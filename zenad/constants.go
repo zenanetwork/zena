@@ -2,7 +2,7 @@ package zenad
 
 const (
 	// ExampleChainDenom is the denomination of the Cosmos EVM example chain's base coin.
-	ExampleChainDenom = "zena"
+	ExampleChainDenom = "azena"
 
 	// ExampleDisplayDenom is the display denomination of the Cosmos EVM example chain's base coin.
 	ExampleDisplayDenom = "ZENA"
@@ -16,10 +16,10 @@ const (
 	CosmosChainID = "zena_1"
 
 	// TestChainID1 is test chain IDs for IBC E2E test
-	TestChainID1 = "zenatest_5"
+	TestChainID1 = "eirene_5"
 	// TestChainID2 is test chain IDs for IBC E2E test
-	TestChainID2 = "zenatest_11"
+	TestChainID2 = "pax_6"
 
-	// 개발 체인 ID
+	// DevChainId is develop chain IDs
 	DevChainID = "zenadev_1337"
 )

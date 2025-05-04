@@ -25,7 +25,7 @@ type PrecompileUnitTestSuite struct {
 	grpcHandler grpc.Handler
 	keyring     keyring.Keyring
 
-	// WEVMOS related fields
+	// WZENA related fields
 	precompile        *werc20.Precompile
 	precompileAddrHex string
 }
@@ -52,7 +52,7 @@ func (s *PrecompileUnitTestSuite) SetupTest(chainID string) {
 	s.grpcHandler = grpcHandler
 	s.keyring = keyring
 
-	s.precompileAddrHex = network.GetWEVMOSContractHex(chainID)
+	s.precompileAddrHex = network.GetWZENAContractHex(chainID)
 
 	ctx := integrationNetwork.GetContext()
 
@@ -60,7 +60,7 @@ func (s *PrecompileUnitTestSuite) SetupTest(chainID string) {
 	s.Require().NoError(err, "failed to get token denom")
 	tokenPairID := s.network.App.Erc20Keeper.GetTokenPairID(ctx, tokenDenom)
 	tokenPair, found := s.network.App.Erc20Keeper.GetTokenPair(ctx, tokenPairID)
-	s.Require().True(found, "expected wevmos precompile to be registered in the tokens map")
+	s.Require().True(found, "expected wzena precompile to be registered in the tokens map")
 	s.Require().Equal(s.precompileAddrHex, tokenPair.Erc20Address, "expected a different address of the contract")
 
 	precompile, err := werc20.NewPrecompile(

@@ -58,7 +58,7 @@ func (suite *GenesisTestSuite) TestValidateGenesis() {
 						Enabled:      true,
 					},
 					{
-						Erc20Address: testconstants.WEVMOSContractMainnet,
+						Erc20Address: testconstants.WZENAContractMainnet,
 						Denom:        testconstants.ExampleAttoDenom,
 						Enabled:      true,
 					},
@@ -82,7 +82,7 @@ func (suite *GenesisTestSuite) TestValidateGenesis() {
 						Enabled:      true,
 					},
 					{
-						Erc20Address: testconstants.WEVMOSContractMainnet,
+						Erc20Address: testconstants.WZENAContractMainnet,
 						Denom:        testconstants.ExampleAttoDenom,
 						Enabled:      true,
 					},
@@ -106,7 +106,7 @@ func (suite *GenesisTestSuite) TestValidateGenesis() {
 						Enabled:      true,
 					},
 					{
-						Erc20Address: testconstants.WEVMOSContractMainnet,
+						Erc20Address: testconstants.WZENAContractMainnet,
 						Denom:        testconstants.ExampleAttoDenom,
 						Enabled:      true,
 					},
@@ -130,7 +130,7 @@ func (suite *GenesisTestSuite) TestValidateGenesis() {
 						Enabled:      true,
 					},
 					{
-						Erc20Address: testconstants.WEVMOSContractMainnet,
+						Erc20Address: testconstants.WZENAContractMainnet,
 						Denom:        testconstants.ExampleAttoDenom,
 						Enabled:      true,
 					},
@@ -149,7 +149,7 @@ func (suite *GenesisTestSuite) TestValidateGenesis() {
 						Enabled:      true,
 					},
 					{
-						Erc20Address: testconstants.WEVMOSContractMainnet,
+						Erc20Address: testconstants.WZENAContractMainnet,
 						Denom:        testconstants.ExampleAttoDenom,
 						Enabled:      true,
 					},
@@ -158,7 +158,7 @@ func (suite *GenesisTestSuite) TestValidateGenesis() {
 			expPass: false,
 		},
 		{
-			name: "invalid genesis - missing wevmos token pair",
+			name: "invalid genesis - missing wzena token pair",
 			genState: &types.GenesisState{
 				Params: types.DefaultParams(),
 				TokenPairs: []types.TokenPair{

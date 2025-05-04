@@ -13,7 +13,7 @@ import (
 )
 
 // CreateGenesisWithTokenPairs creates a genesis that includes
-// the WEVMOS and the provided denoms.
+// the WZENA and the provided denoms.
 // If no denoms provided, creates only one dynamic precompile with the 'xmpl' denom.
 func CreateGenesisWithTokenPairs(keyring testkeyring.Keyring, denoms ...string) network.CustomGenesisState {
 	// Add all keys from the keyring to the genesis accounts as well.
@@ -68,10 +68,10 @@ func CreateGenesisWithTokenPairs(keyring testkeyring.Keyring, denoms ...string) 
 	}
 
 	// STR v2: update the NativePrecompiles and DynamicPrecompiles
-	// with the WEVMOS (default is mainnet) and 'xmpl' tokens in the erc20 params
+	// with the WZENA (default is mainnet) and 'xmpl' tokens in the erc20 params
 	erc20GenesisState := exampleapp.NewErc20GenesisState()
 	erc20GenesisState.TokenPairs = tokenPairs
-	erc20GenesisState.Params.NativePrecompiles = []string{constants.WEVMOSContractMainnet}
+	erc20GenesisState.Params.NativePrecompiles = []string{constants.WZENAContractMainnet}
 	erc20GenesisState.Params.DynamicPrecompiles = dynPrecAddr
 
 	// Combine module genesis states

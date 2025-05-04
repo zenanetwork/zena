@@ -33,11 +33,11 @@ func NewEVMGenesisState() *evmtypes.GenesisState {
 // NewErc20GenesisState returns the default genesis state for the ERC20 module.
 //
 // NOTE: for the example chain implementation we are also adding a default token pair,
-// which is the base denomination of the chain (i.e. the WEVMOS contract).
+// which is the base denomination of the chain (i.e. the WZENA contract).
 func NewErc20GenesisState() *erc20types.GenesisState {
 	erc20GenState := erc20types.DefaultGenesisState()
 	erc20GenState.TokenPairs = ExampleTokenPairs
-	erc20GenState.Params.NativePrecompiles = append(erc20GenState.Params.NativePrecompiles, WEVMOSContractMainnet)
+	erc20GenState.Params.NativePrecompiles = append(erc20GenState.Params.NativePrecompiles, WZENAContractMainnet)
 
 	return erc20GenState
 }

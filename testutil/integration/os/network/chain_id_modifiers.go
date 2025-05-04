@@ -51,12 +51,12 @@ func updateErc20GenesisStateForChainID(chainID string, erc20GenesisState erc20ty
 }
 
 // updateErc20TokenPairs modifies the erc20 token pairs to use the correct
-// WEVMOS depending on ChainID
+// WZENA depending on ChainID
 func updateErc20TokenPairs(chainID string, tokenPairs []erc20types.TokenPair) []erc20types.TokenPair {
-	testnetAddress := GetWEVMOSContractHex(chainID)
+	testnetAddress := GetWZENAContractHex(chainID)
 	coinInfo := testconstants.ExampleChainCoinInfo[chainID]
 
-	mainnetAddress := GetWEVMOSContractHex(testconstants.ExampleChainID)
+	mainnetAddress := GetWZENAContractHex(testconstants.ExampleChainID)
 
 	updatedTokenPairs := make([]erc20types.TokenPair, len(tokenPairs))
 	for i, tokenPair := range tokenPairs {

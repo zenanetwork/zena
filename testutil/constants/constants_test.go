@@ -26,10 +26,10 @@ func TestRequireSameTestBech32Prefix(t *testing.T) {
 	)
 }
 
-func TestRequireSameWEVMOSMainnet(t *testing.T) {
+func TestRequireSameWZENAMainnet(t *testing.T) {
 	require.Equal(t,
-		constants.WEVMOSContractMainnet,
-		zenad.WEVMOSContractMainnet,
-		"wevmos contract addresses should be the same across the repo",
+		constants.WZENAContractMainnet,
+		zenad.WZENAContractMainnet,
+		"wzena contract addresses should be the same across the repo",
 	)
 }

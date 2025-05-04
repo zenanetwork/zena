@@ -4,23 +4,23 @@ import (
 	testconstants "github.com/cosmos/evm/testutil/constants"
 )
 
-// chainsWEVMOSHex is an utility map used to retrieve the WEVMOS contract
+// chainsWZENAHex is an utility map used to retrieve the WZENA contract
 // address in hex format from the chain ID.
 //
 // TODO: refactor to define this in the example chain initialization and pass as function argument
-var chainsWEVMOSHex = map[string]string{
-	testconstants.ExampleChainID: testconstants.WEVMOSContractMainnet,
+var chainsWZENAHex = map[string]string{
+	testconstants.ExampleChainID: testconstants.WZENAContractMainnet,
 }
 
-// GetWEVMOSContractHex returns the hex format of address for the WEVMOS contract
+// GetWZENAContractHex returns the hex format of address for the WZENA contract
 // given the chainID. If the chainID is not found, it defaults to the mainnet
 // address.
-func GetWEVMOSContractHex(chainID string) string {
-	address, found := chainsWEVMOSHex[chainID]
+func GetWZENAContractHex(chainID string) string {
+	address, found := chainsWZENAHex[chainID]
 
 	// default to mainnet address
 	if !found {
-		address = chainsWEVMOSHex[testconstants.ExampleChainID]
+		address = chainsWZENAHex[testconstants.ExampleChainID]
 	}
 
 	return address

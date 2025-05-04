@@ -43,7 +43,7 @@ type PrecompileIntegrationTestSuite struct {
 
 	wrappedCoinDenom string
 
-	// WEVMOS related fields
+	// WZENA related fields
 	precompile        *werc20.Precompile
 	precompileAddrHex string
 }
@@ -51,7 +51,7 @@ type PrecompileIntegrationTestSuite struct {
 func TestPrecompileIntegrationTestSuite(t *testing.T) {
 	// Run Ginkgo integration tests
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "WEVMOS precompile test suite")
+	RunSpecs(t, "WZENA precompile test suite")
 }
 
 // checkAndReturnBalance check that the balance of the address is the same in
@@ -82,7 +82,7 @@ func (is *PrecompileIntegrationTestSuite) checkAndReturnBalance(
 // Integration tests
 // -------------------------------------------------------------------------------------------------
 
-var _ = When("a user interact with the WEVMOS precompiled contract", func() {
+var _ = When("a user interact with the WZENA precompiled contract", func() {
 	var (
 		is                                         *PrecompileIntegrationTestSuite
 		passCheck, failCheck                       testutil.LogCheckArgs
@@ -133,25 +133,25 @@ var _ = When("a user interact with the WEVMOS precompiled contract", func() {
 		is.keyring = keyring
 
 		is.wrappedCoinDenom = evmtypes.GetEVMCoinDenom()
-		is.precompileAddrHex = network.GetWEVMOSContractHex(is.network.GetChainID())
+		is.precompileAddrHex = network.GetWZENAContractHex(is.network.GetChainID())
 
 		ctx := integrationNetwork.GetContext()
 
 		// Perform some check before adding the precompile to the suite.
 
-		// Check that WEVMOS is part of the native precompiles.
+		// Check that WZENA is part of the native precompiles.
 		erc20Params := is.network.App.Erc20Keeper.GetParams(ctx)
 		Expect(erc20Params.NativePrecompiles).To(
 			ContainElement(is.precompileAddrHex),
-			"expected wevmos to be in the native precompiles",
+			"expected wzena to be in the native precompiles",
 		)
 		_, found := is.network.App.BankKeeper.GetDenomMetaData(ctx, evmtypes.GetEVMCoinDenom())
 		Expect(found).To(BeTrue(), "expected native token metadata to be registered")
 
-		// Check that WEVMOS is registered in the token pairs map.
+		// Check that WZENA is registered in the token pairs map.
 		tokenPairID := is.network.App.Erc20Keeper.GetTokenPairID(ctx, is.wrappedCoinDenom)
 		tokenPair, found := is.network.App.Erc20Keeper.GetTokenPair(ctx, tokenPairID)
-		Expect(found).To(BeTrue(), "expected wevmos precompile to be registered in the tokens map")
+		Expect(found).To(BeTrue(), "expected wzena precompile to be registered in the tokens map")
 		Expect(tokenPair.Erc20Address).To(Equal(is.precompileAddrHex))
 
 		precompileAddr := common.HexToAddress(is.precompileAddrHex)
@@ -171,7 +171,7 @@ var _ = When("a user interact with the WEVMOS precompiled contract", func() {
 
 		// Setup of the contract calling into the precompile to tests revert
 		// edge cases and proper handling of snapshots.
-		revertCallerContract, err := testdata.LoadWEVMOS9TestCaller()
+		revertCallerContract, err := testdata.LoadWZENA9TestCaller()
 		Expect(err).ToNot(HaveOccurred(), "failed to load werc20 reverter caller contract")
 
 		txArgs := evmtypes.EvmTxArgs{}

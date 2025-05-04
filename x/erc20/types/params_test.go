@@ -43,7 +43,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 		{
 			"valid address - dynamic precompile",
 			func() types.Params {
-				return types.NewParams(true, []string{}, []string{testconstants.WEVMOSContractMainnet})
+				return types.NewParams(true, []string{}, []string{testconstants.WZENAContractMainnet})
 			},
 			false,
 			"",
@@ -51,7 +51,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 		{
 			"valid address - native precompile",
 			func() types.Params {
-				return types.NewParams(true, []string{testconstants.WEVMOSContractMainnet}, []string{})
+				return types.NewParams(true, []string{testconstants.WZENAContractMainnet}, []string{})
 			},
 			false,
 			"",
@@ -60,7 +60,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 			"sorted address",
 			// order of creation shouldn't matter since it should be sorted when defining new param
 			func() types.Params {
-				return types.NewParams(true, []string{testconstants.WEVMOSContractTestnet, testconstants.WEVMOSContractMainnet}, []string{})
+				return types.NewParams(true, []string{testconstants.WZENAContractTestnet, testconstants.WZENAContractMainnet}, []string{})
 			},
 			false,
 			"",
@@ -69,7 +69,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 			"unsorted address",
 			// order of creation shouldn't matter since it should be sorted when defining new param
 			func() types.Params {
-				return types.NewParams(true, []string{testconstants.WEVMOSContractMainnet, testconstants.WEVMOSContractTestnet}, []string{})
+				return types.NewParams(true, []string{testconstants.WZENAContractMainnet, testconstants.WZENAContractTestnet}, []string{})
 			},
 			false,
 			"",
@@ -99,7 +99,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 		{
 			"repeated address in different params",
 			func() types.Params {
-				return types.NewParams(true, []string{testconstants.WEVMOSContractMainnet}, []string{testconstants.WEVMOSContractMainnet})
+				return types.NewParams(true, []string{testconstants.WZENAContractMainnet}, []string{testconstants.WZENAContractMainnet})
 			},
 			true,
 			"duplicate precompile",
@@ -107,7 +107,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 		{
 			"repeated address - native precompiles",
 			func() types.Params {
-				return types.NewParams(true, []string{testconstants.WEVMOSContractMainnet, testconstants.WEVMOSContractMainnet}, []string{})
+				return types.NewParams(true, []string{testconstants.WZENAContractMainnet, testconstants.WZENAContractMainnet}, []string{})
 			},
 			true,
 			"duplicate precompile",
@@ -115,7 +115,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 		{
 			"repeated address - dynamic precompiles",
 			func() types.Params {
-				return types.NewParams(true, []string{}, []string{testconstants.WEVMOSContractMainnet, testconstants.WEVMOSContractMainnet})
+				return types.NewParams(true, []string{}, []string{testconstants.WZENAContractMainnet, testconstants.WZENAContractMainnet})
 			},
 			true,
 			"duplicate precompile",
@@ -132,7 +132,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 			"unsorted addresses",
 			func() types.Params {
 				params := types.DefaultParams()
-				params.NativePrecompiles = []string{testconstants.WEVMOSContractTestnet, testconstants.WEVMOSContractMainnet}
+				params.NativePrecompiles = []string{testconstants.WZENAContractTestnet, testconstants.WZENAContractMainnet}
 				return params
 			},
 			true,
@@ -163,13 +163,13 @@ func (suite *ParamsTestSuite) TestIsNativePrecompile() {
 		{
 			"default",
 			func() types.Params { return exampleapp.NewErc20GenesisState().Params },
-			common.HexToAddress(testconstants.WEVMOSContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractMainnet),
 			true,
 		},
 		{
 			"not native precompile",
 			func() types.Params { return types.NewParams(true, nil, nil) },
-			common.HexToAddress(testconstants.WEVMOSContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractMainnet),
 			false,
 		},
 		{
@@ -177,7 +177,7 @@ func (suite *ParamsTestSuite) TestIsNativePrecompile() {
 			func() types.Params {
 				return types.NewParams(true, []string{"0xcc491f589B45d4a3C679016195B3FB87D7848210"}, nil)
 			},
-			common.HexToAddress(testconstants.WEVMOSContractTestnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 		{
@@ -185,7 +185,7 @@ func (suite *ParamsTestSuite) TestIsNativePrecompile() {
 			func() types.Params {
 				return types.NewParams(true, []string{"0xcc491f589b45d4a3c679016195b3fb87d7848210"}, nil)
 			},
-			common.HexToAddress(testconstants.WEVMOSContractTestnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 	}
@@ -208,13 +208,13 @@ func (suite *ParamsTestSuite) TestIsDynamicPrecompile() {
 		{
 			"default - not dynamic precompile",
 			types.DefaultParams,
-			common.HexToAddress(testconstants.WEVMOSContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractMainnet),
 			false,
 		},
 		{
 			"no dynamic precompiles",
 			func() types.Params { return types.NewParams(true, nil, nil) },
-			common.HexToAddress(testconstants.WEVMOSContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractMainnet),
 			false,
 		},
 		{
@@ -222,7 +222,7 @@ func (suite *ParamsTestSuite) TestIsDynamicPrecompile() {
 			func() types.Params {
 				return types.NewParams(true, nil, []string{"0xcc491f589B45d4a3C679016195B3FB87D7848210"})
 			},
-			common.HexToAddress(testconstants.WEVMOSContractTestnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 		{
@@ -230,7 +230,7 @@ func (suite *ParamsTestSuite) TestIsDynamicPrecompile() {
 			func() types.Params {
 				return types.NewParams(true, nil, []string{"0xcc491f589b45d4a3c679016195b3fb87d7848210"})
 			},
-			common.HexToAddress(testconstants.WEVMOSContractTestnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 	}

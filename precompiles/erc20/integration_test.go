@@ -246,7 +246,7 @@ var _ = Describe("ERC20 Extension -", func() {
 
 		erc20Params := is.network.App.Erc20Keeper.GetParams(is.network.GetContext())
 		Expect(len(erc20Params.NativePrecompiles)).To(Equal(1))
-		Expect(common.HexToAddress(erc20Params.NativePrecompiles[0])).To(Equal(common.HexToAddress(testconstants.WEVMOSContractMainnet)))
+		Expect(common.HexToAddress(erc20Params.NativePrecompiles[0])).To(Equal(common.HexToAddress(testconstants.WZENAContractMainnet)))
 
 		revertContractAddr, err = is.factory.DeployContract(
 			sender.Priv,
@@ -420,7 +420,7 @@ var _ = Describe("ERC20 Extension -", func() {
 			)
 		})
 		When("calling reverter contract", func() {
-			Context("in a direct call to the WEVMOS contract", func() {
+			Context("in a direct call to the WZENA contract", func() {
 				var (
 					args   factory.CallArgs
 					txArgs evmtypes.EvmTxArgs
@@ -484,7 +484,7 @@ var _ = Describe("ERC20 Extension -", func() {
 					Expect(senderFinalBalance.Amount).To(Equal(senderInitialBalance.Amount.Sub(denomSpent)))
 				},
 				)
-				DescribeTable("it should revert token transfer from the WEVMOS contract", func(before bool, after bool) {
+				DescribeTable("it should revert token transfer from the WZENA contract", func(before bool, after bool) {
 					sender := is.keyring.GetKey(0)
 					receiver := is.keyring.GetAddr(1)
 					amountToSend := big.NewInt(100)
@@ -529,7 +529,7 @@ var _ = Describe("ERC20 Extension -", func() {
 					Entry("revert before", true, false),
 					Entry("revert after", false, true),
 				)
-				It("it should send token transfer and send from WEVMOS contract", func() {
+				It("it should send token transfer and send from WZENA contract", func() {
 					sender := is.keyring.GetKey(0)
 					receiver := is.keyring.GetAddr(1)
 					totalToSend := int64(350)
@@ -577,7 +577,7 @@ var _ = Describe("ERC20 Extension -", func() {
 					Expect(senderFinalBalance.Amount).To(Equal(senderInitialBalance.Amount.Sub(denomSpent)))
 				},
 				)
-				DescribeTable("it should revert token transfer and send from WEVMOS contract", func(before bool, after bool) {
+				DescribeTable("it should revert token transfer and send from WZENA contract", func(before bool, after bool) {
 					sender := is.keyring.GetKey(0)
 					receiver := is.keyring.GetAddr(1)
 					balRes, err := is.handler.GetBalanceFromBank(receiver.Bytes(), is.bondDenom)
@@ -2861,8 +2861,8 @@ var _ = Describe("ERC20 Extension migration Flows -", func() {
 		})
 	})
 
-	When("using Evmos (not wEvmos) in smart contracts", func() {
-		It("should be using straight Evmos for sending funds in smart contracts", func() {
+	When("using Zena (not wZena) in smart contracts", func() {
+		It("should be using straight Zena for sending funds in smart contracts", func() {
 			Skip("will be addressed in follow-up PR")
 
 			Expect(true).To(BeFalse(), "not implemented")

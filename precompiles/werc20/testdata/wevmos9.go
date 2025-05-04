@@ -5,8 +5,8 @@ import (
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
-// LoadWEVMOS9Contract load the WEVMOS9 contract from the json representation of
+// LoadWZENA9Contract load the WZENA9 contract from the json representation of
 // the Solidity contract.
-func LoadWEVMOS9Contract() (evmtypes.CompiledContract, error) {
-	return contractutils.LoadContractFromJSONFile("WEVMOS9.json")
+func LoadWZENA9Contract() (evmtypes.CompiledContract, error) {
+	return contractutils.LoadContractFromJSONFile("WZENA9.json")
 }
