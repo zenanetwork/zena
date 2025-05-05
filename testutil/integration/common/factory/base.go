@@ -5,8 +5,8 @@ import (
 
 	abcitypes "github.com/cometbft/cometbft/abci/types"
 
-	"github.com/cosmos/evm/testutil/integration/os/grpc"
-	"github.com/cosmos/evm/testutil/integration/os/network"
+	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
 
 	errorsmod "cosmossdk.io/errors"
 

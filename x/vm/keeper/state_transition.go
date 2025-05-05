@@ -11,9 +11,9 @@ import (
 
 	cmttypes "github.com/cometbft/cometbft/types"
 
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	"github.com/cosmos/evm/x/vm/statedb"
-	"github.com/cosmos/evm/x/vm/types"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
+	"github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"

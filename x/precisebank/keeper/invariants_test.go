@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cosmos/evm/x/precisebank/keeper"
-	"github.com/cosmos/evm/x/precisebank/types"
-	"github.com/cosmos/evm/x/precisebank/types/mocks"
+	"github.com/zenanetwork/zena/x/precisebank/keeper"
+	"github.com/zenanetwork/zena/x/precisebank/types"
+	"github.com/zenanetwork/zena/x/precisebank/types/mocks"
 
 	sdkmath "cosmossdk.io/math"
 	"cosmossdk.io/store/prefix"

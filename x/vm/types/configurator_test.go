@@ -6,8 +6,8 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/stretchr/testify/require"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/x/vm/types"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/x/vm/types"
 )
 
 func TestEVMConfigurator(t *testing.T) {

@@ -7,9 +7,9 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
-	"github.com/cosmos/evm/x/vm/statedb"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/math"
 

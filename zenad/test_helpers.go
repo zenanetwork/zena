@@ -11,8 +11,8 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/evm/cmd/zenad/config"
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
+	"github.com/zenanetwork/zena/cmd/zenad/config"
+	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 
 	"cosmossdk.io/log"

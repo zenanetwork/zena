@@ -7,9 +7,9 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/params"
 
-	anteinterfaces "github.com/cosmos/evm/ante/interfaces"
-	"github.com/cosmos/evm/x/vm/statedb"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	anteinterfaces "github.com/zenanetwork/zena/ante/interfaces"
+	"github.com/zenanetwork/zena/x/vm/statedb"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
 

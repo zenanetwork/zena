@@ -6,10 +6,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	cmn "github.com/cosmos/evm/precompiles/common"
-	"github.com/cosmos/evm/precompiles/gov"
-	"github.com/cosmos/evm/precompiles/testutil"
-	utiltx "github.com/cosmos/evm/testutil/tx"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/precompiles/gov"
+	"github.com/zenanetwork/zena/precompiles/testutil"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
 
 	"cosmossdk.io/math"
 

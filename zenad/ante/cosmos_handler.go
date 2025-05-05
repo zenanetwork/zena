@@ -1,9 +1,9 @@
 package ante
 
 import (
-	cosmosante "github.com/cosmos/evm/ante/cosmos"
-	evmante "github.com/cosmos/evm/ante/evm"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	cosmosante "github.com/zenanetwork/zena/ante/cosmos"
+	evmante "github.com/zenanetwork/zena/ante/evm"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	ibcante "github.com/cosmos/ibc-go/v10/modules/core/ante"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"

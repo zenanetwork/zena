@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/cosmos/evm/x/vm/statedb"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 
 	storetypes "cosmossdk.io/store/types"
 

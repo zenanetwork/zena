@@ -7,10 +7,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	auth "github.com/cosmos/evm/precompiles/authorization"
-	"github.com/cosmos/evm/precompiles/erc20"
-	app "github.com/cosmos/evm/zenad"
-	chainutil "github.com/cosmos/evm/zenad/testutil"
+	auth "github.com/zenanetwork/zena/precompiles/authorization"
+	"github.com/zenanetwork/zena/precompiles/erc20"
+	app "github.com/zenanetwork/zena/zenad"
+	chainutil "github.com/zenanetwork/zena/zenad/testutil"
 	"github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 
 	sdkmath "cosmossdk.io/math"

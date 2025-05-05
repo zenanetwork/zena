@@ -1,8 +1,8 @@
 package erc20_test
 
 import (
-	"github.com/cosmos/evm/precompiles/erc20"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/precompiles/erc20"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 // TODO: This is not yet producing the correct reason bytes so we skip this test for now,

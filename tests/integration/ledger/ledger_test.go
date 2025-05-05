@@ -9,11 +9,11 @@ import (
 	//nolint:revive // dot imports are fine for Ginkgo
 	. "github.com/onsi/ginkgo/v2"
 
-	"github.com/cosmos/evm/crypto/hd"
-	"github.com/cosmos/evm/encoding"
-	"github.com/cosmos/evm/tests/integration/ledger/mocks"
-	"github.com/cosmos/evm/testutil"
-	utiltx "github.com/cosmos/evm/testutil/tx"
+	"github.com/zenanetwork/zena/crypto/hd"
+	"github.com/zenanetwork/zena/encoding"
+	"github.com/zenanetwork/zena/tests/integration/ledger/mocks"
+	"github.com/zenanetwork/zena/testutil"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
 
 	"cosmossdk.io/math"
 

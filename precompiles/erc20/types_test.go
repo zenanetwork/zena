@@ -3,8 +3,8 @@ package erc20_test
 import (
 	"math/big"
 
-	"github.com/cosmos/evm/precompiles/erc20"
-	utiltx "github.com/cosmos/evm/testutil/tx"
+	"github.com/zenanetwork/zena/precompiles/erc20"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
 )
 
 //nolint:dupl // these tests are not duplicates

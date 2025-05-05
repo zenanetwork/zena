@@ -10,11 +10,11 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 
 	dbm "github.com/cosmos/cosmos-db"
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 	"github.com/cosmos/gogoproto/proto"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 

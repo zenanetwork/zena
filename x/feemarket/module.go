@@ -11,9 +11,9 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	"github.com/cosmos/evm/x/feemarket/client/cli"
-	"github.com/cosmos/evm/x/feemarket/keeper"
-	"github.com/cosmos/evm/x/feemarket/types"
+	"github.com/zenanetwork/zena/x/feemarket/client/cli"
+	"github.com/zenanetwork/zena/x/feemarket/keeper"
+	"github.com/zenanetwork/zena/x/feemarket/types"
 
 	"cosmossdk.io/core/appmodule"
 

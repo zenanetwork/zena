@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/x/erc20/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/x/erc20/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 )
 
 type GenesisTestSuite struct {

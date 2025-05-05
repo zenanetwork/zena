@@ -5,8 +5,8 @@
 package network
 
 import (
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )

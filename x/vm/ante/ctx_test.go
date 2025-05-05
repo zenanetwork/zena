@@ -1,8 +1,8 @@
 package ante_test
 
 import (
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	evmante "github.com/cosmos/evm/x/vm/ante"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	evmante "github.com/zenanetwork/zena/x/vm/ante"
 
 	storetypes "cosmossdk.io/store/types"
 )

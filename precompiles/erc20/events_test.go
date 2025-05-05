@@ -6,10 +6,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	"github.com/cosmos/evm/precompiles/authorization"
-	cmn "github.com/cosmos/evm/precompiles/common"
-	erc20precompile "github.com/cosmos/evm/precompiles/erc20"
-	utiltx "github.com/cosmos/evm/testutil/tx"
+	"github.com/zenanetwork/zena/precompiles/authorization"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	erc20precompile "github.com/zenanetwork/zena/precompiles/erc20"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
 )
 
 //nolint:dupl // this is not a duplicate of the approval events test

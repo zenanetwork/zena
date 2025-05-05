@@ -3,13 +3,13 @@ package evm_test
 import (
 	"fmt"
 
-	evmante "github.com/cosmos/evm/ante/evm"
-	commonfactory "github.com/cosmos/evm/testutil/integration/common/factory"
-	testfactory "github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/testutil/integration/os/grpc"
-	testkeyring "github.com/cosmos/evm/testutil/integration/os/keyring"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	evmante "github.com/zenanetwork/zena/ante/evm"
+	commonfactory "github.com/zenanetwork/zena/testutil/integration/common/factory"
+	testfactory "github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
+	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	sdkmath "cosmossdk.io/math"
 

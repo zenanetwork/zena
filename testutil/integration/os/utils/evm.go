@@ -8,9 +8,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	"github.com/cosmos/evm/contracts"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/contracts"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 // GetERC20Balance returns the token balance of a given account address for

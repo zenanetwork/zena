@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-	"github.com/cosmos/evm/x/precisebank/types"
+	"github.com/zenanetwork/zena/x/precisebank/types"
 
 	sdkmath "cosmossdk.io/math"
 

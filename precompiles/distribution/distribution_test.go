@@ -8,10 +8,10 @@ import (
 	gethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	chainutil "github.com/cosmos/evm/zenad/testutil"
-	"github.com/cosmos/evm/precompiles/distribution"
-	"github.com/cosmos/evm/testutil/constants"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	chainutil "github.com/zenanetwork/zena/zenad/testutil"
+	"github.com/zenanetwork/zena/precompiles/distribution"
+	"github.com/zenanetwork/zena/testutil/constants"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/math"
 

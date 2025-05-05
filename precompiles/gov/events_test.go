@@ -7,9 +7,9 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	cmn "github.com/cosmos/evm/precompiles/common"
-	"github.com/cosmos/evm/precompiles/gov"
-	"github.com/cosmos/evm/x/vm/statedb"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/precompiles/gov"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 
 	storetypes "cosmossdk.io/store/types"
 

@@ -8,12 +8,12 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/cosmos/evm/precompiles/authorization"
-	cmn "github.com/cosmos/evm/precompiles/common"
-	"github.com/cosmos/evm/precompiles/staking"
-	"github.com/cosmos/evm/precompiles/testutil"
-	testkeyring "github.com/cosmos/evm/testutil/integration/os/keyring"
-	"github.com/cosmos/evm/x/vm/statedb"
+	"github.com/zenanetwork/zena/precompiles/authorization"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/precompiles/staking"
+	"github.com/zenanetwork/zena/precompiles/testutil"
+	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 
 	"cosmossdk.io/math"
 

@@ -1,4 +1,4 @@
-module github.com/cosmos/evm
+module github.com/zenanetwork/zena
 
 go 1.23.6
 

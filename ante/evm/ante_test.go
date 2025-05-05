@@ -10,9 +10,9 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	ethparams "github.com/ethereum/go-ethereum/params"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	sdkmath "cosmossdk.io/math"
 

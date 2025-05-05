@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	chainconfig "github.com/cosmos/evm/cmd/zenad/config"
-	"github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/zenad"
+	chainconfig "github.com/zenanetwork/zena/cmd/zenad/config"
+	"github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/zenad"
 )
 
 func TestRequireSameTestDenom(t *testing.T) {

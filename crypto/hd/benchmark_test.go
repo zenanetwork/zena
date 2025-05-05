@@ -3,7 +3,7 @@ package hd
 import (
 	"testing"
 
-	"github.com/cosmos/evm/types"
+	"github.com/zenanetwork/zena/types"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 )

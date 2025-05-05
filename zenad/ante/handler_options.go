@@ -1,7 +1,7 @@
 package ante
 
 import (
-	anteinterfaces "github.com/cosmos/evm/ante/interfaces"
+	anteinterfaces "github.com/zenanetwork/zena/ante/interfaces"
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 
 	errorsmod "cosmossdk.io/errors"

@@ -5,17 +5,17 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"github.com/cosmos/evm/ante"
-	evmante "github.com/cosmos/evm/ante/evm"
-	"github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/testutil/integration/os/grpc"
-	"github.com/cosmos/evm/testutil/integration/os/keyring"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	"github.com/cosmos/evm/types"
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	chainante "github.com/cosmos/evm/zenad/ante"
-	chainutil "github.com/cosmos/evm/zenad/testutil"
+	"github.com/zenanetwork/zena/ante"
+	evmante "github.com/zenanetwork/zena/ante/evm"
+	"github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
+	"github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	"github.com/zenanetwork/zena/types"
+	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	chainante "github.com/zenanetwork/zena/zenad/ante"
+	chainutil "github.com/zenanetwork/zena/zenad/testutil"
 
 	sdkmath "cosmossdk.io/math"
 

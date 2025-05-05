@@ -6,11 +6,11 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	"github.com/cosmos/evm/x/precisebank"
-	"github.com/cosmos/evm/x/precisebank/keeper"
-	"github.com/cosmos/evm/x/precisebank/types"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	"github.com/zenanetwork/zena/x/precisebank"
+	"github.com/zenanetwork/zena/x/precisebank/keeper"
+	"github.com/zenanetwork/zena/x/precisebank/types"
 
 	sdkmath "cosmossdk.io/math"
 

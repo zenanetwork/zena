@@ -7,10 +7,10 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/cosmos/evm/contracts"
-	evmibctesting "github.com/cosmos/evm/ibc/testing"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	"github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/contracts"
+	evmibctesting "github.com/zenanetwork/zena/ibc/testing"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	"github.com/zenanetwork/zena/zenad"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"

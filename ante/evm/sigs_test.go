@@ -3,8 +3,8 @@ package evm_test
 import (
 	"math/big"
 
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 func (suite *AnteTestSuite) TestSignatures() {

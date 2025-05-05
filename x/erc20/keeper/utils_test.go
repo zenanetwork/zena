@@ -5,11 +5,11 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/cosmos/evm/contracts"
-	"github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/x/erc20/keeper/testdata"
-	"github.com/cosmos/evm/x/erc20/types"
-	evm "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/contracts"
+	"github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/x/erc20/keeper/testdata"
+	"github.com/zenanetwork/zena/x/erc20/types"
+	evm "github.com/zenanetwork/zena/x/vm/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"

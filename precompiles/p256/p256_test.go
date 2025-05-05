@@ -10,8 +10,8 @@ import (
 
 	"github.com/cometbft/cometbft/crypto"
 
-	"github.com/cosmos/evm/precompiles/p256"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/precompiles/p256"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 var trueValue = common.LeftPadBytes(common.Big1.Bytes(), 32)

@@ -5,8 +5,8 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	"github.com/cosmos/evm/crypto/ethsecp256k1"
-	exampleapp "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"

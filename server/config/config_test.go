@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 
-	serverconfig "github.com/cosmos/evm/server/config"
-	"github.com/cosmos/evm/testutil/constants"
+	serverconfig "github.com/zenanetwork/zena/server/config"
+	"github.com/zenanetwork/zena/testutil/constants"
 )
 
 func TestDefaultConfig(t *testing.T) {

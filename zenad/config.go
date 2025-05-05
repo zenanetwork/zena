@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/math"
 

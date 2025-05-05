@@ -9,9 +9,9 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	"github.com/cosmos/evm/server/config"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/server/config"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"

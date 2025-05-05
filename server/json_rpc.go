@@ -9,9 +9,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 
-	"github.com/cosmos/evm/rpc"
-	serverconfig "github.com/cosmos/evm/server/config"
-	cosmosevmtypes "github.com/cosmos/evm/types"
+	"github.com/zenanetwork/zena/rpc"
+	serverconfig "github.com/zenanetwork/zena/server/config"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server"

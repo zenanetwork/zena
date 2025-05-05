@@ -1,7 +1,7 @@
 package network
 
 import (
-	testconstants "github.com/cosmos/evm/testutil/constants"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
 )
 
 // chainsWZENAHex is an utility map used to retrieve the WZENA contract

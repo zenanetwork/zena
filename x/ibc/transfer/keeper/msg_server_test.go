@@ -5,11 +5,11 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/cosmos/evm/testutil/integration/os/keyring"
-	testutils "github.com/cosmos/evm/testutil/integration/os/utils"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	"github.com/cosmos/evm/x/ibc/transfer/keeper"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	testutils "github.com/zenanetwork/zena/testutil/integration/os/utils"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	"github.com/zenanetwork/zena/x/ibc/transfer/keeper"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	"github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 

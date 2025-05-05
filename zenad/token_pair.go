@@ -1,6 +1,6 @@
 package zenad
 
-import erc20types "github.com/cosmos/evm/x/erc20/types"
+import erc20types "github.com/zenanetwork/zena/x/erc20/types"
 
 // WZENAContractMainnet is the WZENA contract address for mainnet
 // TODO: Replace with the actual deployed WZENA contract address before mainnet launch

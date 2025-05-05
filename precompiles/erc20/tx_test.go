@@ -6,11 +6,11 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/cosmos/evm/precompiles/erc20"
-	"github.com/cosmos/evm/precompiles/testutil"
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	"github.com/cosmos/evm/x/vm/statedb"
+	"github.com/zenanetwork/zena/precompiles/erc20"
+	"github.com/zenanetwork/zena/precompiles/testutil"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 
 	"cosmossdk.io/math"
 

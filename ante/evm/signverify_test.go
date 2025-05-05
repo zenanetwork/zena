@@ -5,10 +5,10 @@ import (
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	ethante "github.com/cosmos/evm/ante/evm"
-	"github.com/cosmos/evm/testutil"
-	testutiltx "github.com/cosmos/evm/testutil/tx"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	ethante "github.com/zenanetwork/zena/ante/evm"
+	"github.com/zenanetwork/zena/testutil"
+	testutiltx "github.com/zenanetwork/zena/testutil/tx"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

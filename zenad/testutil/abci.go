@@ -8,8 +8,8 @@ import (
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
 
-	"github.com/cosmos/evm/testutil/tx"
-	app "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/testutil/tx"
+	app "github.com/zenanetwork/zena/zenad"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"

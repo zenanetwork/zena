@@ -7,11 +7,11 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	chainconfig "github.com/cosmos/evm/cmd/zenad/config"
-	cmn "github.com/cosmos/evm/precompiles/common"
-	"github.com/cosmos/evm/precompiles/distribution"
-	"github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/x/vm/statedb"
+	chainconfig "github.com/zenanetwork/zena/cmd/zenad/config"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/precompiles/distribution"
+	"github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"

@@ -1,8 +1,8 @@
 package keeper_test
 
 import (
-	"github.com/cosmos/evm/x/vm/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/x/vm/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 )
 
 func (suite *KeeperTestSuite) TestParams() {

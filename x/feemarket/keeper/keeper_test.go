@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cosmos/evm/testutil/integration/os/network"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
 
 	"cosmossdk.io/math"
 

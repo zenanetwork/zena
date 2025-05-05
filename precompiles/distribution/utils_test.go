@@ -1,8 +1,8 @@
 package distribution_test
 
 import (
-	"github.com/cosmos/evm/precompiles/staking"
-	"github.com/cosmos/evm/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/precompiles/staking"
+	"github.com/zenanetwork/zena/testutil/integration/os/keyring"
 
 	"cosmossdk.io/math"
 

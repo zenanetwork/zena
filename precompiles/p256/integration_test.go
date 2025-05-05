@@ -14,14 +14,14 @@ import (
 
 	"github.com/cometbft/cometbft/crypto"
 
-	"github.com/cosmos/evm/precompiles/p256"
-	"github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/testutil/integration/os/grpc"
-	testkeyring "github.com/cosmos/evm/testutil/integration/os/keyring"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	"github.com/cosmos/evm/testutil/integration/os/utils"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/precompiles/p256"
+	"github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
+	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	"github.com/zenanetwork/zena/testutil/integration/os/utils"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 )
 
 type IntegrationTestSuite struct {

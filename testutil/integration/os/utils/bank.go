@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	cmnfactory "github.com/cosmos/evm/testutil/integration/common/factory"
-	cmnnet "github.com/cosmos/evm/testutil/integration/common/network"
-	"github.com/cosmos/evm/testutil/integration/os/keyring"
+	cmnfactory "github.com/zenanetwork/zena/testutil/integration/common/factory"
+	cmnnet "github.com/zenanetwork/zena/testutil/integration/common/network"
+	"github.com/zenanetwork/zena/testutil/integration/os/keyring"
 
 	"cosmossdk.io/math"
 

@@ -6,10 +6,10 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 
-	cryptocodec "github.com/cosmos/evm/crypto/codec"
-	"github.com/cosmos/evm/ethereum/eip712"
-	"github.com/cosmos/evm/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	cryptocodec "github.com/zenanetwork/zena/crypto/codec"
+	"github.com/zenanetwork/zena/ethereum/eip712"
+	"github.com/zenanetwork/zena/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

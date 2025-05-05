@@ -21,10 +21,10 @@ import (
 
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	evmante "github.com/cosmos/evm/x/vm/ante"
-	"github.com/cosmos/evm/x/vm/statedb"
-	"github.com/cosmos/evm/x/vm/types"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
+	evmante "github.com/zenanetwork/zena/x/vm/ante"
+	"github.com/zenanetwork/zena/x/vm/statedb"
+	"github.com/zenanetwork/zena/x/vm/types"
 
 	sdkmath "cosmossdk.io/math"
 

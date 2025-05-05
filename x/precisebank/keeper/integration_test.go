@@ -6,13 +6,13 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/cosmos/evm/contracts"
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/testutil/integration/os/utils"
-	"github.com/cosmos/evm/x/precisebank/keeper"
-	"github.com/cosmos/evm/x/precisebank/types"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/contracts"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/utils"
+	"github.com/zenanetwork/zena/x/precisebank/keeper"
+	"github.com/zenanetwork/zena/x/precisebank/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	sdkmath "cosmossdk.io/math"
 

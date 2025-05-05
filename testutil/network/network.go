@@ -27,12 +27,12 @@ import (
 	cmtclient "github.com/cometbft/cometbft/rpc/client"
 
 	dbm "github.com/cosmos/cosmos-db"
-	chaincmd "github.com/cosmos/evm/cmd/zenad/cmd"
-	"github.com/cosmos/evm/crypto/hd"
-	"github.com/cosmos/evm/server/config"
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	chaincmd "github.com/zenanetwork/zena/cmd/zenad/cmd"
+	"github.com/zenanetwork/zena/crypto/hd"
+	"github.com/zenanetwork/zena/server/config"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"

@@ -1,8 +1,8 @@
 package testdata
 
 import (
-	contractutils "github.com/cosmos/evm/contracts/utils"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	contractutils "github.com/zenanetwork/zena/contracts/utils"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 func LoadERC20Contract() (evmtypes.CompiledContract, error) {

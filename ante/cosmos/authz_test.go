@@ -11,12 +11,12 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	cosmosante "github.com/cosmos/evm/ante/cosmos"
-	"github.com/cosmos/evm/testutil"
-	"github.com/cosmos/evm/testutil/integration/common/factory"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	cosmosante "github.com/zenanetwork/zena/ante/cosmos"
+	"github.com/zenanetwork/zena/testutil"
+	"github.com/zenanetwork/zena/testutil/integration/common/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/math"
 

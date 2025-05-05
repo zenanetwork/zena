@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	cosmosevmtypes "github.com/cosmos/evm/types"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
 
 	errorsmod "cosmossdk.io/errors"
 

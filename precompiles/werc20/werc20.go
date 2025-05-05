@@ -9,10 +9,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	cmn "github.com/cosmos/evm/precompiles/common"
-	erc20 "github.com/cosmos/evm/precompiles/erc20"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	transferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	erc20 "github.com/zenanetwork/zena/precompiles/erc20"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 
 	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"

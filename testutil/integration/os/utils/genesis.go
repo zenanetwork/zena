@@ -1,12 +1,12 @@
 package utils
 
 import (
-	"github.com/cosmos/evm/testutil/constants"
-	testkeyring "github.com/cosmos/evm/testutil/integration/os/keyring"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/testutil/constants"
+	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"

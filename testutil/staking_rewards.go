@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cosmos/evm/testutil/constants"
-	testutiltx "github.com/cosmos/evm/testutil/tx"
-	app "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/testutil/constants"
+	testutiltx "github.com/zenanetwork/zena/testutil/tx"
+	app "github.com/zenanetwork/zena/zenad"
 
 	"cosmossdk.io/math"
 

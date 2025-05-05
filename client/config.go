@@ -10,7 +10,7 @@ import (
 
 	"github.com/cometbft/cometbft/libs/cli"
 
-	"github.com/cosmos/evm/types"
+	"github.com/zenanetwork/zena/types"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
 )

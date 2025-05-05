@@ -13,10 +13,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/suite"
 
-	evmibctesting "github.com/cosmos/evm/ibc/testing"
-	"github.com/cosmos/evm/precompiles/ics20"
-	evmante "github.com/cosmos/evm/x/vm/ante"
-	"github.com/cosmos/evm/zenad"
+	evmibctesting "github.com/zenanetwork/zena/ibc/testing"
+	"github.com/zenanetwork/zena/precompiles/ics20"
+	evmante "github.com/zenanetwork/zena/x/vm/ante"
+	"github.com/zenanetwork/zena/zenad"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 

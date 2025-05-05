@@ -3,11 +3,11 @@ package keeper_test
 import (
 	"testing"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	"github.com/cosmos/evm/x/precisebank/keeper"
-	"github.com/cosmos/evm/x/precisebank/types"
-	"github.com/cosmos/evm/x/precisebank/types/mocks"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	"github.com/zenanetwork/zena/x/precisebank/keeper"
+	"github.com/zenanetwork/zena/x/precisebank/types"
+	"github.com/zenanetwork/zena/x/precisebank/types/mocks"
 
 	sdkmath "cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"

@@ -3,8 +3,8 @@ package cli
 import (
 	"github.com/spf13/cobra"
 
-	rpctypes "github.com/cosmos/evm/rpc/types"
-	"github.com/cosmos/evm/x/vm/types"
+	rpctypes "github.com/zenanetwork/zena/rpc/types"
+	"github.com/zenanetwork/zena/x/vm/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

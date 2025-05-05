@@ -9,8 +9,8 @@ import (
 
 	"github.com/cometbft/cometbft/crypto/tmhash"
 
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	"github.com/cosmos/evm/x/erc20/types"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	"github.com/zenanetwork/zena/x/erc20/types"
 )
 
 type TokenPairTestSuite struct {

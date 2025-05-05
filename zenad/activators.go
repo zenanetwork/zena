@@ -3,7 +3,7 @@ package zenad
 import (
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/cosmos/evm/zenad/eips"
+	"github.com/zenanetwork/zena/zenad/eips"
 )
 
 // cosmosEVMActivators defines a map of opcode modifiers associated

@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"context"
 
-	"github.com/cosmos/evm/x/precisebank/types"
+	"github.com/zenanetwork/zena/x/precisebank/types"
 
 	sdkmath "cosmossdk.io/math"
 

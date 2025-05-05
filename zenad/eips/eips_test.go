@@ -13,14 +13,14 @@ import (
 	//nolint:revive // dot imports are fine for Ginkgo
 	. "github.com/onsi/gomega"
 
-	"github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/testutil/integration/os/grpc"
-	"github.com/cosmos/evm/testutil/integration/os/keyring"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	integrationutils "github.com/cosmos/evm/testutil/integration/os/utils"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	"github.com/cosmos/evm/zenad/eips"
-	"github.com/cosmos/evm/zenad/eips/testdata"
+	"github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
+	"github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	integrationutils "github.com/zenanetwork/zena/testutil/integration/os/utils"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	"github.com/zenanetwork/zena/zenad/eips"
+	"github.com/zenanetwork/zena/zenad/eips/testdata"
 
 	"github.com/cosmos/cosmos-sdk/crypto/types"
 )

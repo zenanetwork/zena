@@ -3,8 +3,8 @@ package tx
 import (
 	protov2 "google.golang.org/protobuf/proto"
 
-	"github.com/cosmos/evm/testutil/constants"
-	exampleapp "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/testutil/constants"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 
 	sdkmath "cosmossdk.io/math"
 

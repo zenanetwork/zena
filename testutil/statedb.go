@@ -3,8 +3,8 @@ package testutil
 import (
 	"github.com/ethereum/go-ethereum/common"
 
-	anteinterfaces "github.com/cosmos/evm/ante/interfaces"
-	"github.com/cosmos/evm/x/vm/statedb"
+	anteinterfaces "github.com/zenanetwork/zena/ante/interfaces"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

@@ -3,7 +3,7 @@ package constants
 import (
 	"fmt"
 
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 const (

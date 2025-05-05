@@ -8,10 +8,10 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/stretchr/testify/require"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	"github.com/cosmos/evm/x/vm/keeper/testdata"
-	"github.com/cosmos/evm/x/vm/types"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	"github.com/zenanetwork/zena/x/vm/keeper/testdata"
+	"github.com/zenanetwork/zena/x/vm/types"
 
 	sdkmath "cosmossdk.io/math"
 

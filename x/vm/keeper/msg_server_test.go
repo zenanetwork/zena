@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"math/big"
 
-	"github.com/cosmos/evm/testutil/integration/os/utils"
-	"github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/testutil/integration/os/utils"
+	"github.com/zenanetwork/zena/x/vm/types"
 
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"

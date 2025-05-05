@@ -15,13 +15,13 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cometbft/cometbft/version"
 
-	commonnetwork "github.com/cosmos/evm/testutil/integration/common/network"
-	"github.com/cosmos/evm/types"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	app "github.com/cosmos/evm/zenad"
-	chainutil "github.com/cosmos/evm/zenad/testutil"
+	commonnetwork "github.com/zenanetwork/zena/testutil/integration/common/network"
+	"github.com/zenanetwork/zena/types"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	app "github.com/zenanetwork/zena/zenad"
+	chainutil "github.com/zenanetwork/zena/zenad/testutil"
 
 	sdkmath "cosmossdk.io/math"
 

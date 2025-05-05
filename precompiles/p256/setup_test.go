@@ -18,7 +18,7 @@ import (
 
 	"github.com/cometbft/cometbft/crypto"
 
-	"github.com/cosmos/evm/precompiles/p256"
+	"github.com/zenanetwork/zena/precompiles/p256"
 )
 
 var s *PrecompileTestSuite

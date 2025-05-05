@@ -17,9 +17,9 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 	cmtversion "github.com/cometbft/cometbft/version"
 
-	"github.com/cosmos/evm/crypto/ethsecp256k1"
-	"github.com/cosmos/evm/zenad"
-	"github.com/cosmos/evm/testutil/tx"
+	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
+	"github.com/zenanetwork/zena/zenad"
+	"github.com/zenanetwork/zena/testutil/tx"
 	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	commitmenttypes "github.com/cosmos/ibc-go/v10/modules/core/23-commitment/types"

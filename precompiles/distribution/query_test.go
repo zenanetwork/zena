@@ -6,9 +6,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	cmn "github.com/cosmos/evm/precompiles/common"
-	"github.com/cosmos/evm/precompiles/distribution"
-	testutiltx "github.com/cosmos/evm/testutil/tx"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/precompiles/distribution"
+	testutiltx "github.com/zenanetwork/zena/testutil/tx"
 
 	"cosmossdk.io/math"
 

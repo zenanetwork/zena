@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cosmos/evm/cmd/zenad/cmd"
-	evmdconfig "github.com/cosmos/evm/cmd/zenad/config"
-	examplechain "github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/cmd/zenad/cmd"
+	evmdconfig "github.com/zenanetwork/zena/cmd/zenad/config"
+	examplechain "github.com/zenanetwork/zena/zenad"
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	sdk "github.com/cosmos/cosmos-sdk/types"

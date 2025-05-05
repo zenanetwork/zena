@@ -7,10 +7,10 @@ import (
 
 	abcitypes "github.com/cometbft/cometbft/abci/types"
 
-	commonfactory "github.com/cosmos/evm/testutil/integration/common/factory"
-	"github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	commonfactory "github.com/zenanetwork/zena/testutil/integration/common/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"

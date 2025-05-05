@@ -11,12 +11,12 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 
-	chainconfig "github.com/cosmos/evm/cmd/zenad/config"
-	"github.com/cosmos/evm/crypto/ethsecp256k1"
-	"github.com/cosmos/evm/ethereum/eip712"
-	"github.com/cosmos/evm/testutil/constants"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	chainconfig "github.com/zenanetwork/zena/cmd/zenad/config"
+	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
+	"github.com/zenanetwork/zena/ethereum/eip712"
+	"github.com/zenanetwork/zena/testutil/constants"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/math"
 

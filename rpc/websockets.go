@@ -24,11 +24,11 @@ import (
 	rpcclient "github.com/cometbft/cometbft/rpc/jsonrpc/client"
 	cmttypes "github.com/cometbft/cometbft/types"
 
-	"github.com/cosmos/evm/rpc/ethereum/pubsub"
-	rpcfilters "github.com/cosmos/evm/rpc/namespaces/ethereum/eth/filters"
-	"github.com/cosmos/evm/rpc/types"
-	"github.com/cosmos/evm/server/config"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/rpc/ethereum/pubsub"
+	rpcfilters "github.com/zenanetwork/zena/rpc/namespaces/ethereum/eth/filters"
+	"github.com/zenanetwork/zena/rpc/types"
+	"github.com/zenanetwork/zena/server/config"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/log"
 

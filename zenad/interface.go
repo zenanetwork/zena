@@ -1,8 +1,8 @@
 package zenad
 
 import (
-	cmn "github.com/cosmos/evm/precompiles/common"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 type BankKeeper interface {

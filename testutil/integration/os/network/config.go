@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"math/big"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	testtx "github.com/cosmos/evm/testutil/tx"
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	testtx "github.com/zenanetwork/zena/testutil/tx"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/math"
 

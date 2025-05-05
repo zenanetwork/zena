@@ -19,8 +19,8 @@ import (
 
 	testifysuite "github.com/stretchr/testify/suite"
 
-	evmibctesting "github.com/cosmos/evm/ibc/testing"
-	"github.com/cosmos/evm/zenad"
+	evmibctesting "github.com/zenanetwork/zena/ibc/testing"
+	"github.com/zenanetwork/zena/zenad"
 	"github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"

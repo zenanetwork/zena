@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	cmn "github.com/cosmos/evm/precompiles/common"
-	"github.com/cosmos/evm/precompiles/evidence"
-	"github.com/cosmos/evm/precompiles/testutil"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/precompiles/evidence"
+	"github.com/zenanetwork/zena/precompiles/testutil"
 
 	evidencetypes "cosmossdk.io/x/evidence/types"
 

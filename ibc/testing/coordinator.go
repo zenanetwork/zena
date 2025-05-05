@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cosmos/evm/zenad"
+	"github.com/zenanetwork/zena/zenad"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 )
 

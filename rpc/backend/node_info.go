@@ -11,11 +11,11 @@ import (
 
 	cmttypes "github.com/cometbft/cometbft/types"
 
-	"github.com/cosmos/evm/crypto/ethsecp256k1"
-	rpctypes "github.com/cosmos/evm/rpc/types"
-	"github.com/cosmos/evm/server/config"
-	"github.com/cosmos/evm/testutil/constants"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
+	rpctypes "github.com/zenanetwork/zena/rpc/types"
+	"github.com/zenanetwork/zena/server/config"
+	"github.com/zenanetwork/zena/testutil/constants"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"

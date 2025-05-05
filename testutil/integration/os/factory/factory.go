@@ -11,11 +11,11 @@ import (
 
 	abcitypes "github.com/cometbft/cometbft/abci/types"
 
-	"github.com/cosmos/evm/precompiles/testutil"
-	commonfactory "github.com/cosmos/evm/testutil/integration/common/factory"
-	"github.com/cosmos/evm/testutil/integration/os/grpc"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/zenanetwork/zena/precompiles/testutil"
+	commonfactory "github.com/zenanetwork/zena/testutil/integration/common/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	"github.com/cosmos/gogoproto/proto"
 
 	errorsmod "cosmossdk.io/errors"

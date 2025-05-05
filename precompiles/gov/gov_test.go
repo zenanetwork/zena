@@ -8,10 +8,10 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/cosmos/evm/precompiles/gov"
-	"github.com/cosmos/evm/x/vm/statedb"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	chainutil "github.com/cosmos/evm/zenad/testutil"
+	"github.com/zenanetwork/zena/precompiles/gov"
+	"github.com/zenanetwork/zena/x/vm/statedb"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	chainutil "github.com/zenanetwork/zena/zenad/testutil"
 )
 
 func (s *PrecompileTestSuite) TestIsTransaction() {

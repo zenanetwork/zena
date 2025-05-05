@@ -12,8 +12,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/cosmos/evm/ibc"
-	auth "github.com/cosmos/evm/precompiles/authorization"
+	"github.com/zenanetwork/zena/ibc"
+	auth "github.com/zenanetwork/zena/precompiles/authorization"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/authz"

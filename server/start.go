@@ -29,12 +29,12 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/evm/cmd/zenad/config"
-	"github.com/cosmos/evm/indexer"
-	ethdebug "github.com/cosmos/evm/rpc/namespaces/ethereum/debug"
-	cosmosevmserverconfig "github.com/cosmos/evm/server/config"
-	srvflags "github.com/cosmos/evm/server/flags"
-	cosmosevmtypes "github.com/cosmos/evm/types"
+	"github.com/zenanetwork/zena/cmd/zenad/config"
+	"github.com/zenanetwork/zena/indexer"
+	ethdebug "github.com/zenanetwork/zena/rpc/namespaces/ethereum/debug"
+	cosmosevmserverconfig "github.com/zenanetwork/zena/server/config"
+	srvflags "github.com/zenanetwork/zena/server/flags"
+	cosmosevmtypes "github.com/zenanetwork/zena/types"
 
 	errorsmod "cosmossdk.io/errors"
 	pruningtypes "cosmossdk.io/store/pruning/types"

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/cosmos/evm/x/feemarket/types"
+	"github.com/zenanetwork/zena/x/feemarket/types"
 
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"

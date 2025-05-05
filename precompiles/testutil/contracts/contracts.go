@@ -9,11 +9,11 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	"github.com/cosmos/evm/crypto/ethsecp256k1"
-	precompiletestutil "github.com/cosmos/evm/precompiles/testutil"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	exampleapp "github.com/cosmos/evm/zenad"
-	chainutil "github.com/cosmos/evm/zenad/testutil"
+	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
+	precompiletestutil "github.com/zenanetwork/zena/precompiles/testutil"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
+	chainutil "github.com/zenanetwork/zena/zenad/testutil"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

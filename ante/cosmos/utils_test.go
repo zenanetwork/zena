@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/cosmos/evm/ante/testutils"
-	"github.com/cosmos/evm/crypto/ethsecp256k1"
+	"github.com/zenanetwork/zena/ante/testutils"
+	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
 
 	sdkmath "cosmossdk.io/math"
 

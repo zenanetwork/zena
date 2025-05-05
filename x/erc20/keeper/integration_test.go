@@ -11,9 +11,9 @@ import (
 	//nolint:revive // dot imports are fine for Ginkgo
 	. "github.com/onsi/gomega"
 
-	"github.com/cosmos/evm/testutil/integration/common/factory"
-	testutils "github.com/cosmos/evm/testutil/integration/os/utils"
-	"github.com/cosmos/evm/x/erc20/types"
+	"github.com/zenanetwork/zena/testutil/integration/common/factory"
+	testutils "github.com/zenanetwork/zena/testutil/integration/os/utils"
+	"github.com/zenanetwork/zena/x/erc20/types"
 
 	"cosmossdk.io/math"
 

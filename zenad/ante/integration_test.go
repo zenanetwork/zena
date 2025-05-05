@@ -6,13 +6,13 @@ import (
 	//nolint:revive // dot imports are fine for Ginkgo
 	. "github.com/onsi/gomega"
 
-	commonfactory "github.com/cosmos/evm/testutil/integration/common/factory"
-	"github.com/cosmos/evm/testutil/integration/os/factory"
-	"github.com/cosmos/evm/testutil/integration/os/grpc"
-	testkeyring "github.com/cosmos/evm/testutil/integration/os/keyring"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	integrationutils "github.com/cosmos/evm/testutil/integration/os/utils"
-	testutiltx "github.com/cosmos/evm/testutil/tx"
+	commonfactory "github.com/zenanetwork/zena/testutil/integration/common/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/factory"
+	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
+	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	integrationutils "github.com/zenanetwork/zena/testutil/integration/os/utils"
+	testutiltx "github.com/zenanetwork/zena/testutil/tx"
 
 	"cosmossdk.io/math"
 

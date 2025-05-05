@@ -9,12 +9,12 @@ import (
 
 	testifysuite "github.com/stretchr/testify/suite"
 
-	evmibctesting "github.com/cosmos/evm/ibc/testing"
-	"github.com/cosmos/evm/testutil"
-	erc20Keeper "github.com/cosmos/evm/x/erc20/keeper"
-	"github.com/cosmos/evm/x/erc20/types"
-	v2 "github.com/cosmos/evm/x/erc20/v2"
-	"github.com/cosmos/evm/zenad"
+	evmibctesting "github.com/zenanetwork/zena/ibc/testing"
+	"github.com/zenanetwork/zena/testutil"
+	erc20Keeper "github.com/zenanetwork/zena/x/erc20/keeper"
+	"github.com/zenanetwork/zena/x/erc20/types"
+	v2 "github.com/zenanetwork/zena/x/erc20/v2"
+	"github.com/zenanetwork/zena/zenad"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	channeltypesv2 "github.com/cosmos/ibc-go/v10/modules/core/04-channel/v2/types"

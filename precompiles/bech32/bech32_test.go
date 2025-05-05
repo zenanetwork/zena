@@ -6,8 +6,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	chainconfig "github.com/cosmos/evm/cmd/zenad/config"
-	"github.com/cosmos/evm/precompiles/bech32"
+	chainconfig "github.com/zenanetwork/zena/cmd/zenad/config"
+	"github.com/zenanetwork/zena/precompiles/bech32"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

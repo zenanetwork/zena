@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cast"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/cosmos/evm/types"
+	"github.com/zenanetwork/zena/types"
 
 	grpctypes "github.com/cosmos/cosmos-sdk/types/grpc"
 )

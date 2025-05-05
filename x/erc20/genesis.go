@@ -3,8 +3,8 @@ package erc20
 import (
 	"fmt"
 
-	"github.com/cosmos/evm/x/erc20/keeper"
-	"github.com/cosmos/evm/x/erc20/types"
+	"github.com/zenanetwork/zena/x/erc20/keeper"
+	"github.com/zenanetwork/zena/x/erc20/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"

@@ -5,11 +5,11 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cosmos/evm/ante"
-	ethante "github.com/cosmos/evm/ante/evm"
-	"github.com/cosmos/evm/testutil/integration/os/network"
-	"github.com/cosmos/evm/types"
-	chainante "github.com/cosmos/evm/zenad/ante"
+	"github.com/zenanetwork/zena/ante"
+	ethante "github.com/zenanetwork/zena/ante/evm"
+	"github.com/zenanetwork/zena/testutil/integration/os/network"
+	"github.com/zenanetwork/zena/types"
+	chainante "github.com/zenanetwork/zena/zenad/ante"
 )
 
 func TestValidateHandlerOptions(t *testing.T) {

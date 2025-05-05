@@ -5,9 +5,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	utiltx "github.com/cosmos/evm/testutil/tx"
-	"github.com/cosmos/evm/x/erc20/types"
-	exampleapp "github.com/cosmos/evm/zenad"
+	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	"github.com/zenanetwork/zena/x/erc20/types"
+	exampleapp "github.com/zenanetwork/zena/zenad"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

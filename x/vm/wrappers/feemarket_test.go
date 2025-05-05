@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	testconstants "github.com/cosmos/evm/testutil/constants"
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
-	"github.com/cosmos/evm/x/vm/wrappers"
-	"github.com/cosmos/evm/x/vm/wrappers/testutil"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	"github.com/zenanetwork/zena/x/vm/wrappers"
+	"github.com/zenanetwork/zena/x/vm/wrappers/testutil"
 
 	sdkmath "cosmossdk.io/math"
 

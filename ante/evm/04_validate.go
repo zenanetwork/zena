@@ -4,8 +4,8 @@ import (
 	"errors"
 	"math/big"
 
-	anteinterfaces "github.com/cosmos/evm/ante/interfaces"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
+	anteinterfaces "github.com/zenanetwork/zena/ante/interfaces"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
