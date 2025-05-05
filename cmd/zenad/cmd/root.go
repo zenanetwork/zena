@@ -51,7 +51,7 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 )
 
-// NewRootCmd creates a new root command for zenad. It is called once in the
+// NewRootCmd creates a new root command for evmd. It is called once in the
 // main function.
 func NewRootCmd() *cobra.Command {
 	// we "pre"-instantiate the application for getting the injected/configured encoding configuration
@@ -89,7 +89,7 @@ func NewRootCmd() *cobra.Command {
 
 	rootCmd := &cobra.Command{
 		Use:   "zenad",
-		Short: "exemplary Cosmos EVM app base zena app",
+		Short: "exemplary Cosmos EVM app",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
@@ -145,6 +145,12 @@ func NewRootCmd() *cobra.Command {
 
 	if err := autoCliOpts.EnhanceRootCommand(rootCmd); err != nil {
 		panic(err)
+	}
+
+	if initClientCtx.ChainID != "" {
+		if err := zenad.EvmAppOptions(initClientCtx.ChainID); err != nil {
+			panic(err)
+		}
 	}
 
 	return rootCmd

@@ -44,14 +44,14 @@
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/zenanetwork/zena.git
+   git clone https://github.com/zanentwork/zena.git
    cd zena
    ```
 
 2. **Configure**
 
    - Edit `config/genesis.json` to define your validator set and initial parameters.
-   - Set `chain-id = "zena-1"` in `config/config.toml`.
+   - Set `chain-id = "zena_1-1"` in `config/config.toml`.
 
 3. **Build & Run**
 

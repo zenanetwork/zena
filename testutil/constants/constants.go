@@ -17,7 +17,7 @@ const (
 	ExampleMicroDenom = "uzena"
 
 	// ExampleDisplayDenom provides an example display denom for use in tests
-	ExampleDisplayDenom = "ZENA"
+	ExampleDisplayDenom = "zena"
 
 	// ExampleBech32Prefix provides an example Bech32 prefix for use in tests
 	ExampleBech32Prefix = "zena"
@@ -39,7 +39,13 @@ var (
 	ExampleChainID = ExampleChainIDPrefix + "-1"
 
 	// SixDecimalsChainID provides a chain ID which is being set up with 6 decimals
-	SixDecimalsChainID = "zenasix_9002-2"
+	SixDecimalsChainID = "zenasix_6-1"
+
+	// TwelveDecimalsChainID provides a chain ID which is being set up with 12 decimals
+	TwelveDecimalsChainID = "ostwelve_8-2"
+
+	// TwoDecimalsChainID provides a chain ID which is being set up with 2 decimals
+	TwoDecimalsChainID = "ostwo_9-3"
 
 	// ExampleChainCoinInfo provides the coin info for the example chain
 	//
@@ -48,14 +54,28 @@ var (
 	// chain id
 	ExampleChainCoinInfo = map[string]evmtypes.EvmCoinInfo{
 		ExampleChainID: {
-			Denom:        ExampleAttoDenom,
-			DisplayDenom: ExampleDisplayDenom,
-			Decimals:     evmtypes.EighteenDecimals,
+			Denom:         ExampleAttoDenom,
+			ExtendedDenom: ExampleAttoDenom,
+			DisplayDenom:  ExampleDisplayDenom,
+			Decimals:      evmtypes.EighteenDecimals,
 		},
 		SixDecimalsChainID: {
-			Denom:        ExampleMicroDenom,
-			DisplayDenom: ExampleDisplayDenom,
-			Decimals:     evmtypes.SixDecimals,
+			Denom:         "utest",
+			ExtendedDenom: "atest",
+			DisplayDenom:  "test",
+			Decimals:      evmtypes.SixDecimals,
+		},
+		TwelveDecimalsChainID: {
+			Denom:         "ptest2",
+			ExtendedDenom: "atest2",
+			DisplayDenom:  "test2",
+			Decimals:      evmtypes.TwelveDecimals,
+		},
+		TwoDecimalsChainID: {
+			Denom:         "ctest3",
+			ExtendedDenom: "atest3",
+			DisplayDenom:  "test3",
+			Decimals:      evmtypes.TwoDecimals,
 		},
 	}
 )
