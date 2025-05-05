@@ -49,7 +49,7 @@ func setEVMCoinExtendedDenom(extendedDenom string) error {
 // GetEVMCoinDecimals returns the decimals used in the representation of the EVM
 // coin.
 func GetEVMCoinDecimals() Decimals {
-	return testingEvmCoinInfo.Denom
+	return testingEvmCoinInfo.Decimals
 }
 
 // GetEVMCoinDenom returns the denom used for the EVM coin.
