@@ -25,7 +25,7 @@ const (
 	// DisplayDenom defines the denomination displayed to users in client applications.
 	DisplayDenom = "zena"
 	// BaseDenom defines to the default denomination used in the Cosmos EVM example chain.
-	BaseDenom = "zeba="
+	BaseDenom = "azena"
 	// BaseDenomUnit defines the precision of the base denomination.
 	BaseDenomUnit = 18
 )

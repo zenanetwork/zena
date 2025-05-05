@@ -15,7 +15,7 @@ import (
 )
 
 // testChainID represents the ChainID used for the purpose of testing.
-const testChainID string = "cosmos_9001-1"
+const testChainID string = "eirene_5-1"
 
 // chainConfig is the chain configuration used in the EVM to defined which
 // opcodes are active based on Ethereum upgrades.
