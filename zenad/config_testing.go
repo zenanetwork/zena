@@ -24,6 +24,12 @@ var ChainsCoinInfo = map[string]evmtypes.EvmCoinInfo{
 		DisplayDenom:  ExampleChainDenom,
 		Decimals:      evmtypes.EighteenDecimals,
 	},
+	CosmosChainID: {
+		Denom:         "azena",
+		ExtendedDenom: "azena",
+		DisplayDenom:  "zena",
+		Decimals:      evmtypes.EighteenDecimals,
+	},
 	SixDecimalsChainID: {
 		Denom:         "uzena",
 		ExtendedDenom: "azena",
@@ -81,7 +87,6 @@ func EvmAppOptions(chainID string) error {
 	if err := setBaseDenom(coinInfo); err != nil {
 		return err
 	}
-
 
 	ethCfg := evmtypes.DefaultChainConfig(chainID)
 
