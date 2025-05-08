@@ -5,6 +5,8 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
@@ -50,6 +52,12 @@ type FeeMarketKeeper interface {
 	GetBaseFee(ctx sdk.Context) math.LegacyDec
 	GetParams(ctx sdk.Context) feemarkettypes.Params
 	CalculateBaseFee(ctx sdk.Context) math.LegacyDec
+}
+
+// EvmHooks event hooks for evm tx processing
+type EvmHooks interface {
+	// Must be called after tx is processed successfully, if return an error, the whole transaction is reverted.
+	PostTxProcessing(ctx sdk.Context, sender common.Address, msg core.Message, receipt *ethtypes.Receipt) error
 }
 
 // Erc20Keeper defines the expected interface needed to instantiate ERC20 precompiles.
