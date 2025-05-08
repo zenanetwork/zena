@@ -29,10 +29,13 @@
 
 - Fixed example chain's cmd by adding NoOpEVMOptions to tmpApp in root.go
 - Added RPC support for `--legacy` transactions (Non EIP-1559)
+- Fixed "unknown chain id: zena_1" error by adding CosmosChainID to ChainsCoinInfo map in test environment
 
 ### IMPROVEMENTS
 
 ### FEATURES
+
+- [\#54](https://github.com/cosmos/evm/pull/54) Added EVM post transaction hooks with safety checks for gas usage
 
 ### STATE BREAKING
 
