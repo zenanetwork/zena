@@ -247,7 +247,7 @@ proto-check-breaking:
 ###                                Releasing                                ###
 ###############################################################################
 
-PACKAGE_NAME:=github.com/cosmos/evm
+PACKAGE_NAME:=github.com/zenanetwork/zena
 GOLANG_CROSS_VERSION  = v1.22
 GOPATH ?= '$(HOME)/go'
 release-dry-run:

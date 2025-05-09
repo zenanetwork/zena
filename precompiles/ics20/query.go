@@ -7,9 +7,9 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/core/vm"
 
+	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	"github.com/zenanetwork/zena/precompiles/authorization"
 	cmn "github.com/zenanetwork/zena/precompiles/common"
-	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -41,7 +41,7 @@ func (p Precompile) Denom(
 	res, err := p.transferKeeper.Denom(ctx, req)
 	if err != nil {
 		// if the trace does not exist, return empty array
-		if strings.Contains(err.Error(), ErrTraceFound) {
+		if strings.Contains(err.Error(), ErrDenomNotFound) {
 			return method.Outputs.Pack(transfertypes.Denom{})
 		}
 		return nil, err
@@ -85,7 +85,7 @@ func (p Precompile) DenomHash(
 	res, err := p.transferKeeper.DenomHash(ctx, req)
 	if err != nil {
 		// if the denom hash does not exist, return empty string
-		if strings.Contains(err.Error(), ErrTraceFound) {
+		if strings.Contains(err.Error(), ErrDenomNotFound) {
 			return method.Outputs.Pack("")
 		}
 		return nil, err
