@@ -34,15 +34,6 @@ import (
 	chainante "github.com/zenanetwork/zena/zenad/ante"
 
 	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
-	"github.com/zenanetwork/zena/x/ibc/transfer"
-	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
-	transferv2 "github.com/zenanetwork/zena/x/ibc/transfer/v2"
-	"github.com/zenanetwork/zena/x/precisebank"
-	precisebankkeeper "github.com/zenanetwork/zena/x/precisebank/keeper"
-	precisebanktypes "github.com/zenanetwork/zena/x/precisebank/types"
-	"github.com/zenanetwork/zena/x/vm"
-	evmkeeper "github.com/zenanetwork/zena/x/vm/keeper"
-	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	"github.com/cosmos/gogoproto/proto"
 	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
 	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
@@ -55,6 +46,15 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
+	"github.com/zenanetwork/zena/x/ibc/transfer"
+	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
+	transferv2 "github.com/zenanetwork/zena/x/ibc/transfer/v2"
+	"github.com/zenanetwork/zena/x/precisebank"
+	precisebankkeeper "github.com/zenanetwork/zena/x/precisebank/keeper"
+	precisebanktypes "github.com/zenanetwork/zena/x/precisebank/types"
+	"github.com/zenanetwork/zena/x/vm"
+	evmkeeper "github.com/zenanetwork/zena/x/vm/keeper"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
@@ -709,6 +709,7 @@ func NewExampleApp(
 		evmtypes.ModuleName,
 		feemarkettypes.ModuleName,
 		erc20types.ModuleName,
+		precisebanktypes.ModuleName,
 
 		ibctransfertypes.ModuleName,
 		genutiltypes.ModuleName, evidencetypes.ModuleName, authz.ModuleName,

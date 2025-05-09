@@ -16,7 +16,7 @@ const (
 	reLeadingNumbers = `(?m)^(\d+)`
 	// ^[^A-Za-z] forces first chars to be letters
 	// [^a-zA-Z0-9/-] deletes special characters
-	reDnmString = `^[^A-Za-z]|[^a-zA-Z0-9/-]`
+	reDnmString = `^[^A-Za-z]|[^a-zA-Z0-9/:-]`
 )
 
 func removeLeadingNumbers(str string) string {
@@ -37,6 +37,11 @@ func removeInvalidPrefixes(str string) string {
 	if strings.HasPrefix(str, "erc20/") {
 		return removeInvalidPrefixes(str[6:])
 	}
+
+	if strings.HasPrefix(str, "erc20:") {
+		return removeInvalidPrefixes(str[6:])
+	}
+
 	return str
 }
 

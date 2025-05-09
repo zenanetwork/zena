@@ -7,17 +7,17 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
+	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
+	ibcgotesting "github.com/cosmos/ibc-go/v10/testing"
+	ibcmock "github.com/cosmos/ibc-go/v10/testing/mock"
 	"github.com/zenanetwork/zena/contracts"
 	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
 	"github.com/zenanetwork/zena/testutil"
 	"github.com/zenanetwork/zena/x/erc20/keeper"
 	"github.com/zenanetwork/zena/x/erc20/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
-	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
-	ibcgotesting "github.com/cosmos/ibc-go/v10/testing"
-	ibcmock "github.com/cosmos/ibc-go/v10/testing/mock"
 
 	"cosmossdk.io/math"
 
@@ -27,7 +27,7 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
-var erc20Denom = "erc20/0xdac17f958d2ee523a2206206994597c13d831ec7"
+var erc20Denom = "erc20:0xdac17f958d2ee523a2206206994597c13d831ec7"
 
 func (suite *KeeperTestSuite) TestOnRecvPacket() {
 	var ctx sdk.Context
