@@ -12,12 +12,12 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/suite"
 
+	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 	evmibctesting "github.com/zenanetwork/zena/ibc/testing"
 	"github.com/zenanetwork/zena/precompiles/ics20"
 	evmante "github.com/zenanetwork/zena/x/vm/ante"
 	"github.com/zenanetwork/zena/zenad"
-	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 
 	sdkmath "cosmossdk.io/math"
 
@@ -47,7 +47,6 @@ func (suite *ICS20TransferTestSuite) SetupTest() {
 		*evmAppA.StakingKeeper,
 		evmAppA.TransferKeeper,
 		evmAppA.IBCKeeper.ChannelKeeper,
-		evmAppA.AuthzKeeper,
 		evmAppA.EVMKeeper,
 	)
 	evmAppB := suite.chainB.App.(*zenad.EVMD)
@@ -55,7 +54,6 @@ func (suite *ICS20TransferTestSuite) SetupTest() {
 		*evmAppB.StakingKeeper,
 		evmAppB.TransferKeeper,
 		evmAppB.IBCKeeper.ChannelKeeper,
-		evmAppB.AuthzKeeper,
 		evmAppB.EVMKeeper,
 	)
 }

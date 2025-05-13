@@ -7,11 +7,11 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 
+	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 	"github.com/zenanetwork/zena/contracts"
 	evmibctesting "github.com/zenanetwork/zena/ibc/testing"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	"github.com/zenanetwork/zena/zenad"
-	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -49,7 +49,7 @@ func SetupNativeErc20(t *testing.T, chain *evmibctesting.TestChain) *NativeErc20
 
 	// Register the contract
 	_, err = evmApp.Erc20Keeper.RegisterERC20(evmCtx, &erc20types.MsgRegisterERC20{
-		Authority:      authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		Signer:         authtypes.NewModuleAddress(govtypes.ModuleName).String(), // does not have to be gov
 		Erc20Addresses: []string{contractAddr.Hex()},
 	})
 	if err != nil {

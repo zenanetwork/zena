@@ -513,7 +513,6 @@ func NewExampleApp(
 		app.BankKeeper,
 		app.EVMKeeper,
 		app.StakingKeeper,
-		app.AuthzKeeper,
 		&app.TransferKeeper,
 	)
 
@@ -580,7 +579,6 @@ func NewExampleApp(
 			app.DistrKeeper,
 			app.PreciseBankKeeper,
 			app.Erc20Keeper,
-			app.AuthzKeeper,
 			app.TransferKeeper,
 			app.IBCKeeper.ChannelKeeper,
 			app.EVMKeeper,

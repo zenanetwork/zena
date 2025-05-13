@@ -14,7 +14,6 @@ import (
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 
-	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 )
 
@@ -52,7 +51,7 @@ func LoadABI() (abi.ABI, error) {
 func NewPrecompile(
 	tokenPair erc20types.TokenPair,
 	bankKeeper bankkeeper.Keeper,
-	authzKeeper authzkeeper.Keeper,
+	erc20Keeper Erc20Keeper,
 	transferKeeper transferkeeper.Keeper,
 ) (*Precompile, error) {
 	newABI, err := LoadABI()
@@ -60,7 +59,7 @@ func NewPrecompile(
 		return nil, fmt.Errorf("error loading the ABI: %w", err)
 	}
 
-	erc20Precompile, err := erc20.NewPrecompile(tokenPair, bankKeeper, authzKeeper, transferKeeper)
+	erc20Precompile, err := erc20.NewPrecompile(tokenPair, bankKeeper, erc20Keeper, transferKeeper)
 	if err != nil {
 		return nil, fmt.Errorf("error instantiating the ERC20 precompile: %w", err)
 	}
@@ -80,7 +79,7 @@ func (p Precompile) Address() common.Address {
 
 // RequiredGas calculates the contract gas use.
 func (p Precompile) RequiredGas(input []byte) uint64 {
-	// TODO: these values were obtained from Remix using the WZENA9.sol.
+	// TODO: these values were obtained from Remix using the WEVMOS9.sol.
 	// We should execute the transactions from Cosmos EVM testnet
 	// to ensure parity in the values.
 

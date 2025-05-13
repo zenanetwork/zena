@@ -11,7 +11,6 @@ import (
 	//nolint:revive // dot imports are fine for Ginkgo
 	. "github.com/onsi/gomega"
 
-	auth "github.com/zenanetwork/zena/precompiles/authorization"
 	"github.com/zenanetwork/zena/precompiles/erc20"
 	"github.com/zenanetwork/zena/precompiles/testutil"
 	"github.com/zenanetwork/zena/precompiles/werc20"
@@ -43,7 +42,7 @@ type PrecompileIntegrationTestSuite struct {
 
 	wrappedCoinDenom string
 
-	// WZENA related fields
+	// WEVMOS related fields
 	precompile        *werc20.Precompile
 	precompileAddrHex string
 }
@@ -51,7 +50,7 @@ type PrecompileIntegrationTestSuite struct {
 func TestPrecompileIntegrationTestSuite(t *testing.T) {
 	// Run Ginkgo integration tests
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "WZENA precompile test suite")
+	RunSpecs(t, "WEVMOS precompile test suite")
 }
 
 // checkAndReturnBalance check that the balance of the address is the same in
@@ -82,7 +81,7 @@ func (is *PrecompileIntegrationTestSuite) checkAndReturnBalance(
 // Integration tests
 // -------------------------------------------------------------------------------------------------
 
-var _ = When("a user interact with the WZENA precompiled contract", func() {
+var _ = When("a user interact with the WEVMOS precompiled contract", func() {
 	var (
 		is                                         *PrecompileIntegrationTestSuite
 		passCheck, failCheck                       testutil.LogCheckArgs
@@ -139,19 +138,19 @@ var _ = When("a user interact with the WZENA precompiled contract", func() {
 
 		// Perform some check before adding the precompile to the suite.
 
-		// Check that WZENA is part of the native precompiles.
+		// Check that WEVMOS is part of the native precompiles.
 		erc20Params := is.network.App.Erc20Keeper.GetParams(ctx)
 		Expect(erc20Params.NativePrecompiles).To(
 			ContainElement(is.precompileAddrHex),
-			"expected wzena to be in the native precompiles",
+			"expected wevmos to be in the native precompiles",
 		)
 		_, found := is.network.App.BankKeeper.GetDenomMetaData(ctx, evmtypes.GetEVMCoinDenom())
 		Expect(found).To(BeTrue(), "expected native token metadata to be registered")
 
-		// Check that WZENA is registered in the token pairs map.
+		// Check that WEVMOS is registered in the token pairs map.
 		tokenPairID := is.network.App.Erc20Keeper.GetTokenPairID(ctx, is.wrappedCoinDenom)
 		tokenPair, found := is.network.App.Erc20Keeper.GetTokenPair(ctx, tokenPairID)
-		Expect(found).To(BeTrue(), "expected wzena precompile to be registered in the tokens map")
+		Expect(found).To(BeTrue(), "expected wevmos precompile to be registered in the tokens map")
 		Expect(tokenPair.Erc20Address).To(Equal(is.precompileAddrHex))
 
 		precompileAddr := common.HexToAddress(is.precompileAddrHex)
@@ -163,7 +162,7 @@ var _ = When("a user interact with the WZENA precompiled contract", func() {
 		precompile, err := werc20.NewPrecompile(
 			tokenPair,
 			is.network.App.BankKeeper,
-			is.network.App.AuthzKeeper,
+			is.network.App.Erc20Keeper,
 			is.network.App.TransferKeeper,
 		)
 		Expect(err).ToNot(HaveOccurred(), "failed to instantiate the werc20 precompile")
@@ -510,23 +509,22 @@ var _ = When("a user interact with the WZENA precompiled contract", func() {
 				Expect(senderBalanceAfter).To(Equal(senderBalance.Sub(transferCoins...)))
 				Expect(receiverBalanceAfter).To(Equal(receiverBalance.Add(transferCoins...)))
 			})
-			It("it should transfer tokens to a receiver using `transferFrom`", func() {
+			It("it should fail to transfer tokens to a receiver using `transferFrom`", func() {
 				ctx := is.network.GetContext()
 
 				senderBalance := is.network.App.BankKeeper.GetAllBalances(ctx, txSender.AccAddr)
 				receiverBalance := is.network.App.BankKeeper.GetAllBalances(ctx, user.AccAddr)
 
 				txArgs, transferArgs := callsData.getTxAndCallArgs(directCall, erc20.TransferFromMethod, txSender.Addr, user.Addr, transferAmount)
-				transferCoins := sdk.Coins{sdk.NewInt64Coin(is.wrappedCoinDenom, transferAmount.Int64())}
 
-				transferCheck := passCheck.WithExpEvents(erc20.EventTypeTransfer, auth.EventTypeApproval)
-				_, _, err := is.factory.CallContractAndCheckLogs(txSender.Priv, txArgs, transferArgs, transferCheck)
+				insufficientAllowanceCheck := failCheck.WithErrContains(erc20.ErrInsufficientAllowance.Error())
+				_, _, err := is.factory.CallContractAndCheckLogs(txSender.Priv, txArgs, transferArgs, insufficientAllowanceCheck)
 				Expect(err).ToNot(HaveOccurred(), "unexpected result calling contract")
 
 				senderBalanceAfter := is.network.App.BankKeeper.GetAllBalances(ctx, txSender.AccAddr)
 				receiverBalanceAfter := is.network.App.BankKeeper.GetAllBalances(ctx, user.AccAddr)
-				Expect(senderBalanceAfter).To(Equal(senderBalance.Sub(transferCoins...)))
-				Expect(receiverBalanceAfter).To(Equal(receiverBalance.Add(transferCoins...)))
+				Expect(senderBalanceAfter).To(Equal(senderBalance))
+				Expect(receiverBalanceAfter).To(Equal(receiverBalance))
 			})
 		})
 		When("querying information", func() {

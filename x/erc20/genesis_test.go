@@ -11,13 +11,15 @@ import (
 	tmversion "github.com/cometbft/cometbft/proto/tendermint/version"
 	"github.com/cometbft/cometbft/version"
 
+	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	"github.com/zenanetwork/zena/testutil/constants"
 	"github.com/zenanetwork/zena/testutil/integration/os/network"
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
 	"github.com/zenanetwork/zena/x/erc20"
 	"github.com/zenanetwork/zena/x/erc20/types"
 	exampleapp "github.com/zenanetwork/zena/zenad"
-	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+
+	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -29,7 +31,7 @@ type GenesisTestSuite struct {
 	genesis types.GenesisState
 }
 
-const osmoERC20ContractAddr = "0x5dCA2483280D9727c80b5518faC4556617fb19ZZ"
+const osmoERC20ContractAddr = "0x5D87876250185593977a6F94aF98877a5E7eD60E"
 
 var osmoDenom = transfertypes.NewDenom("uosmo", transfertypes.NewHop(transfertypes.PortID, "channel-0"))
 
@@ -96,6 +98,51 @@ func (suite *GenesisTestSuite) TestERC20InitGenesis() {
 						ContractOwner: types.OWNER_MODULE,
 					},
 				},
+				[]types.Allowance{},
+			),
+		},
+		{
+			name: "custom genesis with allowances and enabled token pair",
+			genesisState: types.NewGenesisState(
+				types.DefaultParams(),
+				[]types.TokenPair{
+					{
+						Erc20Address:  osmoERC20ContractAddr,
+						Denom:         osmoDenom.IBCDenom(),
+						Enabled:       true,
+						ContractOwner: types.OWNER_MODULE,
+					},
+				},
+				[]types.Allowance{
+					{
+						Erc20Address: osmoERC20ContractAddr,
+						Owner:        utiltx.GenerateAddress().String(),
+						Spender:      utiltx.GenerateAddress().String(),
+						Value:        math.NewInt(100),
+					},
+				},
+			),
+		},
+		{
+			name: "custom genesis with allowances and disabled token pair",
+			genesisState: types.NewGenesisState(
+				types.DefaultParams(),
+				[]types.TokenPair{
+					{
+						Erc20Address:  osmoERC20ContractAddr,
+						Denom:         osmoDenom.IBCDenom(),
+						Enabled:       false,
+						ContractOwner: types.OWNER_MODULE,
+					},
+				},
+				[]types.Allowance{
+					{
+						Erc20Address: osmoERC20ContractAddr,
+						Owner:        utiltx.GenerateAddress().String(),
+						Spender:      utiltx.GenerateAddress().String(),
+						Value:        math.NewInt(100),
+					},
+				},
 			),
 		},
 	}
@@ -117,6 +164,13 @@ func (suite *GenesisTestSuite) TestERC20InitGenesis() {
 		} else {
 			suite.Require().Len(tc.genesisState.TokenPairs, 0, tc.name)
 		}
+
+		allowances := nw.App.Erc20Keeper.GetAllowances(nw.GetContext())
+		if len(allowances) > 0 {
+			suite.Require().Equal(tc.genesisState.Allowances, allowances, tc.name)
+		} else {
+			suite.Require().Len(tc.genesisState.Allowances, 0, tc.name)
+		}
 	}
 }
 
@@ -134,7 +188,7 @@ func (suite *GenesisTestSuite) TestErc20ExportGenesis() {
 			genesisState: *types.DefaultGenesisState(),
 		},
 		{
-			name: "custom genesis",
+			name: "custom genesis with empty allowance",
 			genesisState: types.NewGenesisState(
 				types.DefaultParams(),
 				[]types.TokenPair{
@@ -143,6 +197,35 @@ func (suite *GenesisTestSuite) TestErc20ExportGenesis() {
 						Denom:         osmoDenom.IBCDenom(),
 						Enabled:       true,
 						ContractOwner: types.OWNER_MODULE,
+					},
+				},
+				[]types.Allowance{},
+			),
+		},
+		{
+			name: "custom genesis with allowances",
+			genesisState: types.NewGenesisState(
+				types.DefaultParams(),
+				[]types.TokenPair{
+					{
+						Erc20Address:  osmoERC20ContractAddr,
+						Denom:         osmoDenom.IBCDenom(),
+						Enabled:       true,
+						ContractOwner: types.OWNER_MODULE,
+					},
+				},
+				[]types.Allowance{
+					{
+						Erc20Address: osmoERC20ContractAddr,
+						Owner:        utiltx.GenerateAddress().String(),
+						Spender:      utiltx.GenerateAddress().String(),
+						Value:        math.NewInt(100),
+					},
+					{
+						Erc20Address: osmoERC20ContractAddr,
+						Owner:        utiltx.GenerateAddress().String(),
+						Spender:      utiltx.GenerateAddress().String(),
+						Value:        math.NewInt(200),
 					},
 				},
 			),
