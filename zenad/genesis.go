@@ -3,6 +3,7 @@ package zenad
 import (
 	"encoding/json"
 
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
@@ -36,8 +37,8 @@ func NewEVMGenesisState() *evmtypes.GenesisState {
 // which is the base denomination of the chain (i.e. the WZENA contract).
 func NewErc20GenesisState() *erc20types.GenesisState {
 	erc20GenState := erc20types.DefaultGenesisState()
-	erc20GenState.TokenPairs = ExampleTokenPairs
-	erc20GenState.Params.NativePrecompiles = append(erc20GenState.Params.NativePrecompiles, WZENAContractMainnet)
+	erc20GenState.TokenPairs = testconstants.ExampleTokenPairs
+	erc20GenState.Params.NativePrecompiles = append(erc20GenState.Params.NativePrecompiles, testconstants.WZENAContractMainnet)
 
 	return erc20GenState
 }

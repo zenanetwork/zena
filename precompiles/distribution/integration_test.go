@@ -12,7 +12,6 @@ import (
 	//nolint:revive // dot imports are fine for Ginkgo
 	. "github.com/onsi/gomega"
 
-	"github.com/zenanetwork/zena/precompiles/authorization"
 	cmn "github.com/zenanetwork/zena/precompiles/common"
 	"github.com/zenanetwork/zena/precompiles/distribution"
 	"github.com/zenanetwork/zena/precompiles/staking"
@@ -1473,7 +1472,7 @@ var _ = Describe("Calling distribution precompile from another contract", Ordere
 			logCheck := testutil.LogCheckArgs{
 				ExpPass:   true,
 				ABIEvents: stkPrecompile.ABI.Events,
-				ExpEvents: []string{authorization.EventTypeApproval, staking.EventTypeDelegate},
+				ExpEvents: []string{staking.EventTypeDelegate},
 			}
 			_, _, err = s.factory.CallContractAndCheckLogs(
 				s.keyring.GetPrivKey(0),
@@ -1614,7 +1613,7 @@ var _ = Describe("Calling distribution precompile from another contract", Ordere
 				logCheck := testutil.LogCheckArgs{
 					ExpPass:   true,
 					ABIEvents: stkPrecompile.ABI.Events,
-					ExpEvents: []string{authorization.EventTypeApproval, staking.EventTypeDelegate},
+					ExpEvents: []string{staking.EventTypeDelegate},
 				}
 				_, _, err = s.factory.CallContractAndCheckLogs(
 					s.keyring.GetPrivKey(0),
@@ -2236,7 +2235,7 @@ var _ = Describe("Calling distribution precompile from another contract", Ordere
 			logCheck := testutil.LogCheckArgs{
 				ExpPass:   true,
 				ABIEvents: stkPrecompile.ABI.Events,
-				ExpEvents: []string{authorization.EventTypeApproval, staking.EventTypeDelegate},
+				ExpEvents: []string{staking.EventTypeDelegate},
 			}
 			_, _, err = s.factory.CallContractAndCheckLogs(
 				s.keyring.GetPrivKey(0),

@@ -7,11 +7,11 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	cmn "github.com/zenanetwork/zena/precompiles/common"
-	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v10/modules/core/24-host"
+	cmn "github.com/zenanetwork/zena/precompiles/common"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
 
@@ -67,19 +67,8 @@ func (p *Precompile) Transfer(
 		return nil, fmt.Errorf(ErrDifferentOriginFromSender, origin.String(), sender.String())
 	}
 
-	// no need to have authorization when the contract caller is the same as origin (owner of funds)
-	// and the sender is the origin
-	resp, expiration, err := CheckAndAcceptAuthorizationIfNeeded(ctx, contract, origin, p.AuthzKeeper, msg)
-	if err != nil {
-		return nil, err
-	}
-
 	res, err := p.transferKeeper.Transfer(ctx, msg)
 	if err != nil {
-		return nil, err
-	}
-
-	if err := UpdateGrantIfNeeded(ctx, contract, p.AuthzKeeper, origin, expiration, resp); err != nil {
 		return nil, err
 	}
 

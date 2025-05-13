@@ -36,6 +36,8 @@
 ### FEATURES
 
 - [\#54](https://github.com/cosmos/evm/pull/54) Added EVM post transaction hooks with safety checks for gas usage
+- [\#84](https://github.com/cosmos/evm/pull/84) permissionless erc20 registration to cosmos coin conversion
+- [\#69](https://github.com/cosmos/evm/pull/69) Add new `x/precisebank` module with bank decimal extension for EVM usage.
 
 ### STATE BREAKING
 
@@ -45,6 +47,7 @@
 - [\#83](https://github.com/cosmos/evm/pull/83) Remove base fee v1 from x/feemarket
 - [\#93](https://github.com/cosmos/evm/pull/93) Remove legacy subspaces
 - [\#95](https://github.com/cosmos/evm/pull/95) Replaced erc20/ with erc20 in native ERC20 denoms prefix for IBC v2
+- [\#62](https://github.com/cosmos/evm/pull/62) Remove x/authz dependency from precompiles
 
 ### API-Breaking
 

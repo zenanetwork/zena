@@ -28,4 +28,7 @@ const (
 
 	// DevChainId is develop chain IDs
 	DevChainID = "zenadev_1337"
+
+	// WZENAContractMainnet is the WZENA contract address for mainnet
+	WZENAContractMainnet = "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517"
 )
