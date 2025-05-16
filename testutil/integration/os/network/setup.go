@@ -10,13 +10,13 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 
 	dbm "github.com/cosmos/cosmos-db"
+	"github.com/cosmos/gogoproto/proto"
+	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	cosmosevmtypes "github.com/zenanetwork/zena/types"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	exampleapp "github.com/zenanetwork/zena/zenad"
-	"github.com/cosmos/gogoproto/proto"
-	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
@@ -283,7 +283,8 @@ func getValidatorsSlashingGen(validators []stakingtypes.Validator, sk slashingty
 		signInfo[i] = slashingtypes.SigningInfo{
 			Address: consAddr,
 			ValidatorSigningInfo: slashingtypes.ValidatorSigningInfo{
-				Address: consAddr,
+				Address:     consAddr,
+				JailedUntil: time.Unix(0, 0),
 			},
 		}
 		missedBlocks[i] = slashingtypes.ValidatorMissedBlocks{

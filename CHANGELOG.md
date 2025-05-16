@@ -30,6 +30,8 @@
 - Fixed example chain's cmd by adding NoOpEVMOptions to tmpApp in root.go
 - Added RPC support for `--legacy` transactions (Non EIP-1559)
 - Fixed "unknown chain id: zena_1" error by adding CosmosChainID to ChainsCoinInfo map in test environment
+- [\#140](https://github.com/cosmos/evm/pull/140) Fixed inconsistent method name in distribution precompile (withdrawDelegatorReward)
+- [\#143](https://github.com/cosmos/evm/pull/143) Fixed Equivocation.Time type in evidence precompile (uint64 -> int64) to prevent potential overflow
 
 ### IMPROVEMENTS
 
