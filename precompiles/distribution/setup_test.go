@@ -30,6 +30,7 @@ type PrecompileTestSuite struct {
 
 	precompile           *distribution.Precompile
 	bondDenom            string
+	otherDenoms          []string
 	baseDenom            string
 	validatorsKeys       []testkeyring.Key
 	withValidatorSlashes bool
@@ -74,8 +75,14 @@ func (s *PrecompileTestSuite) SetupTest() {
 		operatorsAddr[i] = k.AccAddr
 	}
 
+	s.otherDenoms = []string{
+		testconstants.OtherCoinDenoms[0],
+		testconstants.OtherCoinDenoms[1],
+	}
+
 	nw := network.NewUnitTestNetwork(
 		network.WithPreFundedAccounts(keyring.GetAllAccAddrs()...),
+		network.WithOtherDenoms(s.otherDenoms),
 		network.WithCustomGenesis(customGen),
 		network.WithValidatorOperators(operatorsAddr),
 	)
