@@ -77,20 +77,20 @@ func (suite *LedgerTestSuite) getMockTxAmino() []byte {
 			"account_number": "0",
 			"chain_id":"%s",
 			"fee":{
-				"amount":[{"amount":"150","denom":"atom"}],
+				"amount":[{"amount":"150","denom":"zena"}],
 				"gas":"20000"
 			},
 			"memo":"memo",
 			"msgs":[{
 				"type":"cosmos-sdk/MsgSend",
 				"value":{
-					"amount":[{"amount":"150","denom":"atom"}],
-					"from_address":"cosmos10jmp6sgh4cc6zt3e8gw05wavvejgr5pwsjskvv",
-					"to_address":"cosmos1fx944mzagwdhx0wz7k9tfztc8g3lkfk6rrgv6l"
+					"amount":[{"amount":"150","denom":"zena"}],
+					"from_address":"zenanet10jmp6sgh4cc6zt3e8gw05wavvejgr5pwsjskvv",
+					"to_address":"zenanet1fx944mzagwdhx0wz7k9tfztc8g3lkfk6rrgv6l"
 				}
 			}],
 			"sequence":"6"
-		}`, constants.ExampleChainID),
+		}`, constants.ExampleChainID.ChainID),
 		"",
 	)
 
@@ -102,8 +102,8 @@ func (suite *LedgerTestSuite) getMockTxProtobuf() []byte {
 
 	memo := "memo"
 	msg := bankTypes.NewMsgSend(
-		sdk.MustAccAddressFromBech32("cosmos1r5sckdd808qvg7p8d0auaw896zcluqfd7djffp"),
-		sdk.MustAccAddressFromBech32("cosmos10t8ca2w09ykd6ph0agdz5stvgau47whhaggl9a"),
+		sdk.MustAccAddressFromBech32("zenanet1r5sckdd808qvg7p8d0auaw896zcluqfd7djffp"),
+		sdk.MustAccAddressFromBech32("zenanet10t8ca2w09ykd6ph0agdz5stvgau47whhaggl9a"),
 		[]sdk.Coin{
 			{
 				Denom:  "atom",
@@ -141,7 +141,7 @@ func (suite *LedgerTestSuite) getMockTxProtobuf() []byte {
 		Sequence: 6,
 	}
 
-	fee := txTypes.Fee{Amount: sdk.NewCoins(sdk.NewInt64Coin("atom", 150)), GasLimit: 20000}
+	fee := txTypes.Fee{Amount: sdk.NewCoins(sdk.NewInt64Coin("zena", 150)), GasLimit: 20000}
 
 	authInfo := &txTypes.AuthInfo{
 		SignerInfos: []*txTypes.SignerInfo{signerInfo},
@@ -154,7 +154,7 @@ func (suite *LedgerTestSuite) getMockTxProtobuf() []byte {
 	signBytes, err := auxTx.DirectSignBytes(
 		bodyBytes,
 		authInfoBytes,
-		constants.ExampleChainID,
+		constants.ExampleChainID.ChainID,
 		0,
 	)
 	suite.Require().NoError(err)

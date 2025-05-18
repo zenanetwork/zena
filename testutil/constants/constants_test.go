@@ -5,15 +5,14 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	chainconfig "github.com/zenanetwork/zena/cmd/zenad/config"
+	config2 "github.com/zenanetwork/zena/cmd/zenad/config"
 	"github.com/zenanetwork/zena/testutil/constants"
-	"github.com/zenanetwork/zena/zenad"
 )
 
 func TestRequireSameTestDenom(t *testing.T) {
 	require.Equal(t,
 		constants.ExampleAttoDenom,
-		zenad.ExampleChainDenom,
+		config2.ExampleChainDenom,
 		"test denoms should be the same across the repo",
 	)
 }
@@ -21,7 +20,7 @@ func TestRequireSameTestDenom(t *testing.T) {
 func TestRequireSameTestBech32Prefix(t *testing.T) {
 	require.Equal(t,
 		constants.ExampleBech32Prefix,
-		chainconfig.Bech32Prefix,
+		config2.Bech32Prefix,
 		"bech32 prefixes should be the same across the repo",
 	)
 }
@@ -29,7 +28,7 @@ func TestRequireSameTestBech32Prefix(t *testing.T) {
 func TestRequireSameWZENAMainnet(t *testing.T) {
 	require.Equal(t,
 		constants.WZENAContractMainnet,
-		zenad.WZENAContractMainnet,
+		config2.WZENAContractMainnet,
 		"wzena contract addresses should be the same across the repo",
 	)
 }

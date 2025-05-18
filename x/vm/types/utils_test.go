@@ -8,10 +8,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 
+	proto "github.com/cosmos/gogoproto/proto"
 	"github.com/zenanetwork/zena/encoding"
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
-	proto "github.com/cosmos/gogoproto/proto"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -47,10 +47,11 @@ func TestEvmDataEncoding(t *testing.T) {
 }
 
 func TestUnwrapEthererumMsg(t *testing.T) {
+	chainID := big.NewInt(1)
 	_, err := evmtypes.UnwrapEthereumMsg(nil, common.Hash{})
 	require.NotNil(t, err)
 
-	encodingConfig := encoding.MakeConfig()
+	encodingConfig := encoding.MakeConfig(chainID.Uint64())
 	clientCtx := client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 	builder, _ := clientCtx.TxConfig.NewTxBuilder().(authtx.ExtensionOptionsTxBuilder)
 
@@ -59,7 +60,7 @@ func TestUnwrapEthererumMsg(t *testing.T) {
 	require.NotNil(t, err)
 
 	evmTxParams := &evmtypes.EvmTxArgs{
-		ChainID:  big.NewInt(1),
+		ChainID:  chainID,
 		Nonce:    0,
 		To:       &common.Address{},
 		Amount:   big.NewInt(0),

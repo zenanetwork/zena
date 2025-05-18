@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/zenanetwork/zena/zenad"
-	"github.com/zenanetwork/zena/zenad/testutil"
-	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
+	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
+	"github.com/zenanetwork/zena/zenad"
 
 	"cosmossdk.io/log"
 
@@ -21,7 +20,8 @@ func SetupExampleApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
 		nil,
 		true,
 		simtestutil.EmptyAppOptions{},
-		testutil.NoOpEvmAppOptions,
+		9001,
+		zenad.EvmAppOptions,
 	)
 	// disable base fee for testing
 	genesisState := app.DefaultGenesis()

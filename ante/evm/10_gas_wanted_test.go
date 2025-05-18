@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/zenanetwork/zena/ante/evm"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	"github.com/zenanetwork/zena/testutil/integration/os/factory"
 	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
 	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
@@ -20,7 +21,10 @@ import (
 func (suite *EvmAnteTestSuite) TestCheckGasWanted() {
 	keyring := testkeyring.New(1)
 	unitNetwork := network.NewUnitTestNetwork(
-		network.WithChainID(suite.chainID),
+		network.WithChainID(testconstants.ChainID{
+			ChainID:    suite.chainID,
+			EVMChainID: suite.evmChainID,
+		}),
 		network.WithPreFundedAccounts(keyring.GetAllAccAddrs()...),
 	)
 	grpcHandler := grpc.NewIntegrationHandler(unitNetwork)

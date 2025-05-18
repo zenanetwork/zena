@@ -8,14 +8,14 @@ import (
 // address in hex format from the chain ID.
 //
 // TODO: refactor to define this in the example chain initialization and pass as function argument
-var chainsWZENAHex = map[string]string{
+var chainsWZENAHex = map[testconstants.ChainID]string{
 	testconstants.ExampleChainID: testconstants.WZENAContractMainnet,
 }
 
 // GetWZENAContractHex returns the hex format of address for the WZENA contract
 // given the chainID. If the chainID is not found, it defaults to the mainnet
 // address.
-func GetWZENAContractHex(chainID string) string {
+func GetWZENAContractHex(chainID testconstants.ChainID) string {
 	address, found := chainsWZENAHex[chainID]
 
 	// default to mainnet address

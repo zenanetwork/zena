@@ -24,8 +24,8 @@ func updateBankGenesisStateForChainID(bankGenesisState banktypes.GenesisState) b
 // for the Evm coin depending on the chainID.
 func generateBankGenesisMetadata() banktypes.Metadata {
 	return banktypes.Metadata{
-		Description: "The native EVM, governance and staking token of the Cosmos EVM example chain",
-		Base:        "aatom",
+		Description: "The native EVM, governance and staking token of the Zena EVM example chain",
+		Base:        "azena",
 		DenomUnits: []*banktypes.DenomUnit{
 			{
 				Denom:    testconstants.ExampleAttoDenom,
@@ -36,15 +36,15 @@ func generateBankGenesisMetadata() banktypes.Metadata {
 				Exponent: 18,
 			},
 		},
-		Name:    "Cosmos EVM",
-		Symbol:  "ATOM",
+		Name:    "Zena EVM",
+		Symbol:  "AZENA",
 		Display: testconstants.ExampleDisplayDenom,
 	}
 }
 
 // updateErc20GenesisStateForChainID modify the default genesis state for the
 // erc20 module on the testing suite depending on the chainID.
-func updateErc20GenesisStateForChainID(chainID string, erc20GenesisState erc20types.GenesisState) erc20types.GenesisState {
+func updateErc20GenesisStateForChainID(chainID testconstants.ChainID, erc20GenesisState erc20types.GenesisState) erc20types.GenesisState {
 	erc20GenesisState.TokenPairs = updateErc20TokenPairs(chainID, erc20GenesisState.TokenPairs)
 
 	return erc20GenesisState
@@ -52,7 +52,7 @@ func updateErc20GenesisStateForChainID(chainID string, erc20GenesisState erc20ty
 
 // updateErc20TokenPairs modifies the erc20 token pairs to use the correct
 // WZENA depending on ChainID
-func updateErc20TokenPairs(chainID string, tokenPairs []erc20types.TokenPair) []erc20types.TokenPair {
+func updateErc20TokenPairs(chainID testconstants.ChainID, tokenPairs []erc20types.TokenPair) []erc20types.TokenPair {
 	testnetAddress := GetWZENAContractHex(chainID)
 	coinInfo := testconstants.ExampleChainCoinInfo[chainID]
 
