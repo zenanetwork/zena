@@ -35,6 +35,8 @@
 
 ### IMPROVEMENTS
 
+- [\#138](https://github.com/cosmos/evm/pull/138) Separated Cosmos and EVM Chain IDs for improved compatibility
+
 ### FEATURES
 
 - [\#54](https://github.com/cosmos/evm/pull/54) Added EVM post transaction hooks with safety checks for gas usage
@@ -50,6 +52,7 @@
 - [\#93](https://github.com/cosmos/evm/pull/93) Remove legacy subspaces
 - [\#95](https://github.com/cosmos/evm/pull/95) Replaced erc20/ with erc20 in native ERC20 denoms prefix for IBC v2
 - [\#62](https://github.com/cosmos/evm/pull/62) Remove x/authz dependency from precompiles
+- [\#138](https://github.com/cosmos/evm/pull/138) Separated Cosmos and EVM Chain IDs, removed chain config from keeper params
 
 ### API-Breaking
 
@@ -57,3 +60,4 @@
 - Renamed x/evm to x/vm
 - Renamed protobuf files from evmos to cosmos org
 - [\#95](https://github.com/cosmos/evm/pull/95) Updated ics20 precompile to use Denom instead of DenomTrace for IBC v2
+- [\#138](https://github.com/cosmos/evm/pull/138) Separated Cosmos and EVM Chain IDs, removed EVM chain config from params
