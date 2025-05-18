@@ -33,3 +33,7 @@ contracts/@openzeppelin/*
 zenad/build/
 
 build/
+
+# bash
+setup_zena_mainnet_linux.sh
+setup_zena_mainnet.sh

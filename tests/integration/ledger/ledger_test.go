@@ -11,6 +11,7 @@ import (
 
 	"github.com/zenanetwork/zena/crypto/hd"
 	"github.com/zenanetwork/zena/encoding"
+	"github.com/zenanetwork/zena/server/config"
 	"github.com/zenanetwork/zena/tests/integration/ledger/mocks"
 	"github.com/zenanetwork/zena/testutil"
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
@@ -60,7 +61,7 @@ var _ = Describe("Ledger CLI and keyring functionality: ", func() {
 	Describe("Adding a key from ledger using the CLI", func() {
 		BeforeEach(func() {
 			krHome = s.T().TempDir()
-			encCfg = encoding.MakeConfig()
+			encCfg = encoding.MakeConfig(config.DefaultEVMChainID)
 
 			cmd = s.cosmosEVMAddKeyCmd()
 
@@ -109,7 +110,7 @@ var _ = Describe("Ledger CLI and keyring functionality: ", func() {
 	Describe("Singing a transactions", func() {
 		BeforeEach(func() {
 			krHome = s.T().TempDir()
-			encCfg = encoding.MakeConfig()
+			encCfg = encoding.MakeConfig(config.DefaultEVMChainID)
 
 			var err error
 

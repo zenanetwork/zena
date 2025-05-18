@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	evmante "github.com/zenanetwork/zena/ante/evm"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	commonfactory "github.com/zenanetwork/zena/testutil/integration/common/factory"
 	testfactory "github.com/zenanetwork/zena/testutil/integration/os/factory"
 	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
@@ -20,7 +21,10 @@ import (
 func (suite *EvmAnteTestSuite) TestUpdateCumulativeGasWanted() {
 	keyring := testkeyring.New(1)
 	unitNetwork := network.NewUnitTestNetwork(
-		network.WithChainID(suite.chainID),
+		network.WithChainID(testconstants.ChainID{
+			ChainID:    suite.chainID,
+			EVMChainID: suite.evmChainID,
+		}),
 		network.WithPreFundedAccounts(keyring.GetAllAccAddrs()...),
 	)
 
@@ -93,7 +97,10 @@ func (suite *EvmAnteTestSuite) TestUpdateCumulativeGasWanted() {
 func (suite *EvmAnteTestSuite) TestConsumeGasAndEmitEvent() {
 	keyring := testkeyring.New(1)
 	unitNetwork := network.NewUnitTestNetwork(
-		network.WithChainID(suite.chainID),
+		network.WithChainID(testconstants.ChainID{
+			ChainID:    suite.chainID,
+			EVMChainID: suite.evmChainID,
+		}),
 		network.WithPreFundedAccounts(keyring.GetAllAccAddrs()...),
 	)
 	grpcHandler := grpc.NewIntegrationHandler(unitNetwork)

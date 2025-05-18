@@ -2,6 +2,7 @@ package evm_test
 
 import (
 	"github.com/zenanetwork/zena/ante/evm"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	"github.com/zenanetwork/zena/testutil/integration/os/grpc"
 	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
 	"github.com/zenanetwork/zena/testutil/integration/os/network"
@@ -13,7 +14,10 @@ import (
 func (suite *EvmAnteTestSuite) TestIncrementSequence() {
 	keyring := testkeyring.New(1)
 	unitNetwork := network.NewUnitTestNetwork(
-		network.WithChainID(suite.chainID),
+		network.WithChainID(testconstants.ChainID{
+			ChainID:    suite.chainID,
+			EVMChainID: suite.evmChainID,
+		}),
 		network.WithPreFundedAccounts(keyring.GetAllAccAddrs()...),
 	)
 	grpcHandler := grpc.NewIntegrationHandler(unitNetwork)

@@ -1,4 +1,4 @@
-package zenad
+package config
 
 const (
 	// ExampleChainDenom is the denomination of the Cosmos EVM example chain's base coin.
@@ -8,26 +8,26 @@ const (
 	ExampleDisplayDenom = "zena"
 
 	// EighteenDecimalsChainID is the chain ID for the 18 decimals chain.
-	EighteenDecimalsChainID = "zena_18"
+	EighteenDecimalsChainID = 18
 
 	// SixDecimalsChainID is the chain ID for the 6 decimals chain.
-	SixDecimalsChainID = "zenasix_6"
+	SixDecimalsChainID = 6
 
 	// TwelveDecimalsChainID is the chain ID for the 12 decimals chain.
-	TwelveDecimalsChainID = "ostwelve_8"
+	TwelveDecimalsChainID = 8
 
 	// TwoDecimalsChainID is the chain ID for the 2 decimals chain.
-	TwoDecimalsChainID = "ostwo_9"
+	TwoDecimalsChainID = 9
 
-	CosmosChainID = "zena_1"
+	CosmosChainID = 262144
 
 	// TestChainID1 is test chain IDs for IBC E2E test
-	TestChainID1 = "eirene_5"
+	TestChainID1 = 5
 	// TestChainID2 is test chain IDs for IBC E2E test
-	TestChainID2 = "pax_7"
+	TestChainID2 = 7
 
 	// DevChainId is develop chain IDs
-	DevChainID = "zenadev_1337"
+	DevChainID = 1337
 
 	// WZENAContractMainnet is the WZENA contract address for mainnet
 	WZENAContractMainnet = "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517"

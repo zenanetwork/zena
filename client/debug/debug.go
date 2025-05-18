@@ -11,8 +11,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
+	evmdconfig "github.com/zenanetwork/zena/cmd/zenad/config"
 	"github.com/zenanetwork/zena/ethereum/eip712"
-	cosmosevmtypes "github.com/zenanetwork/zena/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	cosmosclientdebug "github.com/cosmos/cosmos-sdk/client/debug"
@@ -57,14 +57,11 @@ func getPubKeyFromString(ctx client.Context, pkstr string) (cryptotypes.PubKey, 
 
 func PubkeyCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "pubkey [pubkey]",
-		Short: "Decode a pubkey from proto JSON",
-		Long:  "Decode a pubkey from proto JSON and display it's address",
-		Example: fmt.Sprintf(
-			`"$ %s debug pubkey '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ"}'`, //gitleaks:allow
-			version.AppName,
-		),
-		Args: cobra.ExactArgs(1),
+		Use:     "pubkey [pubkey]",
+		Short:   "Decode a pubkey from proto JSON",
+		Long:    "Decode a pubkey from proto JSON and display it's address",
+		Example: fmt.Sprintf(`$ %s debug legacy-eip712 tx.json --chain-id evmd-1`, version.AppName),
+		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 			pk, err := getPubKeyFromString(clientCtx, args[0])
@@ -185,12 +182,8 @@ func LegacyEIP712Cmd() *cobra.Command {
 				return errors.Wrap(err, "encode tx")
 			}
 
-			chainID, err := cosmosevmtypes.ParseChainID(clientCtx.ChainID)
-			if err != nil {
-				return errors.Wrap(err, "invalid chain ID passed as argument")
-			}
+			td, err := eip712.LegacyWrapTxToTypedData(clientCtx.Codec, evmdconfig.EVMChainID, stdTx.GetMsgs()[0], txBytes, nil)
 
-			td, err := eip712.LegacyWrapTxToTypedData(clientCtx.Codec, chainID.Uint64(), stdTx.GetMsgs()[0], txBytes, nil)
 			if err != nil {
 				return errors.Wrap(err, "wrap tx to typed data")
 			}

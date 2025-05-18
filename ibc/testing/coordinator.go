@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/zenanetwork/zena/zenad"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
+	"github.com/zenanetwork/zena/zenad"
 )
 
 var (
@@ -40,10 +40,12 @@ func NewCoordinator(t *testing.T, nEVMChains, mCosmosChains int) *Coordinator {
 
 	ibctesting.DefaultTestingAppInit = SetupExampleApp
 	for i := 1; i <= nEVMChains; i++ {
-		chainID := GetEvmChainID(i)
-		require.NoError(t, zenad.EvmAppOptions(chainID))
+		chainID := GetChainID(i)
+		evmChainID, err := strconv.ParseUint(GetEvmChainID(i), 10, 64)
+		require.NoError(t, err)
+		require.NoError(t, zenad.EvmAppOptions(evmChainID))
 		// setup EVM chains
-		chains[chainID] = NewTestChain(t, true, coord, chainID)
+		chains[strconv.FormatUint(evmChainID, 10)] = NewTestChain(t, true, coord, chainID)
 	}
 
 	// setup Cosmos chains
@@ -155,12 +157,12 @@ func (coord *Coordinator) GetChain(chainID string) *TestChain {
 
 // GetChainID returns the chainID used for the provided index.
 func GetChainID(index int) string {
-	return ChainIDPrefix + strconv.Itoa(index) + ChainIDSuffix
+	return ChainIDPrefix + fmt.Sprintf("%d", index) + ChainIDSuffix
 }
 
 // GetEvmChainID returns the EIP-155 chainID used for the provided index.
 func GetEvmChainID(index int) string {
-	return fmt.Sprintf("%s_%d-1", ChainIDPrefix, 9000+index)
+	return strconv.FormatUint(uint64(9000+index), 10) //nolint:gosec // G115 // won't exceed uint64
 }
 
 // CommitBlock commits a block on the provided indexes and then increments the global time.

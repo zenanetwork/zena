@@ -3,6 +3,7 @@ package zenad
 import (
 	"encoding/json"
 
+	"github.com/zenanetwork/zena/cmd/zenad/config"
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
@@ -48,7 +49,7 @@ func NewErc20GenesisState() *erc20types.GenesisState {
 // NOTE: for the example chain implementation we are also adding a default minter.
 func NewMintGenesisState() *minttypes.GenesisState {
 	mintGenState := minttypes.DefaultGenesisState()
-	mintGenState.Params.MintDenom = ExampleChainDenom
+	mintGenState.Params.MintDenom = config.ExampleChainDenom
 
 	return mintGenState
 }

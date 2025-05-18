@@ -8,6 +8,7 @@ import (
 	"github.com/zenanetwork/zena/ante"
 	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
 	"github.com/zenanetwork/zena/encoding"
+	"github.com/zenanetwork/zena/server/config"
 
 	storetypes "cosmossdk.io/store/types"
 
@@ -26,7 +27,7 @@ func TestConsumeSignatureVerificationGas(t *testing.T) {
 	params := authtypes.DefaultParams()
 	msg := []byte{1, 2, 3, 4}
 
-	encodingConfig := encoding.MakeConfig()
+	encodingConfig := encoding.MakeConfig(config.DefaultEVMChainID)
 	cdc := encodingConfig.Amino
 
 	p := authtypes.DefaultParams()
