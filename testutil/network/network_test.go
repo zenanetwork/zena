@@ -8,9 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/suite"
-
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/stretchr/testify/suite"
 
 	"github.com/zenanetwork/zena/server/config"
 	"github.com/zenanetwork/zena/testutil/network"

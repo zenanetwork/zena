@@ -157,7 +157,7 @@ contract DistributionCaller {
     /// @return success Whether the transaction was successful or not
     function testFundCommunityPool(
         address depositor,
-        uint256 amount
+        types.Coin[] memory amount
     ) public returns (bool success) {
         counter += 1;
         success = distribution.DISTRIBUTION_CONTRACT.fundCommunityPool(
@@ -203,7 +203,7 @@ contract DistributionCaller {
     /// @param _after Boolean to specify if funds should be transferred to delegator after the precompile call
     function testFundCommunityPoolWithTransfer(
         address payable depositor,
-        uint256 amount,
+        types.Coin[] memory amount,
         bool _before,
         bool _after
     ) public {
