@@ -69,6 +69,53 @@
 
 ---
 
+
+## Getting started
+
+To run the example `zenad` chain, run the script using `./local_node.sh`
+from the root folder of the respository.
+
+### Testing
+
+All of the test scripts are found in `Makefile` in the root of the repository.
+Listed below are the commands for various tests:
+
+#### Unit Testing
+
+```bash
+make test-unit
+```
+
+#### Coverage Test
+
+This generates a code coverage file `filtered_coverage.txt` and prints out the
+covered code percentage for the working files.
+
+```bash
+make test-unit-cover
+```
+
+#### Fuzz Testing
+
+```bash
+make test-fuzz
+```
+
+#### Solidity Tests
+
+```bash
+make test-solidity
+```
+
+#### Benchmark Tests
+
+```bash
+make benchmark
+```
+
+---
+
+
 ## 📝 License & Credits
 
 Zena is licensed under the **Apache License 2.0**. This project is forked from the Cosmos SDK’s official EVM module repository ([cosmos/evm](https://github.com/cosmos/evm)), which itself extends the foundational work by Tharsis evmOS. Please refer to the `LICENSE` file for full terms and retain all required notices.
