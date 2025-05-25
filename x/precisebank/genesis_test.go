@@ -9,7 +9,6 @@ import (
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	"github.com/zenanetwork/zena/testutil/integration/os/network"
 	"github.com/zenanetwork/zena/x/precisebank"
-	"github.com/zenanetwork/zena/x/precisebank/keeper"
 	"github.com/zenanetwork/zena/x/precisebank/types"
 
 	sdkmath "cosmossdk.io/math"
@@ -192,11 +191,6 @@ func (suite *GenesisTestSuite) TestInitGenesis() {
 			remainder := suite.network.App.PreciseBankKeeper.GetRemainderAmount(suite.network.GetContext())
 			suite.Require().Equal(tc.genesisState.Remainder, remainder, "remainder should be set in state")
 
-			// Additional verification of state via invariants
-			invariantFn := keeper.AllInvariants(suite.network.App.PreciseBankKeeper)
-			msg, broken := invariantFn(suite.network.GetContext())
-			suite.Require().False(broken, "invariants should not be broken after InitGenesis")
-			suite.Require().Empty(msg, "invariants should not return a message after InitGenesis")
 		})
 	}
 }

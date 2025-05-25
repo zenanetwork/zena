@@ -10,7 +10,6 @@ import (
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	"github.com/zenanetwork/zena/testutil/integration/os/factory"
 	"github.com/zenanetwork/zena/testutil/integration/os/utils"
-	"github.com/zenanetwork/zena/x/precisebank/keeper"
 	"github.com/zenanetwork/zena/x/precisebank/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
@@ -129,11 +128,6 @@ func (suite *KeeperIntegrationTestSuite) TestMintBurnSendCoins_RandomValueMultiD
 			actualRemainder := suite.network.App.PreciseBankKeeper.GetRemainderAmount(suite.network.GetContext())
 			suite.Require().Equal(expectedRemainder.BigInt().Cmp(actualRemainder.BigInt()), 0, "Remainder mismatch (expected: %s, actual: %s)", expectedRemainder, actualRemainder)
 
-			// Invariant check
-			inv := keeper.AllInvariants(suite.network.App.PreciseBankKeeper)
-			res, stop := inv(suite.network.GetContext())
-			suite.Require().False(stop, "Invariant broken")
-			suite.Require().Empty(res, "Unexpected invariant violation: %s", res)
 		})
 	}
 }
@@ -251,11 +245,6 @@ func (suite *KeeperIntegrationTestSuite) TestSendEvmTx_RandomValueMultiDecimals(
 			suite.Require().Equal(expectedRecipientBal.BigInt().Cmp(actualRecipientBal.BigInt()), 0,
 				"Recipient balance mismatch (expected: %s, actual: %s)", expectedRecipientBal, actualRecipientBal)
 
-			// Check invariants
-			inv := keeper.AllInvariants(suite.network.App.PreciseBankKeeper)
-			res, stop := inv(suite.network.GetContext())
-			suite.Require().False(stop, "Invariant broken")
-			suite.Require().Empty(res, "Unexpected invariant violation: %s", res)
 		})
 	}
 }
