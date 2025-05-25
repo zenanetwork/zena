@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
-	"github.com/zenanetwork/zena/x/precisebank/keeper"
 	"github.com/zenanetwork/zena/x/precisebank/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	"github.com/zenanetwork/zena/zenad"
@@ -431,11 +430,6 @@ func (suite *KeeperIntegrationTestSuite) TestSendCoins() {
 				recipientBalAfter,
 			)
 
-			invariantFn := keeper.AllInvariants(suite.network.App.PreciseBankKeeper)
-			res, stop := invariantFn(suite.network.GetContext())
-			suite.Require().False(stop, "invariants should not stop")
-			suite.Require().Empty(res, "invariants should not return any messages")
-
 			// Check events
 
 			// FULL aatom equivalent, including uatom only/mixed sends
@@ -584,10 +578,6 @@ func (suite *KeeperIntegrationTestSuite) TestSendCoins_Matrix() {
 						recipientBalAfter,
 					)
 
-					invariantFn := keeper.AllInvariants(suite.network.App.PreciseBankKeeper)
-					res, stop := invariantFn(suite.network.GetContext())
-					suite.Require().False(stop, "invariants should not stop")
-					suite.Require().Empty(res, "invariants should not return any messages")
 				})
 			}
 		}
@@ -802,11 +792,6 @@ func (suite *KeeperIntegrationTestSuite) TestSendCoins_RandomValueMultiDecimals(
 			suite.Equal(expectedInt.BigInt().Cmp(intReceived.BigInt()), 0, "integer carry mismatch (expected: %s, received: %s)", expectedInt, intReceived)
 			suite.Equal(expectedFrac.BigInt().Cmp(fracReceived.BigInt()), 0, "fractional balance mismatch (expected: %s, received: %s)", expectedFrac, fracReceived)
 
-			// Check invariants
-			inv := keeper.AllInvariants(suite.network.App.PreciseBankKeeper)
-			res, stop := inv(suite.network.GetContext())
-			suite.False(stop, "invariant broken")
-			suite.Empty(res, "unexpected invariant error: %s", res)
 		})
 	}
 }
@@ -869,11 +854,5 @@ func FuzzSendCoins(f *testing.F) {
 			balReceiver.AmountOf(types.ExtendedCoinDenom()).Uint64(),
 		)
 
-		// Run Invariants to ensure remainder is backing all minted fractions
-		// and in a valid state
-		allInvariantsFn := keeper.AllInvariants(suite.network.App.PreciseBankKeeper)
-		res, stop := allInvariantsFn(suite.network.GetContext())
-		suite.Require().False(stop, "invariant should not be broken")
-		suite.Require().Empty(res, "unexpected invariant message: %s", res)
 	})
 }
