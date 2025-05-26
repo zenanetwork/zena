@@ -20,7 +20,7 @@ func SetupExampleApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
 		nil,
 		true,
 		simtestutil.EmptyAppOptions{},
-		9001,
+		18, // EighteenDecimalsChainID
 		zenad.EvmAppOptions,
 	)
 	// disable base fee for testing

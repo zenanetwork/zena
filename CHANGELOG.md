@@ -13,6 +13,7 @@
 
 - Fixed example chain's cmd by adding NoOpEVMOptions to tmpApp in root.go
 - Added RPC support for `--legacy` transactions (Non EIP-1559)
+- Fixed test failures by standardizing chain ID usage to 18 (EighteenDecimalsChainID) across all test files
 
 ### IMPROVEMENTS
 

@@ -24,7 +24,7 @@ const (
 	ExampleBech32Prefix = "zena"
 
 	// ExampleEIP155ChainID provides an example EIP-155 chain ID for use in tests
-	ExampleEIP155ChainID = 1
+	ExampleEIP155ChainID = 18 // EighteenDecimalsChainID
 
 	// WZENAContractMainnet is the WZENA contract address for mainnet
 	WZENAContractMainnet = "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517"
@@ -49,25 +49,25 @@ var (
 	// ExampleChainID provides a chain ID that can be used in tests
 	ExampleChainID = ChainID{
 		ChainID:    ExampleChainIDPrefix + "-1",
-		EVMChainID: 1,
+		EVMChainID: 18, // EighteenDecimalsChainID
 	}
 
 	// SixDecimalsChainID provides a chain ID which is being set up with 6 decimals
 	SixDecimalsChainID = ChainID{
 		ChainID:    "ossix-2",
-		EVMChainID: 9002,
+		EVMChainID: 6,
 	}
 
 	// TwelveDecimalsChainID provides a chain ID which is being set up with 12 decimals
 	TwelveDecimalsChainID = ChainID{
 		ChainID:    "ostwelve-3",
-		EVMChainID: 9003,
+		EVMChainID: 12,
 	}
 
 	// TwoDecimalsChainID provides a chain ID which is being set up with 2 decimals
 	TwoDecimalsChainID = ChainID{
 		ChainID:    "ostwo-4",
-		EVMChainID: 9004,
+		EVMChainID: 4,
 	}
 
 	// ExampleChainCoinInfo provides the coin info for the example chain
