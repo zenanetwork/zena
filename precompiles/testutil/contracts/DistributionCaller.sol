@@ -41,28 +41,26 @@ contract DistributionCaller {
     }
 
     function testWithdrawDelegatorRewardWithTransfer(
-        address payable _delAddr,
         string memory _valAddr,
         bool _before,
         bool _after
     ) public returns (types.Coin[] memory coins) {
         if (_before) {
             counter++;
-            (bool sent, ) = _delAddr.call{value: 15}("");
+            (bool sent, ) = msg.sender.call{value: 15}("");
             require(sent, "Failed to send Ether to delegator");
         }
         coins = distribution.DISTRIBUTION_CONTRACT.withdrawDelegatorRewards(
-            _delAddr,
+            address(this),
             _valAddr
         );
         if (_after) {
             counter++;
-            (bool sent, ) = _delAddr.call{value: 15}("");
+            (bool sent, ) = msg.sender.call{value: 15}("");
             require(sent, "Failed to send Ether to delegator");
         }
         return coins;
     }
-
     function revertWithdrawRewardsAndTransfer(
         address payable _delAddr,
         address payable _withdrawer,
@@ -150,6 +148,21 @@ contract DistributionCaller {
         );
     }
 
+    function testTryClaimRewards(
+        address delegatorAddress,
+        uint32 maxRetrieve
+    ) external returns (bool) {
+        bool success;
+
+        try distribution.DISTRIBUTION_CONTRACT.claimRewards(delegatorAddress, maxRetrieve) returns (bool result) {
+            success = result;
+        } catch {
+            success = false;
+        }
+
+        return success;
+    }
+
     /// @dev testFundCommunityPool defines a method to allow an account to directly
     /// fund the community pool.
     /// @param depositor The address of the depositor
@@ -169,29 +182,24 @@ contract DistributionCaller {
     }
 
     function testClaimRewardsWithTransfer(
-        address payable _delAddr,
         uint32 _maxRetrieve,
         bool _before,
         bool _after
     ) public {
         if (_before) {
             counter++;
-            if (_delAddr != address(this)) {
-                (bool sent, ) = _delAddr.call{value: 15}("");
-                require(sent, "Failed to send Ether to delegator");
-            }
+            (bool sent, ) = msg.sender.call{value: 15}("");
+            require(sent, "Failed to send Ether to delegator");
         }
         bool success = distribution.DISTRIBUTION_CONTRACT.claimRewards(
-            _delAddr,
+            address(this),
             _maxRetrieve
         );
         require(success, "failed to claim rewards");
         if (_after) {
             counter++;
-            if (_delAddr != address(this)) {
-                (bool sent, ) = _delAddr.call{value: 15}("");
-                require(sent, "Failed to send Ether to delegator");
-            }
+            (bool sent, ) = msg.sender.call{value: 15}("");
+            require(sent, "Failed to send Ether to delegator");
         }
     }
 
@@ -224,21 +232,6 @@ contract DistributionCaller {
         }
     }
 
-    /// @dev This function calls the staking precompile's delegate method.
-    /// @param _validatorAddr The validator address to delegate to.
-    /// @param _amount The amount to delegate.
-    function testDelegateFromContract(
-        string memory _validatorAddr,
-        uint256 _amount
-    ) public {
-        staking.STAKING_CONTRACT.delegate(
-            address(this),
-            _validatorAddr,
-            _amount
-        );
-    }
-
-
     /// @dev testDepositValidatorRewardsPool defines a method to allow an account to directly
     /// fund the validator rewards pool.
     /// @param depositor The address of the depositor
@@ -262,13 +255,11 @@ contract DistributionCaller {
 
     /// @dev testDepositValidatorRewardsPoolWithTransfer defines a method to allow an account to directly
     /// fund the validator rewards pool and performs a transfer to the deposit.
-    /// @param depositor The address of the depositor
     /// @param validatorAddress The address of the validator
     /// @param amount The amount of coins sent to the validator rewards pool
     /// @param _before Boolean to specify if funds should be transferred to delegator before the precompile call
     /// @param _after Boolean to specify if funds should be transferred to delegator after the precompile call
     function testDepositValidatorRewardsPoolWithTransfer(
-        address payable depositor,
         string memory validatorAddress,
         types.Coin[] memory amount,
         bool _before,
@@ -276,17 +267,31 @@ contract DistributionCaller {
     ) public {
         if (_before) {
             counter++;
-            (bool sent, ) = depositor.call{value: 15}("");
+            (bool sent, ) = msg.sender.call{value: 15}("");
             require(sent, "Failed to send Ether to delegator");
         }
         bool success = distribution.DISTRIBUTION_CONTRACT
-            .depositValidatorRewardsPool(depositor, validatorAddress, amount);
+            .depositValidatorRewardsPool(address(this), validatorAddress, amount);
         require(success);
         if (_after) {
             counter++;
-            (bool sent, ) = depositor.call{value: 15}("");
+            (bool sent, ) = msg.sender.call{value: 15}("");
             require(sent, "Failed to send Ether to delegator");
         }
+    }
+
+    /// @dev This function calls the staking precompile's delegate method.
+    /// @param _validatorAddr The validator address to delegate to.
+    /// @param _amount The amount to delegate.
+    function testDelegateFromContract(
+        string memory _validatorAddr,
+        uint256 _amount
+    ) public payable {
+        staking.STAKING_CONTRACT.delegate(
+            address(this),
+            _validatorAddr,
+            _amount
+        );
     }
 
     function getValidatorDistributionInfo(
@@ -373,6 +378,10 @@ contract DistributionCaller {
             distribution.DISTRIBUTION_CONTRACT.delegatorWithdrawAddress(
             _delAddr
         );
+    }
+
+    function getCommunityPool() public view returns (types.DecCoin[] memory) {
+        return distribution.DISTRIBUTION_CONTRACT.communityPool();
     }
 
     // testRevertState allows sender to change the withdraw address
