@@ -81,7 +81,7 @@ func (is *PrecompileIntegrationTestSuite) checkAndReturnBalance(
 // Integration tests
 // -------------------------------------------------------------------------------------------------
 
-var _ = When("a user interact with the WZENA precompiled contract", func() {
+var _ = When("a user interact with the WEVMOS precompiled contract", func() {
 	var (
 		is                                         *PrecompileIntegrationTestSuite
 		passCheck, failCheck                       testutil.LogCheckArgs

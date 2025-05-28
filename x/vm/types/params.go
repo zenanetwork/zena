@@ -9,23 +9,26 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/params"
 
-	"github.com/zenanetwork/zena/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v10/modules/core/24-host"
+	"github.com/zenanetwork/zena/types"
 
 	errorsmod "cosmossdk.io/errors"
 )
 
 var (
+	// DefaultEVMDenom is the default value for the evm denom
+	DefaultEVMDenom = "atest"
+	// DefaultEVMChainID is the default value for the evm chain ID
+	DefaultEVMChainID = "cosmos_262144-1"
+	// DefaultEVMDecimals is the default value for the evm denom decimal precision
+	DefaultEVMDecimals uint64 = 18
 	// DefaultAllowUnprotectedTxs rejects all unprotected txs (i.e false)
 	DefaultAllowUnprotectedTxs = false
 	// DefaultStaticPrecompiles defines the default active precompiles.
 	DefaultStaticPrecompiles []string
 	// DefaultExtraEIPs defines the default extra EIPs to be included.
-	// On v15, EIP 3855 was enabled
-	DefaultExtraEIPs = []int64{
-		3855, // NOTE: we suggest to enable EIP-3855 on all chains to support new Solidity versions >=v0.8.20
-	}
+	DefaultExtraEIPs []int64
 	// DefaultEVMChannels defines a list of IBC channels that connect to EVM chains like injective or cronos.
 	DefaultEVMChannels              []string
 	DefaultCreateAllowlistAddresses []string
@@ -62,6 +65,7 @@ func NewParams(
 // DefaultParams returns default evm parameters
 func DefaultParams() Params {
 	return Params{
+		EvmDenom:                DefaultEVMDenom,
 		ExtraEIPs:               DefaultExtraEIPs,
 		AllowUnprotectedTxs:     DefaultAllowUnprotectedTxs,
 		ActiveStaticPrecompiles: DefaultStaticPrecompiles,

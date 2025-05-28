@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/holiman/uint256"
 
 	"github.com/zenanetwork/zena/utils"
 	"github.com/zenanetwork/zena/x/vm/statedb"
@@ -110,7 +111,7 @@ func (suite *KeeperTestSuite) TestGetAccountStorage() {
 func (suite *KeeperTestSuite) TestGetAccountOrEmpty() {
 	ctx := suite.network.GetContext()
 	empty := statedb.Account{
-		Balance:  new(big.Int),
+		Balance:  new(uint256.Int),
 		CodeHash: evmtypes.EmptyCodeHash,
 	}
 

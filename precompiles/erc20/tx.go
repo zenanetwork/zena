@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 
 	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/utils"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"cosmossdk.io/math"
@@ -126,7 +127,10 @@ func (p *Precompile) transfer(
 
 	evmDenom := evmtypes.GetEVMCoinDenom()
 	if p.tokenPair.Denom == evmDenom {
-		convertedAmount := evmtypes.ConvertAmountTo18DecimalsBigInt(amount)
+		convertedAmount, err := utils.Uint256FromBigInt(evmtypes.ConvertAmountTo18DecimalsBigInt(amount))
+		if err != nil {
+			return nil, err
+		}
 		p.SetBalanceChangeEntries(cmn.NewBalanceChangeEntry(from, convertedAmount, cmn.Sub),
 			cmn.NewBalanceChangeEntry(to, convertedAmount, cmn.Add))
 	}

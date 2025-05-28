@@ -71,12 +71,12 @@ func (s *PrecompileTestSuite) TestSetWithdrawAddressEvent() {
 		ctx = s.network.GetContext()
 		stDB = s.network.GetStateDB()
 
-		contract := vm.NewContract(vm.AccountRef(s.keyring.GetAddr(0)), s.precompile, big.NewInt(0), tc.gas)
+		contract := vm.NewContract(vm.AccountRef(s.keyring.GetAddr(0)), s.precompile, common.U2560, tc.gas)
 		ctx = ctx.WithGasMeter(storetypes.NewInfiniteGasMeter())
 		initialGas := ctx.GasMeter().GasConsumed()
 		s.Require().Zero(initialGas)
 
-		_, err := s.precompile.SetWithdrawAddress(ctx, s.keyring.GetAddr(0), contract, stDB, &method, tc.malleate(s.network.GetValidators()[0].OperatorAddress))
+		_, err := s.precompile.SetWithdrawAddress(ctx, contract, stDB, &method, tc.malleate(s.network.GetValidators()[0].OperatorAddress))
 
 		if tc.expError {
 			s.Require().Error(err)
@@ -150,12 +150,12 @@ func (s *PrecompileTestSuite) TestWithdrawDelegatorRewardEvent() {
 		ctx = s.network.GetContext()
 		stDB = s.network.GetStateDB()
 
-		contract := vm.NewContract(vm.AccountRef(s.keyring.GetAddr(0)), s.precompile, big.NewInt(0), tc.gas)
+		contract := vm.NewContract(vm.AccountRef(s.keyring.GetAddr(0)), s.precompile, common.U2560, tc.gas)
 		ctx = ctx.WithGasMeter(storetypes.NewInfiniteGasMeter())
 		initialGas := ctx.GasMeter().GasConsumed()
 		s.Require().Zero(initialGas)
 
-		_, err := s.precompile.WithdrawDelegatorReward(ctx, s.keyring.GetAddr(0), contract, stDB, &method, tc.malleate(s.network.GetValidators()[0]))
+		_, err := s.precompile.WithdrawDelegatorReward(ctx, contract, stDB, &method, tc.malleate(s.network.GetValidators()[0]))
 
 		if tc.expError {
 			s.Require().Error(err)
@@ -230,12 +230,12 @@ func (s *PrecompileTestSuite) TestWithdrawValidatorCommissionEvent() {
 		valAddr, err := sdk.ValAddressFromBech32(s.network.GetValidators()[0].GetOperator())
 		s.Require().NoError(err)
 		validatorAddress := common.BytesToAddress(valAddr)
-		contract := vm.NewContract(vm.AccountRef(validatorAddress), s.precompile, big.NewInt(0), tc.gas)
+		contract := vm.NewContract(vm.AccountRef(validatorAddress), s.precompile, common.U2560, tc.gas)
 		ctx = ctx.WithGasMeter(storetypes.NewInfiniteGasMeter())
 		initialGas := ctx.GasMeter().GasConsumed()
 		s.Require().Zero(initialGas)
 
-		_, err = s.precompile.WithdrawValidatorCommission(ctx, validatorAddress, contract, stDB, &method, tc.malleate(s.network.GetValidators()[0].OperatorAddress))
+		_, err = s.precompile.WithdrawValidatorCommission(ctx, contract, stDB, &method, tc.malleate(s.network.GetValidators()[0].OperatorAddress))
 
 		if tc.expError {
 			s.Require().Error(err)
@@ -448,7 +448,6 @@ func (s *PrecompileTestSuite) TestDepositValidatorRewardsPoolEvent() {
 						Amount: big.NewInt(3e18),
 					},
 				}
-
 				sdkCoins, err := cmn.NewSdkCoinsFromCoins(coins)
 				s.Require().NoError(err)
 
@@ -495,7 +494,7 @@ func (s *PrecompileTestSuite) TestDepositValidatorRewardsPoolEvent() {
 		contract, ctx = testutil.NewPrecompileContract(s.T(), ctx, s.keyring.GetAddr(0), s.precompile, tc.gas)
 
 		args, sdkCoins := tc.malleate(s.network.GetValidators()[0].OperatorAddress)
-		_, err := s.precompile.DepositValidatorRewardsPool(ctx, s.keyring.GetAddr(0), contract, stDB, &method, args)
+		_, err := s.precompile.DepositValidatorRewardsPool(ctx, contract, stDB, &method, args)
 
 		if tc.expError {
 			s.Require().Error(err)

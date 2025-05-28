@@ -11,6 +11,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v10/modules/core/24-host"
 	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/utils"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
@@ -81,7 +82,10 @@ func (p *Precompile) Transfer(
 		// NOTE: This ensures that the changes in the bank keeper are correctly mirrored to the EVM stateDB
 		// when calling the precompile from another smart contract.
 		// This prevents the stateDB from overwriting the changed balance in the bank keeper when committing the EVM state.
-		amt := msg.Token.Amount.BigInt()
+		amt, err := utils.Uint256FromBigInt(msg.Token.Amount.BigInt())
+		if err != nil {
+			return nil, err
+		}
 		p.SetBalanceChangeEntries(
 			cmn.NewBalanceChangeEntry(sender, amt, cmn.Sub),
 			cmn.NewBalanceChangeEntry(escrowHexAddr, amt, cmn.Add),
