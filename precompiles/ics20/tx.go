@@ -11,6 +11,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v10/modules/core/24-host"
 	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/utils"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	errorsmod "cosmossdk.io/errors"
@@ -27,7 +28,6 @@ const (
 // Transfer implements the ICS20 transfer transactions.
 func (p *Precompile) Transfer(
 	ctx sdk.Context,
-	origin common.Address,
 	contract *vm.Contract,
 	stateDB vm.StateDB,
 	method *abi.Method,
@@ -59,12 +59,9 @@ func (p *Precompile) Transfer(
 		)
 	}
 
-	// isCallerSender is true when the contract caller is the same as the sender
-	isCallerSender := contract.CallerAddress == sender
-
-	// If the contract caller is not the same as the sender, the sender must be the origin
-	if !isCallerSender && origin != sender {
-		return nil, fmt.Errorf(ErrDifferentOriginFromSender, origin.String(), sender.String())
+	msgSender := contract.CallerAddress
+	if msgSender != sender {
+		return nil, fmt.Errorf(cmn.ErrRequesterIsNotMsgSender, msgSender.String(), sender.String())
 	}
 
 	res, err := p.transferKeeper.Transfer(ctx, msg)
@@ -73,7 +70,7 @@ func (p *Precompile) Transfer(
 	}
 
 	evmDenom := evmtypes.GetEVMCoinDenom()
-	if contract.CallerAddress != origin && msg.Token.Denom == evmDenom {
+	if msg.Token.Denom == evmDenom {
 		// escrow address is also changed on this tx, and it is not a module account
 		// so we need to account for this on the UpdateDirties
 		escrowAccAddress := transfertypes.GetEscrowAddress(msg.SourcePort, msg.SourceChannel)
@@ -81,7 +78,10 @@ func (p *Precompile) Transfer(
 		// NOTE: This ensures that the changes in the bank keeper are correctly mirrored to the EVM stateDB
 		// when calling the precompile from another smart contract.
 		// This prevents the stateDB from overwriting the changed balance in the bank keeper when committing the EVM state.
-		amt := msg.Token.Amount.BigInt()
+		amt, err := utils.Uint256FromBigInt(msg.Token.Amount.BigInt())
+		if err != nil {
+			return nil, err
+		}
 		p.SetBalanceChangeEntries(
 			cmn.NewBalanceChangeEntry(sender, amt, cmn.Sub),
 			cmn.NewBalanceChangeEntry(escrowHexAddr, amt, cmn.Add),

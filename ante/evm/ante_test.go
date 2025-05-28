@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	ethparams "github.com/ethereum/go-ethereum/params"
+	"github.com/holiman/uint256"
 
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
@@ -538,7 +539,7 @@ func (suite *AnteTestSuite) TestAnteHandler() {
 				from := suite.GetKeyring().GetAccAddr(0)
 				gas := uint64(200000)
 				amount := sdk.NewCoins(sdk.NewCoin(testconstants.ExampleAttoDenom, sdkmath.NewInt(100*int64(gas)))) //#nosec G115
-				txBuilder, err := suite.CreateTestEIP712TxBuilderMsgSend(from, privKey, "zena-1", 9002, gas, amount)
+				txBuilder, err := suite.CreateTestEIP712TxBuilderMsgSend(from, privKey, "cosmos-1", 9002, gas, amount)
 				suite.Require().NoError(err)
 				return txBuilder.GetTx()
 			}, false, false, false,
@@ -562,7 +563,7 @@ func (suite *AnteTestSuite) TestAnteHandler() {
 				from := suite.GetKeyring().GetAccAddr(0)
 				gas := uint64(200000)
 				amount := sdk.NewCoins(sdk.NewCoin(testconstants.ExampleAttoDenom, sdkmath.NewInt(100*int64(gas)))) //#nosec G115
-				txBuilder, err := suite.CreateTestEIP712TxBuilderMsgSend(from, privKey, "zena-1", 9005, gas, amount)
+				txBuilder, err := suite.CreateTestEIP712TxBuilderMsgSend(from, privKey, "cosmos-1", 9005, gas, amount)
 				suite.Require().NoError(err)
 				return txBuilder.GetTx()
 			}, false, false, false,
@@ -1089,7 +1090,7 @@ func (suite *AnteTestSuite) TestAnteHandlerWithDynamicTxFee() {
 			suite.GetNetwork().App.AccountKeeper.SetAccount(ctx, acc)
 
 			ctx = ctx.WithIsCheckTx(tc.checkTx).WithIsReCheckTx(tc.reCheckTx)
-			err := suite.GetNetwork().App.EVMKeeper.SetBalance(ctx, addr, big.NewInt((ethparams.InitialBaseFee+10)*100000))
+			err := suite.GetNetwork().App.EVMKeeper.SetBalance(ctx, addr, uint256.NewInt((ethparams.InitialBaseFee+10)*100000))
 			suite.Require().NoError(err)
 
 			anteHandler := suite.GetAnteHandler()
@@ -1216,7 +1217,7 @@ func (suite *AnteTestSuite) TestAnteHandlerWithParams() {
 			suite.GetNetwork().App.AccountKeeper.SetAccount(ctx, acc)
 
 			ctx = ctx.WithIsCheckTx(true)
-			err := suite.GetNetwork().App.EVMKeeper.SetBalance(ctx, addr, big.NewInt((ethparams.InitialBaseFee+10)*100000))
+			err := suite.GetNetwork().App.EVMKeeper.SetBalance(ctx, addr, uint256.NewInt((ethparams.InitialBaseFee+10)*100000))
 			suite.Require().NoError(err)
 
 			anteHandler := suite.GetAnteHandler()
