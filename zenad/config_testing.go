@@ -6,12 +6,12 @@ package zenad
 import (
 	"fmt"
 
+	"github.com/zenanetwork/zena/cmd/zenad/config"
+	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+
 	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	"github.com/zenanetwork/zena/cmd/zenad/config"
-	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
 // ChainsCoinInfo is a map of the chain id and its corresponding EvmCoinInfo
@@ -25,9 +25,9 @@ var ChainsCoinInfo = map[uint64]evmtypes.EvmCoinInfo{
 		Decimals:      evmtypes.EighteenDecimals,
 	},
 	config.SixDecimalsChainID: {
-		Denom:         "uzena",
-		ExtendedDenom: "azena",
-		DisplayDenom:  "zena",
+		Denom:         "utest",
+		ExtendedDenom: "atest",
+		DisplayDenom:  "test",
 		Decimals:      evmtypes.SixDecimals,
 	},
 	config.TwelveDecimalsChainID: {
