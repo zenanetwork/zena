@@ -3,10 +3,10 @@ package transfer
 import (
 	"fmt"
 
-	"github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	"github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	"github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 )
@@ -54,5 +54,9 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 
 	if err := cfg.RegisterMigration(types.ModuleName, 4, m.MigrateDenomMetadata); err != nil {
 		panic(fmt.Errorf("failed to migrate transfer app from version 4 to 5 (set denom metadata migration): %v", err))
+	}
+
+	if err := cfg.RegisterMigration(types.ModuleName, 5, m.MigrateDenomTraceToDenom); err != nil {
+		panic(fmt.Errorf("failed to migrate transfer app from version 5 to 6 (migrate DenomTrace to Denom): %v", err))
 	}
 }
