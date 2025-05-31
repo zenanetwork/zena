@@ -18,6 +18,18 @@ import (
 	abci "github.com/cometbft/cometbft/abci/types"
 
 	dbm "github.com/cosmos/cosmos-db"
+	"github.com/cosmos/gogoproto/proto"
+	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
+	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v10/modules/core"
+	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	ibcconnectiontypes "github.com/cosmos/ibc-go/v10/modules/core/03-connection/types"
+	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
+	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
+	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
+	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
+	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
+	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 	evmante "github.com/zenanetwork/zena/ante"
 	cosmosevmante "github.com/zenanetwork/zena/ante/evm"
 	evmosencoding "github.com/zenanetwork/zena/encoding"
@@ -31,20 +43,6 @@ import (
 	"github.com/zenanetwork/zena/x/feemarket"
 	feemarketkeeper "github.com/zenanetwork/zena/x/feemarket/keeper"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
-	chainante "github.com/zenanetwork/zena/zenad/ante"
-
-	"github.com/cosmos/gogoproto/proto"
-	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
-	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	ibc "github.com/cosmos/ibc-go/v10/modules/core"
-	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
-	ibcconnectiontypes "github.com/cosmos/ibc-go/v10/modules/core/03-connection/types"
-	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
-	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
-	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
-	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
-	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
-	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 	"github.com/zenanetwork/zena/x/ibc/transfer" // NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
 	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 	transferv2 "github.com/zenanetwork/zena/x/ibc/transfer/v2"
@@ -54,6 +52,7 @@ import (
 	"github.com/zenanetwork/zena/x/vm"
 	evmkeeper "github.com/zenanetwork/zena/x/vm/keeper"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	chainante "github.com/zenanetwork/zena/zenad/ante"
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
@@ -139,13 +138,13 @@ func init() {
 
 	// get the user's home directory
 	var err error
-	DefaultNodeHome, err = clienthelpers.GetNodeHomeDirectory(".zenad")
+	DefaultNodeHome, err = clienthelpers.GetNodeHomeDirectory(".evmd")
 	if err != nil {
 		panic(err)
 	}
 }
 
-const appName = "zenad"
+const appName = "evmd"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -481,7 +480,6 @@ func NewExampleApp(
 	// For example, if your custom evidence handler deducts tokens from a user’s account, ensure that the evidence
 	// precompile also applies these deductions through the EVM’s balance tracking. Failing to do so may cause
 	// inconsistencies in reported balances and break state synchronization.
-
 	app.EvidenceKeeper = *evidenceKeeper
 
 	// Cosmos EVM keepers
@@ -491,6 +489,9 @@ func NewExampleApp(
 		tkeys[feemarkettypes.TransientKey],
 	)
 
+	// Set up PreciseBank keeper
+	//
+	// NOTE: PreciseBank is not needed if SDK use 18 decimals for gas coin. Use BankKeeper instead.
 	app.PreciseBankKeeper = precisebankkeeper.NewKeeper(
 		appCodec,
 		keys[precisebanktypes.StoreKey],
@@ -625,7 +626,7 @@ func NewExampleApp(
 		ibctm.NewAppModule(tmLightClientModule),
 		transferModule,
 		// Cosmos EVM modules
-		vm.NewAppModule(app.EVMKeeper, app.AccountKeeper),
+		vm.NewAppModule(app.EVMKeeper, app.AccountKeeper, app.AccountKeeper.AddressCodec()),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
 		erc20.NewAppModule(app.Erc20Keeper, app.AccountKeeper),
 		precisebank.NewAppModule(app.PreciseBankKeeper, app.BankKeeper, app.AccountKeeper),
@@ -678,7 +679,8 @@ func NewExampleApp(
 		evidencetypes.ModuleName, stakingtypes.ModuleName,
 		authtypes.ModuleName, banktypes.ModuleName, govtypes.ModuleName, genutiltypes.ModuleName,
 		authz.ModuleName, feegrant.ModuleName,
-		paramstypes.ModuleName, consensusparamtypes.ModuleName, precisebanktypes.ModuleName,
+		paramstypes.ModuleName, consensusparamtypes.ModuleName,
+		precisebanktypes.ModuleName,
 		vestingtypes.ModuleName,
 	)
 
@@ -931,7 +933,7 @@ func (app *EVMD) DefaultGenesis() map[string]json.RawMessage {
 	genesis[evmtypes.ModuleName] = app.appCodec.MustMarshalJSON(evmGenState)
 
 	// NOTE: for the example chain implementation we are also adding a default token pair,
-	// which is the base denomination of the chain (i.e. the WZENA contract)
+	// which is the base denomination of the chain (i.e. the WEVMOS contract)
 	erc20GenState := NewErc20GenesisState()
 	genesis[erc20types.ModuleName] = app.appCodec.MustMarshalJSON(erc20GenState)
 
@@ -1089,7 +1091,7 @@ func BlockedAddresses() map[string]bool {
 	}
 
 	for _, precompile := range blockedPrecompilesHex {
-		blockedAddrs[cosmosevmutils.EthHexToCosmosAddr(precompile).String()] = true
+		blockedAddrs[cosmosevmutils.Bech32StringFromHexAddress(precompile)] = true
 	}
 
 	return blockedAddrs
