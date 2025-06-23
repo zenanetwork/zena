@@ -24,7 +24,6 @@ func NewPublicAPI(ctx *server.Context, clientCtx client.Context) *PublicAPI {
 	if err != nil {
 		panic(err)
 	}
-
 	return &PublicAPI{
 		networkVersion: cfg.EVM.EVMChainID,
 		tmClient:       clientCtx.Client.(rpcclient.Client),

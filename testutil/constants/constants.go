@@ -12,25 +12,24 @@ const (
 	DefaultGasPrice = 20
 
 	// ExampleAttoDenom provides an example denom for use in tests
-	ExampleAttoDenom = "azena"
+	ExampleAttoDenom = "aatom"
 
 	// ExampleMicroDenom provides an example denom for use in tests
-	ExampleMicroDenom = "uzena"
+	ExampleMicroDenom = "uatom"
 
 	// ExampleDisplayDenom provides an example display denom for use in tests
-	ExampleDisplayDenom = "zena"
+	ExampleDisplayDenom = "atom"
 
 	// ExampleBech32Prefix provides an example Bech32 prefix for use in tests
-	ExampleBech32Prefix = "zena"
+	ExampleBech32Prefix = "cosmos"
 
 	// ExampleEIP155ChainID provides an example EIP-155 chain ID for use in tests
-	ExampleEIP155ChainID = 18 // EighteenDecimalsChainID
+	ExampleEIP155ChainID = 9001
 
-	// WZENAContractMainnet is the WZENA contract address for mainnet
+	// WEVMOSContractMainnet is the WEVMOS contract address for mainnet
 	WZENAContractMainnet = "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517"
-	// WZENAContractTestnet is the WZENA contract address for testnet
+	// WEVMOSContractTestnet is the WEVMOS contract address for testnet
 	WZENAContractTestnet = "0xcc491f589b45d4a3c679016195b3fb87d7848210"
-
 	// ExampleEvmAddress1 is the example EVM address
 	ExampleEvmAddressAlice = "0x1e0DE5DB1a39F99cBc67B00fA3415181b3509e42"
 	// ExampleEvmAddress2 is the example EVM address
@@ -44,30 +43,30 @@ type ChainID struct {
 
 var (
 	// ExampleChainIDPrefix provides a chain ID prefix for EIP-155 that can be used in tests
-	ExampleChainIDPrefix = "zena"
+	ExampleChainIDPrefix = "cosmos"
 
 	// ExampleChainID provides a chain ID that can be used in tests
 	ExampleChainID = ChainID{
 		ChainID:    ExampleChainIDPrefix + "-1",
-		EVMChainID: 18, // EighteenDecimalsChainID
+		EVMChainID: 9001,
 	}
 
 	// SixDecimalsChainID provides a chain ID which is being set up with 6 decimals
 	SixDecimalsChainID = ChainID{
 		ChainID:    "ossix-2",
-		EVMChainID: 6,
+		EVMChainID: 9002,
 	}
 
 	// TwelveDecimalsChainID provides a chain ID which is being set up with 12 decimals
 	TwelveDecimalsChainID = ChainID{
 		ChainID:    "ostwelve-3",
-		EVMChainID: 12,
+		EVMChainID: 9003,
 	}
 
 	// TwoDecimalsChainID provides a chain ID which is being set up with 2 decimals
 	TwoDecimalsChainID = ChainID{
 		ChainID:    "ostwo-4",
-		EVMChainID: 4,
+		EVMChainID: 9004,
 	}
 
 	// ExampleChainCoinInfo provides the coin info for the example chain

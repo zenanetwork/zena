@@ -110,7 +110,6 @@ interface IGov {
     /// @param amount the amount of the deposit
     event Deposit(address indexed depositor, uint64 proposalId, Coin[] amount);
 
-
     /// @dev Vote defines an Event emitted when a proposal voted.
     /// @param voter the address of the voter
     /// @param proposalId the proposal of id
@@ -156,6 +155,7 @@ interface IGov {
         uint64 proposalId,
         Coin[] calldata amount
     ) external returns (bool success);
+
 
     /// @dev vote defines a method to add a vote on a specific proposal.
     /// @param voter The address of the voter

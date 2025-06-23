@@ -24,11 +24,11 @@ var (
 
 const (
 	// Amino names
-	convertERC20Name = "cosmos/evm/MsgConvertERC20"
-	convertCoinName  = "cosmos/evm/MsgConvertCoin" // keep it for backwards compatibility when querying txs
-	updateParams     = "cosmos/evm/erc20/MsgUpdateParams"
-	registerERC20    = "cosmos/evm/erc20/MsgRegisterERC20"
-	toggleConversion = "cosmos/evm/erc20/MsgToggleConversion"
+	convertERC20Name = "zenanetwork/zena/MsgConvertERC20"
+	convertCoinName  = "zenanetwork/zena/MsgConvertCoin" // keep it for backwards compatibility when querying txs
+	updateParams     = "zenanetwork/zena/erc20/MsgUpdateParams"
+	registerERC20    = "zenanetwork/zena/erc20/MsgRegisterERC20"
+	toggleConversion = "zenanetwork/zena/erc20/MsgToggleConversion"
 )
 
 // NOTE: This is required for the GetSignBytes function

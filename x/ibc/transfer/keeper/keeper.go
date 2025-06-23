@@ -1,10 +1,10 @@
 package keeper
 
 import (
-	"github.com/zenanetwork/zena/x/ibc/transfer/types"
 	"github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
+	"github.com/zenanetwork/zena/x/ibc/transfer/types"
 
 	corestore "cosmossdk.io/core/store"
 

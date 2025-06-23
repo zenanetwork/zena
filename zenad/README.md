@@ -13,12 +13,12 @@ as well as to provide a chain object for testing purposes within the repository.
 By default, this chain has the following configuration:
 
 | Option              | Value                  |
-| ------------------- | ---------------------- |
-| Binary              | `zenad`                |
-| Chain ID            | `zena_1-1`             |
+|---------------------|------------------------|
+| Binary              | `evmd`                 |
+| Chain ID            | `cosmos_262144-1`      |
 | Custom Opcodes      | -                      |
 | Default Token Pairs | 1 for the native token |
-| Denomination        | `azena`                |
+| Denomination        | `atest`                |
 | EVM permissioning   | permissionless         |
 | Enabled Precompiles | all                    |
 
@@ -42,7 +42,7 @@ Available flags are:
 For the sake of this example, we'll be using Metamask:
 
 1. Use the following seed phrase when adding a new wallet:
-   `gesture inject test cycle original hollow east ridge hen combine
+`gesture inject test cycle original hollow east ridge hen combine
 junk child baconzero hope comfort vacuum milk pitch cage oppose
 unhappy lunar seat`
 2. On the top left of the Metamask extension, click the Network button.

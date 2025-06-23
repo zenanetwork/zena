@@ -270,8 +270,9 @@ interface IGov {
     /// @dev getParams returns the current governance parameters.
     /// @return params The governance parameters
     function getParams() external view returns (Params memory params);
-    
+
     /// @dev getConstitution returns the current constitution.
     /// @return constitution The current constitution
     function getConstitution() external view returns (string memory constitution);
 }
+

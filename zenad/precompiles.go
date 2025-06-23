@@ -7,7 +7,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	"github.com/cosmos/cosmos-sdk/codec"
 	channelkeeper "github.com/cosmos/ibc-go/v10/modules/core/04-channel/keeper"
 	bankprecompile "github.com/zenanetwork/zena/precompiles/bank"
 	"github.com/zenanetwork/zena/precompiles/bech32"
@@ -25,6 +24,7 @@ import (
 
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 
+	"github.com/cosmos/cosmos-sdk/codec"
 	distributionkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
@@ -75,6 +75,7 @@ func NewAvailableStaticPrecompiles(
 	}
 
 	ibcTransferPrecompile, err := ics20precompile.NewPrecompile(
+		bankKeeper,
 		stakingKeeper,
 		transferKeeper,
 		channelKeeper,

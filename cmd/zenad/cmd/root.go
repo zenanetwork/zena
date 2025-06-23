@@ -20,7 +20,6 @@ import (
 	cosmosevmserverconfig "github.com/zenanetwork/zena/server/config"
 	srvflags "github.com/zenanetwork/zena/server/flags"
 	"github.com/zenanetwork/zena/zenad"
-	"github.com/zenanetwork/zena/zenad/testutil"
 
 	"cosmossdk.io/log"
 	"cosmossdk.io/store"
@@ -57,6 +56,9 @@ func NewRootCmd() *cobra.Command {
 	// we "pre"-instantiate the application for getting the injected/configured encoding configuration
 	// and the CLI options for the modules
 	// add keyring to autocli opts
+	noOpEvmAppOptions := func(_ uint64) error {
+		return nil
+	}
 	tempApp := zenad.NewExampleApp(
 		log.NewNopLogger(),
 		dbm.NewMemDB(),
@@ -64,7 +66,7 @@ func NewRootCmd() *cobra.Command {
 		true,
 		simtestutil.EmptyAppOptions{},
 		evmdconfig.EVMChainID,
-		testutil.NoOpEvmAppOptions,
+		noOpEvmAppOptions,
 	)
 
 	encodingConfig := sdktestutil.TestEncodingConfig{
@@ -90,7 +92,7 @@ func NewRootCmd() *cobra.Command {
 
 	rootCmd := &cobra.Command{
 		Use:   "zenad",
-		Short: "exemplary Cosmos EVM app",
+		Short: "exemplary zenanetwork ZENA app",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())

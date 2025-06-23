@@ -69,7 +69,7 @@ func TestFractionalBalances_Validate(t *testing.T) {
 					sdkmath.NewInt(100),
 				),
 			},
-			"duplicate address zena1qyfkm2y3",
+			"duplicate address cosmos1qyfkm2y3",
 		},
 	}
 

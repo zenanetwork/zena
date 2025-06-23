@@ -1,10 +1,11 @@
 version: v1
-name: buf.build/cosmos/evm
+name: buf.build/zenanetwork/zena
 deps:
   - buf.build/cosmos/cosmos-sdk
   - buf.build/cosmos/cosmos-proto
   - buf.build/cosmos/gogo-proto
   - buf.build/googleapis/googleapis
+  - buf.build/protocolbuffers/wellknowntypes
 lint:
   use:
     - DEFAULT

@@ -1,9 +1,9 @@
 package v2
 
 import (
-	"github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 	v2 "github.com/cosmos/ibc-go/v10/modules/apps/transfer/v2"
 	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
+	"github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 )
 
 var _ ibcapi.IBCModule = IBCModule{}

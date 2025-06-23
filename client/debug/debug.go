@@ -56,11 +56,14 @@ func getPubKeyFromString(ctx client.Context, pkstr string) (cryptotypes.PubKey, 
 
 func PubkeyCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:     "pubkey [pubkey]",
-		Short:   "Decode a pubkey from proto JSON",
-		Long:    "Decode a pubkey from proto JSON and display it's address",
-		Example: fmt.Sprintf(`$ %s debug legacy-eip712 tx.json --chain-id evmd-1`, version.AppName),
-		Args:    cobra.ExactArgs(1),
+		Use:   "pubkey [pubkey]",
+		Short: "Decode a pubkey from proto JSON",
+		Long:  "Decode a pubkey from proto JSON and display it's address",
+		Example: fmt.Sprintf(
+			`"$ %s debug pubkey '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ"}'`, //gitleaks:allow
+			version.AppName,
+		),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 			pk, err := getPubKeyFromString(clientCtx, args[0])
@@ -164,7 +167,7 @@ func LegacyEIP712Cmd() *cobra.Command {
 		Use:     "legacy-eip712 [file] [evm-chain-id]",
 		Short:   "Output types of legacy eip712 typed data according to the given transaction",
 		Example: fmt.Sprintf(`$ %s debug legacy-eip712 tx.json 4221 --chain-id evmd-1`, version.AppName),
-		Args:    cobra.ExactArgs(1),
+		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -187,7 +190,6 @@ func LegacyEIP712Cmd() *cobra.Command {
 			}
 
 			td, err := eip712.LegacyWrapTxToTypedData(clientCtx.Codec, uint64(evmChainID), stdTx.GetMsgs()[0], txBytes, nil) //nolint:gosec // G115 // overflow not a concern
-
 			if err != nil {
 				return errors.Wrap(err, "wrap tx to typed data")
 			}

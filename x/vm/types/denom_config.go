@@ -53,13 +53,14 @@ func GetEVMCoinDecimals() Decimals {
 	return evmCoinInfo.Decimals
 }
 
-func GetEVMCoinExtendedDenom() string {
-	return evmCoinInfo.ExtendedDenom
-}
-
 // GetEVMCoinDenom returns the denom used for the EVM coin.
 func GetEVMCoinDenom() string {
 	return evmCoinInfo.Denom
+}
+
+// GetEVMCoinExtendedDenom returns the extended denom used for the EVM coin.
+func GetEVMCoinExtendedDenom() string {
+	return evmCoinInfo.ExtendedDenom
 }
 
 // setEVMCoinInfo allows to define denom and decimals of the coin used in the EVM.

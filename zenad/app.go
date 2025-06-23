@@ -18,18 +18,6 @@ import (
 	abci "github.com/cometbft/cometbft/abci/types"
 
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/gogoproto/proto"
-	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
-	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	ibc "github.com/cosmos/ibc-go/v10/modules/core"
-	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
-	ibcconnectiontypes "github.com/cosmos/ibc-go/v10/modules/core/03-connection/types"
-	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
-	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
-	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
-	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
-	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
-	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 	evmante "github.com/zenanetwork/zena/ante"
 	cosmosevmante "github.com/zenanetwork/zena/ante/evm"
 	evmosencoding "github.com/zenanetwork/zena/encoding"
@@ -43,7 +31,24 @@ import (
 	"github.com/zenanetwork/zena/x/feemarket"
 	feemarketkeeper "github.com/zenanetwork/zena/x/feemarket/keeper"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
-	"github.com/zenanetwork/zena/x/ibc/transfer" // NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
+	ibccallbackskeeper "github.com/zenanetwork/zena/x/ibc/callbacks/keeper"
+	chainante "github.com/zenanetwork/zena/zenad/ante"
+
+	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
+	"github.com/cosmos/gogoproto/proto"
+	ibccallbacks "github.com/cosmos/ibc-go/v10/modules/apps/callbacks"
+	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
+	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v10/modules/core"
+	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	ibcconnectiontypes "github.com/cosmos/ibc-go/v10/modules/core/03-connection/types"
+	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
+	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
+	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
+	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
+	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
+	ibctesting "github.com/cosmos/ibc-go/v10/testing"
+	"github.com/zenanetwork/zena/x/ibc/transfer"
 	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 	transferv2 "github.com/zenanetwork/zena/x/ibc/transfer/v2"
 	"github.com/zenanetwork/zena/x/precisebank"
@@ -52,7 +57,6 @@ import (
 	"github.com/zenanetwork/zena/x/vm"
 	evmkeeper "github.com/zenanetwork/zena/x/vm/keeper"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
-	chainante "github.com/zenanetwork/zena/zenad/ante"
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
@@ -138,13 +142,13 @@ func init() {
 
 	// get the user's home directory
 	var err error
-	DefaultNodeHome, err = clienthelpers.GetNodeHomeDirectory(".evmd")
+	DefaultNodeHome, err = clienthelpers.GetNodeHomeDirectory(".zenad")
 	if err != nil {
 		panic(err)
 	}
 }
 
-const appName = "evmd"
+const appName = "zenad"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -206,6 +210,7 @@ type EVMD struct {
 	// IBC keepers
 	IBCKeeper      *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
 	TransferKeeper transferkeeper.Keeper
+	CallbackKeeper ibccallbackskeeper.ContractKeeper
 
 	// Cosmos EVM keepers
 	FeeMarketKeeper   feemarketkeeper.Keeper
@@ -544,21 +549,29 @@ func NewExampleApp(
 		Create Transfer Stack
 
 		transfer stack contains (from bottom to top):
+			- IBC Callbacks Middleware (with EVM ContractKeeper)
 			- ERC-20 Middleware
 			- IBC Transfer
 
 		SendPacket, since it is originating from the application to core IBC:
-		 	transferKeeper.SendPacket -> erc20.SendPacket -> channel.SendPacket
+		 	transferKeeper.SendPacket ->  erc20.SendPacket -> callbacks.SendPacket -> channel.SendPacket
 
 		RecvPacket, message that originates from core IBC and goes down to app, the flow is the other way
-			channel.RecvPacket -> erc20.OnRecvPacket -> transfer.OnRecvPacket
+			channel.RecvPacket -> callbacks.OnRecvPacket -> erc20.OnRecvPacket -> transfer.OnRecvPacket
 	*/
 
 	// create IBC module from top to bottom of stack
 	var transferStack porttypes.IBCModule
 
 	transferStack = transfer.NewIBCModule(app.TransferKeeper)
+	maxCallbackGas := uint64(1_000_000)
 	transferStack = erc20.NewIBCMiddleware(app.Erc20Keeper, transferStack)
+	app.CallbackKeeper = ibccallbackskeeper.NewKeeper(
+		app.AccountKeeper,
+		app.EVMKeeper,
+		app.Erc20Keeper,
+	)
+	transferStack = ibccallbacks.NewIBCMiddleware(transferStack, app.IBCKeeper.ChannelKeeper, app.CallbackKeeper, maxCallbackGas)
 
 	var transferStackV2 ibcapi.IBCModule
 	transferStackV2 = transferv2.NewIBCModule(app.TransferKeeper)
@@ -998,14 +1011,14 @@ func (app *EVMD) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfi
 
 // RegisterTxService implements the Application.RegisterTxService method.
 func (app *EVMD) RegisterTxService(clientCtx client.Context) {
-	authtx.RegisterTxService(app.GRPCQueryRouter(), clientCtx, app.BaseApp.Simulate, app.interfaceRegistry)
+	authtx.RegisterTxService(app.GRPCQueryRouter(), clientCtx, app.Simulate, app.interfaceRegistry)
 }
 
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
 func (app *EVMD) RegisterTendermintService(clientCtx client.Context) {
 	cmtservice.RegisterTendermintService(
 		clientCtx,
-		app.BaseApp.GRPCQueryRouter(),
+		app.GRPCQueryRouter(),
 		app.interfaceRegistry,
 		app.Query,
 	)
@@ -1032,6 +1045,82 @@ func (app *EVMD) GetStakingKeeperSDK() stakingkeeper.Keeper {
 // GetIBCKeeper implements the TestingApp interface.
 func (app *EVMD) GetIBCKeeper() *ibckeeper.Keeper {
 	return app.IBCKeeper
+}
+
+func (app *EVMD) GetEVMKeeper() *evmkeeper.Keeper {
+	return app.EVMKeeper
+}
+
+func (app *EVMD) GetErc20Keeper() *erc20keeper.Keeper {
+	return &app.Erc20Keeper
+}
+
+func (app *EVMD) SetErc20Keeper(erc20Keeper erc20keeper.Keeper) {
+	app.Erc20Keeper = erc20Keeper
+}
+
+func (app *EVMD) GetGovKeeper() govkeeper.Keeper {
+	return app.GovKeeper
+}
+
+func (app *EVMD) GetEvidenceKeeper() *evidencekeeper.Keeper {
+	return &app.EvidenceKeeper
+}
+
+func (app *EVMD) GetSlashingKeeper() slashingkeeper.Keeper {
+	return app.SlashingKeeper
+}
+
+func (app *EVMD) GetBankKeeper() bankkeeper.Keeper {
+	return app.BankKeeper
+}
+
+func (app *EVMD) GetFeeMarketKeeper() *feemarketkeeper.Keeper {
+	return &app.FeeMarketKeeper
+}
+
+func (app *EVMD) GetFeeGrantKeeper() feegrantkeeper.Keeper {
+	return app.FeeGrantKeeper
+}
+
+func (app *EVMD) GetAccountKeeper() authkeeper.AccountKeeper {
+	return app.AccountKeeper
+}
+
+func (app *EVMD) GetAuthzKeeper() authzkeeper.Keeper {
+	return app.AuthzKeeper
+}
+
+func (app *EVMD) GetDistrKeeper() distrkeeper.Keeper {
+	return app.DistrKeeper
+}
+
+func (app *EVMD) GetStakingKeeper() *stakingkeeper.Keeper {
+	return app.StakingKeeper
+}
+
+func (app *EVMD) GetMintKeeper() mintkeeper.Keeper {
+	return app.MintKeeper
+}
+
+func (app *EVMD) GetPreciseBankKeeper() *precisebankkeeper.Keeper {
+	return &app.PreciseBankKeeper
+}
+
+func (app *EVMD) GetCallbackKeeper() ibccallbackskeeper.ContractKeeper {
+	return app.CallbackKeeper
+}
+
+func (app *EVMD) GetTransferKeeper() transferkeeper.Keeper {
+	return app.TransferKeeper
+}
+
+func (app *EVMD) SetTransferKeeper(transferKeeper transferkeeper.Keeper) {
+	app.TransferKeeper = transferKeeper
+}
+
+func (app *EVMD) GetAnteHandler() sdk.AnteHandler {
+	return app.BaseApp.AnteHandler()
 }
 
 // GetTxConfig implements the TestingApp interface.

@@ -12,13 +12,12 @@ import (
 
 // NOTE: Remember to add the ConversionFactor associated with constants.
 const (
-	OneDecimals   Decimals = 1
-	TwoDecimals   Decimals = 2
-	ThreeDecimals Decimals = 3
-	FourDecimals  Decimals = 4
-	FiveDecimals  Decimals = 5
-	// SixDecimals is the Decimals used for Cosmos coin with 6 decimals.
-	SixDecimals       Decimals = 6
+	OneDecimals       Decimals = 1
+	TwoDecimals       Decimals = 2
+	ThreeDecimals     Decimals = 3
+	FourDecimals      Decimals = 4
+	FiveDecimals      Decimals = 5
+	SixDecimals       Decimals = 6 // SixDecimals is the Decimals used for Cosmos coin with 6 decimals.
 	SevenDecimals     Decimals = 7
 	EightDecimals     Decimals = 8
 	NineDecimals      Decimals = 9
@@ -30,8 +29,7 @@ const (
 	FifteenDecimals   Decimals = 15
 	SixteenDecimals   Decimals = 16
 	SeventeenDecimals Decimals = 17
-	// EighteenDecimals is the Decimals used for Cosmos coin with 18 decimals.
-	EighteenDecimals Decimals = 18
+	EighteenDecimals  Decimals = 18 // EighteenDecimals is the Decimals used for Cosmos coin with 18 decimals.
 )
 
 var ConversionFactor = map[Decimals]math.Int{
@@ -64,6 +62,7 @@ func (d Decimals) Validate() error {
 	if 0 < d && d <= EighteenDecimals {
 		return nil
 	}
+
 	return fmt.Errorf("received unsupported decimals: %d", d)
 }
 

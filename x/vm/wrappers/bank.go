@@ -45,7 +45,7 @@ func (w BankWrapper) MintAmountToAccount(ctx context.Context, recipientAddr sdk.
 	}
 
 	coinsToMint := sdk.Coins{convertedCoin}
-	if err := w.BankKeeper.MintCoins(ctx, types.ModuleName, coinsToMint); err != nil {
+	if err := w.MintCoins(ctx, types.ModuleName, coinsToMint); err != nil {
 		return errors.Wrap(err, "failed to mint coins to account in bank wrapper")
 	}
 
@@ -66,18 +66,15 @@ func (w BankWrapper) BurnAmountFromAccount(ctx context.Context, account sdk.AccA
 	if err := w.BankKeeper.SendCoinsFromAccountToModule(ctx, account, types.ModuleName, coinsToBurn); err != nil {
 		return errors.Wrap(err, "failed to burn coins from account in bank wrapper")
 	}
-	return w.BankKeeper.BurnCoins(ctx, types.ModuleName, coinsToBurn)
+	return w.BurnCoins(ctx, types.ModuleName, coinsToBurn)
 }
 
 // ------------------------------------------------------------------------------------------
 // Bank keeper shadowed methods
 // ------------------------------------------------------------------------------------------
 
-// GetBalance returns the balance of the given account converted to 18 decimals.
+// GetBalance returns the balance of the given account.
 func (w BankWrapper) GetBalance(ctx context.Context, addr sdk.AccAddress, denom string) sdk.Coin {
-	// Get the balance from the BankModule. The balance returned is in the bank
-	// decimals representation, which could be different than the 18 decimals
-	// representation used in the evm.
 	if denom != types.GetEVMCoinDenom() {
 		panic(fmt.Sprintf("expected evm denom %s, received %s", types.GetEVMCoinDenom(), denom))
 	}
