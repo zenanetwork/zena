@@ -56,6 +56,10 @@ type TestCaseStruct struct {
 func TestLedgerPreprocessing(t *testing.T) {
 	// Update bech32 prefix
 	sdk.GetConfig().SetBech32PrefixForAccount(constants.ExampleBech32Prefix, "")
+	evmConfigurator := evmtypes.NewEVMConfigurator().
+		WithEVMCoinInfo(constants.ExampleChainCoinInfo[constants.ExampleChainID])
+	err := evmConfigurator.Configure()
+	require.NoError(t, err)
 
 	testCases := []TestCaseStruct{
 		createBasicTestCase(t),
@@ -78,7 +82,7 @@ func TestLedgerPreprocessing(t *testing.T) {
 		require.True(t, len(hasExtOptsTx.GetExtensionOptions()) == 1)
 
 		expectedExt := types.ExtensionOptionsWeb3Tx{
-			TypedDataChainID: 18, // EighteenDecimalsChainID
+			TypedDataChainID: 9001,
 			FeePayer:         feePayerAddress,
 			FeePayerSig:      tc.expectedSignatureBytes,
 		}

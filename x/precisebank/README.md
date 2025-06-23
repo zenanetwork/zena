@@ -15,31 +15,31 @@ This module is used only by `x/evm` where 18 decimal points are expected.
 ## Contents
 
 - [Background](#background)
-  - [Adding](#adding)
-  - [Subtracting](#subtracting)
-  - [Transfer](#transfer)
-    - [Setup](#setup)
-    - [Remainder does not change](#remainder-does-not-change)
-    - [Reserve](#reserve)
-  - [Burn](#burn)
-  - [Mint](#mint)
+    - [Adding](#adding)
+    - [Subtracting](#subtracting)
+    - [Transfer](#transfer)
+        - [Setup](#setup)
+        - [Remainder does not change](#remainder-does-not-change)
+        - [Reserve](#reserve)
+    - [Burn](#burn)
+    - [Mint](#mint)
 - [State](#state)
 - [Keepers](#keepers)
 - [Messages](#messages)
 - [Events](#events)
-  - [Keeper Events](#keeper-events)
-    - [SendCoins](#sendcoins)
-    - [MintCoins](#mintcoins)
-    - [BurnCoins](#burncoins)
+    - [Keeper Events](#keeper-events)
+        - [SendCoins](#sendcoins)
+        - [MintCoins](#mintcoins)
+        - [BurnCoins](#burncoins)
 - [Client](#client)
-  - [gRPC](#grpc)
-    - [TotalFractionalBalances](#totalfractionalbalances)
-    - [Remainder](#remainder)
-    - [FractionalBalance](#fractionalbalance)
+    - [gRPC](#grpc)
+        - [TotalFractionalBalances](#totalfractionalbalances)
+        - [Remainder](#remainder)
+        - [FractionalBalance](#fractionalbalance)
 
 ## Background
 
-The standard unit of currency on the Cosmos Chain is `ATOM`. This is denominated by the atomic unit `uatom`,
+The standard unit of currency on the Cosmos Chain is `ATOM`.  This is denominated by the atomic unit `uatom`,
 which represents $10^{-6}$ `ATOM` and there are $10^6$ `uatom` per `ATOM`.
 
 In order to support 18 decimals of precision while maintaining `uatom` as the cosmos-native atomic unit,
@@ -48,7 +48,9 @@ we further split each `uatom` unit into $10^{12}$ `aatom` units, the native curr
 This gives a full $10^{18}$ precision on the EVM. In order to avoid confusion with atomic `uatom` units,
 we will refer to `aatom` as "sub-atomic units".
 
-To review we have: - `uatom`, the cosmos-native unit and atomic unit of the Cosmos chain - `aatom`, the evm-native unit and sub-atomic unit of the Cosmos chain
+To review we have:
+    - `uatom`, the cosmos-native unit and atomic unit of the Cosmos chain
+    - `aatom`, the evm-native unit and sub-atomic unit of the Cosmos chain
 
 In order to maintain consistency between the `aatom` supply and the `uatom` supply,
 we add the constraint that each sub-atomic `aatom`, may only exist as part of an atomic `uatom`.
@@ -64,7 +66,7 @@ This brings us to how account balances are extended to represent `aatom` balance
 First, we define $a(n)$, $b(n)$, and $C$ where $a(n)$ is the `aatom` balance of account `n`, $b(n)$ is the
 `uatom` balance of account `n` stored in the `x/bank` module, and $C$ is the conversion factor equal to $10^{12}$.
 
-Any $a(n)$ divisible by $C$, can be represented by $C$ \* $b(n)$. Any remainder not divisible by $C$,
+Any $a(n)$ divisible by $C$, can be represented by $C$ * $b(n)$.  Any remainder not divisible by $C$,
 we define the "fractional balance" as $f(n)$ and store this in the `x/precisebank` store.
 
 Thus,
@@ -113,7 +115,7 @@ invalid after updates to account balances, we adjust the $T_b$ supply by minting
 which holds `uatom` equal to that of all `aatom` balances less than `C` plus the remainder.
 
 If we didn't add these constraints, then the total supply of `uatom` reported by the bank keeper would not account
-for the `aatom` units. We would incorrectly increase the supply of `aatom` without increasing the reported
+for the `aatom` units.  We would incorrectly increase the supply of `aatom` without increasing the reported
 total supply of ATOM.
 
 ### Adding
@@ -129,10 +131,8 @@ must hold true for all $a$. We can determine the new $b'(n)$ and $f'(n)$ with th
 
 $$f'(n) = f(n) + a \mod{C}$$
 
-$$
-b'(n) = \begin{cases} b(n) + \lfloor a/C \rfloor & f'(n) \geq f(n) \\
-b(n) + \lfloor a/C \rfloor + 1 & f'(n) < f(n) \end{cases}
-$$
+$$b'(n) = \begin{cases} b(n) + \lfloor a/C \rfloor & f'(n) \geq f(n) \\
+b(n) + \lfloor a/C \rfloor + 1 & f'(n) < f(n) \end{cases}$$
 
 We can see that $b'(n)$ is incremented by an additional 1 integer unit if
 $f'(n) < f(n)$ because the new balance requires an arithmetic carry from the
@@ -150,10 +150,8 @@ and
 
 $$f'(n) = f(n) - a \mod{C}$$
 
-$$
-b'(n) = \begin{cases} b(n) - \lfloor a/C \rfloor & f'(n) \leq f(n) \\
-b(n) - \lfloor a/C \rfloor - 1 & f'(n) > f(n) \end{cases}
-$$
+$$b'(n) = \begin{cases} b(n) - \lfloor a/C \rfloor & f'(n) \leq f(n) \\
+b(n) - \lfloor a/C \rfloor - 1 & f'(n) > f(n) \end{cases}$$
 
 Similar to the adding case, we subtract $b'(n)$ by an additional 1 if
 $f'(n) > f(n)$ because $f(n)$ is insufficient on its own and requires an
@@ -231,7 +229,7 @@ $$ -C < r' - r < C$$
 
 This implies that $q$ must be $0$ as there is no other integer $q$ that satisfies the inequality.
 
-$$ -C < q \* C < C$$
+$$ -C < q * C < C$$
 
 $$q = 0$$
 
@@ -257,10 +255,8 @@ $$f'(1) = f(1) - a \bmod{C} \mod{C}$$
 
 This results in two cases for $f'(1)$:
 
-$$
-f'(1) = \begin{cases} f(1) - a\bmod{C} & 0 \leq f(1) - a\bmod{C} \\
-f(1) - a\bmod{C} + C & 0 > f(1) - a\bmod{C} \end{cases}
-$$
+$$f'(1) = \begin{cases} f(1) - a\bmod{C} & 0 \leq f(1) - a\bmod{C} \\
+f(1) - a\bmod{C} + C & 0 > f(1) - a\bmod{C} \end{cases}$$
 
 Since we can identify the following:
 
@@ -270,10 +266,8 @@ $$f'(1) > f(1) \Longleftrightarrow  f'(1) = f(1) - a\bmod{C} + C$$
 
 We can simplify the two cases for $f'(1)$:
 
-$$
-f'(1) = \begin{cases} f(1) - a\bmod{C} & f'(1) \leq f(1) \\
-f(1) - a\bmod{C} + C & f'(1) > f(1) \end{cases}
-$$
+$$f'(1) = \begin{cases} f(1) - a\bmod{C} & f'(1) \leq f(1) \\
+f(1) - a\bmod{C} + C & f'(1) > f(1) \end{cases}$$
 
 The same for $f'(2)$:
 
@@ -283,41 +277,33 @@ $$f'(2)\bmod{C}= f(2)\bmod{C} + a \bmod{C} \mod{C}$$
 
 $$f'(2) = f(2) + a \bmod{C} \mod{C}$$
 
-$$
-f'(2) = \begin{cases} f(2) + a\bmod{C} & f'(2) \geq f(2) \\
-f(2) + a\bmod{C} - C & f'(2) < f(2) \end{cases}
-$$
+$$f'(2) = \begin{cases} f(2) + a\bmod{C} & f'(2) \geq f(2) \\
+f(2) + a\bmod{C} - C & f'(2) < f(2) \end{cases}$$
 
 Bringing the two cases for the two accounts together to determine the change in the reserve account:
 
-$$
-b'(R) - b(R) \cdot C = \begin{cases}
+$$b'(R) - b(R) \cdot C = \begin{cases}
 f(1) - a\bmod{C} + C - f(1) + f(2) + a\bmod{C} - C + f(2) & f'(1) > f(1) \land f'(2) < f(2) \\
 f(1) - a\bmod{C} - f(1) + f(2) + a\bmod{C} - C + f(2) & f'(1) \leq f(1) \land f'(2) < f(2) \\
 f(1) - a\bmod{C} + C - f(1) + f(2) + a\bmod{C} + f(2) & f'(1) > f(1) \land f'(2) \geq f(2) \\
 f(1) - a\bmod{C} - f(1) + f(2) + a\bmod{C} + f(2) & f'(1) \leq f(1) \land f'(2) \geq f(2) \\
-\end{cases}
-$$
+\end{cases}$$
 
 This simplifies to:
 
-$$
-b'(R) - b(R) \cdot C = \begin{cases} 0 & f'(1) > f(1) \land f'(2) < f(2) \\
+$$b'(R) - b(R) \cdot C = \begin{cases} 0 & f'(1) > f(1) \land f'(2) < f(2) \\
 -C & f'(1) \leq f(1) \land f'(2) < f(2) \\
 C & f'(1) > f(1) \land f'(2) \geq f(2) \\
 0 & f'(1) \leq f(1) \land f'(2) \geq f(2) \\
-\end{cases}
-$$
+\end{cases}$$
 
 Simplifying further by dividing by $C$:
 
-$$
-b'(R) - b(R) = \begin{cases} 0 & f'(1) > f(1) \land f'(2) < f(2) \\
+$$b'(R) - b(R) = \begin{cases} 0 & f'(1) > f(1) \land f'(2) < f(2) \\
 -1 & f'(1) \leq f(1) \land f'(2) < f(2) \\
 1 & f'(1) > f(1) \land f'(2) \geq f(2) \\
 0 & f'(1) \leq f(1) \land f'(2) \geq f(2) \\
-\end{cases}
-$$
+\end{cases}$$
 
 Thus the reserve account is updated based on the changes in the fractional units of the two accounts.
 
@@ -345,10 +331,8 @@ $$f'(1) = f(1) - a \bmod{C} \mod{C}$$
 
 We can see two cases for $f'(1)$, depending on whether the new fractional balance is less than the old fractional balance.
 
-$$
-f'(1) = \begin{cases} f(1) - a\bmod{C} & f'(1) \leq f(1) \\
-f(1) - a\bmod{C} + C & f'(1) > f(1) \end{cases}
-$$
+$$f'(1) = \begin{cases} f(1) - a\bmod{C} & f'(1) \leq f(1) \\
+f(1) - a\bmod{C} + C & f'(1) > f(1) \end{cases}$$
 
 The second case occurs when we need to borrow from the integer units.
 
@@ -363,20 +347,16 @@ $$r' = r + a \bmod{C} \mod{C}$$
 
 We can see two cases for $r'$, depending on whether the new remainder is less than the old remainder.
 
-$$
-r' = \begin{cases} r + a\bmod{C} & r' \geq r \\
-r + a\bmod{C} - C & r' < r \end{cases}
-$$
+$$r' = \begin{cases} r + a\bmod{C} & r' \geq r \\
+r + a\bmod{C} - C & r' < r \end{cases}$$
 
 The reserve account is updated based on the changes in the fractional units of the account and remainder.
 
-$$
-b'(R) - b(R) = \begin{cases} 0 & f'(1) > f(1) \land r' < r \\
+$$b'(R) - b(R) = \begin{cases} 0 & f'(1) > f(1) \land r' < r \\
 -1 & f'(1) \leq f(1) \land r' < r \\
 1 & f'(1) > f(1) \land r' \geq r \\
 0 & f'(1) \leq f(1) \land r' \geq r \\
-\end{cases}
-$$
+\end{cases}$$
 
 ### Mint
 
@@ -401,10 +381,8 @@ $$f'(1) = f(1) + a \bmod{C} \mod{C}$$
 
 We can see two cases for $f'(1)$, depending on whether the new fractional balance is greater than the old fractional balance.
 
-$$
-f'(1) = \begin{cases} f(1) + a\bmod{C} & f'(1) \geq f(1) \\
-f(1) + a\bmod{C} - C & f'(1) < f(1) \end{cases}
-$$
+$$f'(1) = \begin{cases} f(1) + a\bmod{C} & f'(1) \geq f(1) \\
+f(1) + a\bmod{C} - C & f'(1) < f(1) \end{cases}$$
 
 The second case occurs when we need to carry to the integer unit.
 
@@ -417,20 +395,16 @@ $$r'\bmod{C}= r\bmod{C} - a \bmod{C} \mod{C}$$
 
 $$r' = r - a \bmod{C} \mod{C}$$
 
-$$
-r' = \begin{cases} r - a\bmod{C} & r' \leq r \\
-r - a\bmod{C} + C & r' > r \end{cases}
-$$
+$$r' = \begin{cases} r - a\bmod{C} & r' \leq r \\
+r - a\bmod{C} + C & r' > r \end{cases}$$
 
 The reserve account is updated based on the changes in the fractional units of the account and the remainder.
 
-$$
-b'(R) - b(R) = \begin{cases} 0 & r' > r \land f'(1) < f(1) \\
+$$b'(R) - b(R) = \begin{cases} 0 & r' > r \land f'(1) < f(1) \\
 -1 & r' \leq r \land f'(1) < f(1) \\
 1 & r' > r \land f'(1) \geq f(1) \\
 0 & r' \leq r \land f'(1) \geq f(1) \\
-\end{cases}
-$$
+\end{cases}$$
 
 ## State
 
@@ -477,11 +451,11 @@ by other modules as a replacement of the bank module.
 
 The `x/precisebank` module emits the following events, that are meant to be
 match the events emitted by the `x/bank` module. Events emitted by
-`x/precisebank` will only contain `azena` amounts, as the `x/bank` module will
+`x/precisebank` will only contain `aatom` amounts, as the `x/bank` module will
 emit events with all other denoms. This means if an account transfers multiple
-coins including `azena`, the `x/precisebank` module will emit an event with the
-full `azena` amount. If `uzena` is included in a transfer, mint, or burn, the
-`x/precisebank` module will emit an event with the full equivalent `azena`
+coins including `aatom`, the `x/precisebank` module will emit an event with the
+full `aatom` amount. If `uatom` is included in a transfer, mint, or burn, the
+`x/precisebank` module will emit an event with the full equivalent `aatom`
 amount.
 
 #### SendCoins

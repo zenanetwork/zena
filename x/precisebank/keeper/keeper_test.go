@@ -3,11 +3,12 @@ package keeper_test
 import (
 	"testing"
 
+	evmosencoding "github.com/zenanetwork/zena/encoding"
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
-	"github.com/zenanetwork/zena/testutil/integration/os/network"
 	"github.com/zenanetwork/zena/x/precisebank/keeper"
 	"github.com/zenanetwork/zena/x/precisebank/types"
 	"github.com/zenanetwork/zena/x/precisebank/types/mocks"
+	"github.com/zenanetwork/zena/zenad"
 
 	sdkmath "cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
@@ -39,11 +40,14 @@ func newMockedTestData(t *testing.T) testData {
 	bk := mocks.NewMockBankKeeper(t)
 	ak := mocks.NewMockAccountKeeper(t)
 
-	nw := network.NewUnitTestNetwork(
-		network.WithChainID(testconstants.SixDecimalsChainID),
-	)
-	cdc := nw.App.AppCodec()
+	chainID := testconstants.SixDecimalsChainID.EVMChainID
+	cfg := evmosencoding.MakeConfig(chainID)
+	cdc := cfg.Codec
 	k := keeper.NewKeeper(cdc, storeKey, bk, ak)
+	err := zenad.EvmAppOptions(chainID)
+	if err != nil {
+		return testData{}
+	}
 
 	return testData{
 		ctx:      ctx,

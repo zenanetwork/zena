@@ -5,6 +5,6 @@ import (
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
-func LoadWZENA9TestCaller() (evmtypes.CompiledContract, error) {
-	return contractutils.LoadContractFromJSONFile("WZENA9TestCaller.json")
+func LoadWEVMOS9TestCaller() (evmtypes.CompiledContract, error) {
+	return contractutils.LoadContractFromJSONFile("WEVMOS9TestCaller.json")
 }

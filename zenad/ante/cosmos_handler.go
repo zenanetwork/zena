@@ -1,10 +1,10 @@
 package ante
 
 import (
+	ibcante "github.com/cosmos/ibc-go/v10/modules/core/ante"
 	cosmosante "github.com/zenanetwork/zena/ante/cosmos"
 	evmante "github.com/zenanetwork/zena/ante/evm"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
-	ibcante "github.com/cosmos/ibc-go/v10/modules/core/ante"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"

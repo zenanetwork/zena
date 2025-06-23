@@ -10,7 +10,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	protov2 "google.golang.org/protobuf/proto"
 
-	evmapi "github.com/zenanetwork/zena/api/cosmos/evm/vm/v1"
+	evmapi "github.com/zenanetwork/zena/api/zenanetwork/zena/vm/v1"
 	"github.com/zenanetwork/zena/types"
 
 	errorsmod "cosmossdk.io/errors"

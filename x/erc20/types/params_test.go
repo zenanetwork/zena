@@ -10,7 +10,7 @@ import (
 
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	"github.com/zenanetwork/zena/x/erc20/types"
-	exampleapp "github.com/zenanetwork/zena/zenad"
+	"github.com/zenanetwork/zena/zenad"
 )
 
 type ParamsTestSuite struct {
@@ -60,7 +60,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 			"sorted address",
 			// order of creation shouldn't matter since it should be sorted when defining new param
 			func() types.Params {
-				return types.NewParams(true, []string{testconstants.WZENAContractMainnet, testconstants.WZENAContractMainnet}, []string{}, true)
+				return types.NewParams(true, []string{testconstants.WZENAContractTestnet, testconstants.WZENAContractMainnet}, []string{}, true)
 			},
 			false,
 			"",
@@ -69,7 +69,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 			"unsorted address",
 			// order of creation shouldn't matter since it should be sorted when defining new param
 			func() types.Params {
-				return types.NewParams(true, []string{testconstants.WZENAContractMainnet, testconstants.WZENAContractMainnet}, []string{}, true)
+				return types.NewParams(true, []string{testconstants.WZENAContractMainnet, testconstants.WZENAContractTestnet}, []string{}, true)
 			},
 			false,
 			"",
@@ -132,7 +132,7 @@ func (suite *ParamsTestSuite) TestParamsValidate() {
 			"unsorted addresses",
 			func() types.Params {
 				params := types.DefaultParams()
-				params.NativePrecompiles = []string{testconstants.WZENAContractMainnet, testconstants.WZENAContractMainnet}
+				params.NativePrecompiles = []string{testconstants.WZENAContractTestnet, testconstants.WZENAContractMainnet}
 				return params
 			},
 			true,
@@ -162,7 +162,7 @@ func (suite *ParamsTestSuite) TestIsNativePrecompile() {
 	}{
 		{
 			"default",
-			func() types.Params { return exampleapp.NewErc20GenesisState().Params },
+			func() types.Params { return zenad.NewErc20GenesisState().Params },
 			common.HexToAddress(testconstants.WZENAContractMainnet),
 			true,
 		},
@@ -177,7 +177,7 @@ func (suite *ParamsTestSuite) TestIsNativePrecompile() {
 			func() types.Params {
 				return types.NewParams(true, []string{"0xcc491f589B45d4a3C679016195B3FB87D7848210"}, nil, true)
 			},
-			common.HexToAddress(testconstants.WZENAContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 		{
@@ -185,7 +185,7 @@ func (suite *ParamsTestSuite) TestIsNativePrecompile() {
 			func() types.Params {
 				return types.NewParams(true, []string{"0xcc491f589b45d4a3c679016195b3fb87d7848210"}, nil, true)
 			},
-			common.HexToAddress(testconstants.WZENAContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 	}
@@ -222,7 +222,7 @@ func (suite *ParamsTestSuite) TestIsDynamicPrecompile() {
 			func() types.Params {
 				return types.NewParams(true, nil, []string{"0xcc491f589B45d4a3C679016195B3FB87D7848210"}, true)
 			},
-			common.HexToAddress(testconstants.WZENAContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 		{
@@ -230,7 +230,7 @@ func (suite *ParamsTestSuite) TestIsDynamicPrecompile() {
 			func() types.Params {
 				return types.NewParams(true, nil, []string{"0xcc491f589b45d4a3c679016195b3fb87d7848210"}, true)
 			},
-			common.HexToAddress(testconstants.WZENAContractMainnet),
+			common.HexToAddress(testconstants.WZENAContractTestnet),
 			true,
 		},
 	}

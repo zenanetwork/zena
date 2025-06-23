@@ -6,7 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/suite"
 
-	testkeyring "github.com/zenanetwork/zena/testutil/integration/os/keyring"
+	testkeyring "github.com/zenanetwork/zena/testutil/keyring"
 	"github.com/zenanetwork/zena/x/vm/types"
 )
 

@@ -10,8 +10,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cryptohd "github.com/zenanetwork/zena/crypto/hd"
 	bip39 "github.com/cosmos/go-bip39"
+	cryptohd "github.com/zenanetwork/zena/crypto/hd"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

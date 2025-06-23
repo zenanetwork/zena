@@ -109,6 +109,7 @@ func CheckTxFee(txFeeInfo *tx.Fee, txFee *big.Int, txGasLimit uint64) error {
 	if txFeeInfo == nil {
 		return nil
 	}
+
 	// NOTE: When an evm tx comes in, it goes through the process of converting it
 	// to MsgEthereumTx, which is a sdk tx. Here, the denom will be a uatom, not aatom.
 	// BuildTx then converts uatom to aatom meaning that logic that interacts with the user
@@ -117,6 +118,7 @@ func CheckTxFee(txFeeInfo *tx.Fee, txFee *big.Int, txGasLimit uint64) error {
 	if !txFeeInfo.Amount.AmountOf(evmExtendedDenom).Equal(sdkmath.NewIntFromBigInt(txFee)) {
 		return errorsmod.Wrapf(errortypes.ErrInvalidRequest, "invalid AuthInfo Fee Amount (%s != %s)", txFeeInfo.Amount, txFee)
 	}
+
 	if txFeeInfo.GasLimit != txGasLimit {
 		return errorsmod.Wrapf(errortypes.ErrInvalidRequest, "invalid AuthInfo Fee GasLimit (%d != %d)", txFeeInfo.GasLimit, txGasLimit)
 	}

@@ -2,7 +2,6 @@ package config
 
 import (
 	"github.com/zenanetwork/zena/types"
-
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -34,8 +33,7 @@ var ChainsCoinInfo = map[uint64]evmtypes.EvmCoinInfo{
 
 const (
 	// Bech32Prefix defines the Bech32 prefix used for accounts on the exemplary Cosmos EVM blockchain.
-	Bech32Prefix = "zenanet"
-
+	Bech32Prefix = "zenanetwork"
 	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address.
 	Bech32PrefixAccAddr = Bech32Prefix
 	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key.
@@ -69,5 +67,5 @@ func SetBech32Prefixes(config *sdk.Config) {
 func SetBip44CoinType(config *sdk.Config) {
 	config.SetCoinType(types.Bip44CoinType)
 	config.SetPurpose(sdk.Purpose)                  // Shared
-	config.SetFullFundraiserPath(types.BIP44HDPath) // nolint: staticcheck
+	config.SetFullFundraiserPath(types.BIP44HDPath) //nolint: staticcheck
 }

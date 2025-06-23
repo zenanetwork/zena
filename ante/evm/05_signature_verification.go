@@ -82,6 +82,7 @@ func SignatureVerification(
 				"rejected ethereum transaction with incorrect chain-id; expected %d, got %d", ethCfg.ChainID, ethTx.ChainId())
 		}
 	}
+
 	sender, err := signer.Sender(ethTx)
 	if err != nil {
 		return errorsmod.Wrapf(

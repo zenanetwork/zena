@@ -12,9 +12,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/suite"
 
-	//nolint:revive // dot imports are fine for Ginkgo
+	//nolint:revive,ST1001 // dot imports are fine for Ginkgo
 	. "github.com/onsi/ginkgo/v2"
-	//nolint:revive // dot imports are fine for Ginkgo
+	//nolint:revive,ST1001 // dot imports are fine for Ginkgo
 	. "github.com/onsi/gomega"
 
 	"github.com/cometbft/cometbft/crypto/tmhash"
@@ -89,7 +89,7 @@ func (suite *LedgerTestSuite) SetupEvmosApp() {
 	// init app
 	chainID := constants.ExampleChainID
 	suite.app = exampleapp.Setup(suite.T(), chainID.ChainID, chainID.EVMChainID)
-	suite.ctx = suite.app.BaseApp.NewContextLegacy(false, tmproto.Header{
+	suite.ctx = suite.app.NewContextLegacy(false, tmproto.Header{
 		Height:          1,
 		ChainID:         chainID.ChainID,
 		Time:            time.Now().UTC(),

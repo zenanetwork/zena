@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cosmos/evm.git"
+    "url": "git+https://github.com/zenanetwork/zena.git"
   },
   "author": "Evmos Core Team",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cosmos/evm/issues"
+    "url": "https://github.com/zenanetwork/zena/issues"
   },
-  "homepage": "https://github.com/cosmos/evm#readme"
+  "homepage": "https://github.com/zenanetwork/zena#readme"
 }

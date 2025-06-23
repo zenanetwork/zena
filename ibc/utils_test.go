@@ -5,12 +5,12 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	cosmosevmibc "github.com/zenanetwork/zena/ibc"
-	precompilestestutil "github.com/zenanetwork/zena/precompiles/testutil"
-	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
+	cosmosevmibc "github.com/zenanetwork/zena/ibc"
+	precompilestestutil "github.com/zenanetwork/zena/precompiles/testutil"
+	testconstants "github.com/zenanetwork/zena/testutil/constants"
 
 	"cosmossdk.io/math"
 

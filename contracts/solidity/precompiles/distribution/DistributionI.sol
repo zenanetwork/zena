@@ -230,7 +230,7 @@ interface DistributionI {
     function delegatorWithdrawAddress(
         address delegatorAddress
     ) external view returns (string memory withdrawAddress);
-    
+
     /// @dev Queries the coins in the community pool.
     /// @return coins The coins in the community pool
     function communityPool() external view returns (DecCoin[] calldata coins);

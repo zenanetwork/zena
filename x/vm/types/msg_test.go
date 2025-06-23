@@ -18,7 +18,7 @@ import (
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
 	"github.com/zenanetwork/zena/x/vm/types"
-	exampleapp "github.com/zenanetwork/zena/zenad"
+	"github.com/zenanetwork/zena/zenad"
 
 	sdkmath "cosmossdk.io/math"
 
@@ -57,7 +57,7 @@ func (suite *MsgsTestSuite) SetupTest() {
 	encodingConfig := encoding.MakeConfig(suite.chainID.Uint64())
 	suite.clientCtx = client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 
-	err := exampleapp.EvmAppOptions(18) // EighteenDecimalsChainID
+	err := zenad.EvmAppOptions(9001)
 	suite.Require().NoError(err)
 }
 

@@ -65,9 +65,9 @@ func TestLegacyWrapTxToTypedData(t *testing.T) {
 	require.NotNil(t, typedData)
 
 	// Check Domain
-	require.Equal(t, "Zenanet Web3", typedData.Domain.Name)
+	require.Equal(t, "Cosmos Web3", typedData.Domain.Name)
 	require.Equal(t, "1.0.0", typedData.Domain.Version)
-	require.Equal(t, "Zenanet", typedData.Domain.VerifyingContract)
+	require.Equal(t, "cosmos", typedData.Domain.VerifyingContract)
 
 	// Check Message
 	message := typedData.Message

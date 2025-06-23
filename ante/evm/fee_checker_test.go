@@ -10,11 +10,13 @@ import (
 
 	"github.com/zenanetwork/zena/ante/evm"
 	anteinterfaces "github.com/zenanetwork/zena/ante/interfaces"
+	evmdconfig "github.com/zenanetwork/zena/cmd/zenad/config"
+	"github.com/zenanetwork/zena/encoding"
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
-	"github.com/zenanetwork/zena/testutil/integration/os/network"
 	"github.com/zenanetwork/zena/types"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	"github.com/zenanetwork/zena/zenad"
 
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
@@ -56,8 +58,11 @@ func TestSDKTxFeeChecker(t *testing.T) {
 	//      with extension option
 	//      without extension option
 	//      london hardfork enableness
-	nw := network.New()
-	encodingConfig := nw.GetEncodingConfig()
+	chainID := uint64(evmdconfig.EighteenDecimalsChainID)
+	encodingConfig := encoding.MakeConfig(chainID)
+	err := zenad.EvmAppOptions(chainID)
+	require.NoError(t, err)
+
 	evmDenom := evmtypes.GetEVMCoinDenom()
 	minGasPrices := sdk.NewDecCoins(sdk.NewDecCoin(evmDenom, math.NewInt(10)))
 
