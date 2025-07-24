@@ -1,6 +1,6 @@
 <img
 src="repo_header.png"
-alt="Cosmos EVM - A plug-and-play solution that adds EVM compatibility and customizability to your chain"
+alt="Cosmos EVM forked Zena - custom rebrand Zena blockchain"
 />
 
 **Please note**: This repo is undergoing changes in preparation for a new audit. After this audit we will cut the first
