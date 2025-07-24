@@ -33,3 +33,6 @@ contracts/@openzeppelin/*
 zenad/build/
 
 build/
+
+# bash
+setup_zena_evm.sh
