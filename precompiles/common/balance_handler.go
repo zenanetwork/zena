@@ -84,11 +84,7 @@ func parseHexAddress(event sdk.Event, key string) (common.Address, error) {
 		return common.Address{}, fmt.Errorf("invalid address %q: %w", attr.Value, err)
 	}
 
-<<<<<<< HEAD
-	return common.Address(accAddr.Bytes()), nil
-=======
 	return common.BytesToAddress(accAddr), nil
->>>>>>> upstream/main
 }
 
 func parseAmount(event sdk.Event) (*uint256.Int, error) {

@@ -14,6 +14,7 @@ import (
 
 	"cosmossdk.io/math"
 
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -137,10 +138,7 @@ func (s *PrecompileTestSuite) SetupTest() {
 	if s.precompile, err = gov.NewPrecompile(
 		s.network.App.GetGovKeeper(),
 		s.network.App.AppCodec(),
-<<<<<<< HEAD
-=======
 		address.NewBech32Codec(sdk.GetConfig().GetBech32AccountAddrPrefix()),
->>>>>>> upstream/main
 	); err != nil {
 		panic(err)
 	}

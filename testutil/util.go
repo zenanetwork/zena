@@ -116,8 +116,6 @@ func CreateTx(ctx context.Context, txCfg client.TxConfig, priv cryptotypes.PrivK
 
 	return txBuilder.GetTx(), nil
 }
-<<<<<<< HEAD
-=======
 
 // DecodeRevertReason extracts and decodes the human-readable revert reason from an EVM transaction response.
 // It processes the raw return data (Ret field) from a failed EVM transaction and attempts to decode
@@ -154,4 +152,3 @@ func DecodeRevertReason(evmRes evmtypes.MsgEthereumTxResponse) error {
 	}
 	return fmt.Errorf("tx failed with VmError: %v: %s", evmRes.VmError, revertErr.ErrorData())
 }
->>>>>>> upstream/main

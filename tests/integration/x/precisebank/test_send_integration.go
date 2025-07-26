@@ -866,10 +866,6 @@ func FuzzSendCoins(f *testing.F) {
 func blockedAddresses() map[string]bool {
 	blockedAddrs := make(map[string]bool)
 
-<<<<<<< HEAD
-	maps.Clone(maccPerms)
-=======
->>>>>>> upstream/main
 	maccPerms := getMaccPerms()
 	accs := make([]string, 0, len(maccPerms))
 	for acc := range maccPerms {

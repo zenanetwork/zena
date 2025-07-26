@@ -7,8 +7,9 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 	"github.com/zenanetwork/zena"
 	testconfig "github.com/zenanetwork/zena/testutil/config"
+	"github.com/zenanetwork/zena/testutil/constants"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
-	evmd "github.com/zenanetwork/zena/zenad"
+	"github.com/zenanetwork/zena/zenad"
 	"github.com/zenanetwork/zena/zenad/cmd/zenad/config"
 
 	clienthelpers "cosmossdk.io/client/v2/helpers"
@@ -33,7 +34,7 @@ func CreateEvmd(chainID string, evmChainID uint64, customBaseAppOptions ...func(
 	appOptions := simutils.NewAppOptionsWithFlagHome(defaultNodeHome)
 	baseAppOptions := append(customBaseAppOptions, baseapp.SetChainID(chainID)) //nolint:gocritic
 
-	return evmd.NewExampleApp(
+	return zenad.NewExampleApp(
 		logger,
 		db,
 		nil,
@@ -45,16 +46,16 @@ func CreateEvmd(chainID string, evmChainID uint64, customBaseAppOptions ...func(
 	)
 }
 
-// SetupEvmd initializes a new evmd app with default genesis state.
-// It is used in IBC integration tests to create a new evmd app instance.
+// SetupEvmd initializes a new zenad app with default genesis state.
+// It is used in IBC integration tests to create a new zenad app instance.
 func SetupEvmd() (ibctesting.TestingApp, map[string]json.RawMessage) {
-	app := evmd.NewExampleApp(
+	app := zenad.NewExampleApp(
 		log.NewNopLogger(),
 		dbm.NewMemDB(),
 		nil,
 		true,
 		simutils.EmptyAppOptions{},
-		9001,
+		constants.ExampleEIP155ChainID,
 		testconfig.EvmAppOptions,
 	)
 	// disable base fee for testing

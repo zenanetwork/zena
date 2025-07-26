@@ -33,15 +33,11 @@ func setupBalanceHandlerTest(t *testing.T) {
 }
 
 func TestParseHexAddress(t *testing.T) {
-<<<<<<< HEAD
-	var accAddr sdk.AccAddress
-=======
 	// account key, use a constant account to keep unit test deterministic.
 	priv, err := crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	require.NoError(t, err)
 	privKey := &ethsecp256k1.PrivKey{Key: crypto.FromECDSA(priv)}
 	accAddr := sdk.AccAddress(privKey.PubKey().Address().Bytes())
->>>>>>> upstream/main
 
 	testCases := []struct {
 		name     string
@@ -56,8 +52,6 @@ func TestParseHexAddress(t *testing.T) {
 				return sdk.NewEvent("bank", sdk.NewAttribute(banktypes.AttributeKeySpender, accAddr.String()))
 			},
 			key:      banktypes.AttributeKeySpender,
-<<<<<<< HEAD
-=======
 			expAddr:  common.BytesToAddress(accAddr),
 			expError: false,
 		},
@@ -68,7 +62,6 @@ func TestParseHexAddress(t *testing.T) {
 			},
 			key:      banktypes.AttributeKeySpender,
 			expAddr:  common.HexToAddress("0x0000006B6579636861696e2d0000000000000001"),
->>>>>>> upstream/main
 			expError: false,
 		},
 		{
@@ -93,13 +86,6 @@ func TestParseHexAddress(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			setupBalanceHandlerTest(t)
 
-<<<<<<< HEAD
-			_, addrs, err := testutil.GeneratePrivKeyAddressPairs(1)
-			require.NoError(t, err)
-			accAddr = addrs[0]
-
-=======
->>>>>>> upstream/main
 			event := tc.maleate()
 
 			addr, err := parseHexAddress(event, tc.key)
@@ -109,11 +95,7 @@ func TestParseHexAddress(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-<<<<<<< HEAD
-			require.Equal(t, common.Address(accAddr.Bytes()), addr)
-=======
 			require.Equal(t, tc.expAddr, addr)
->>>>>>> upstream/main
 		})
 	}
 }
@@ -178,13 +160,8 @@ func TestAfterBalanceChange(t *testing.T) {
 	require.NoError(t, err)
 	spenderAcc := addrs[0]
 	receiverAcc := addrs[1]
-<<<<<<< HEAD
-	spender := common.Address(spenderAcc.Bytes())
-	receiver := common.Address(receiverAcc.Bytes())
-=======
 	spender := common.BytesToAddress(spenderAcc)
 	receiver := common.BytesToAddress(receiverAcc)
->>>>>>> upstream/main
 
 	// initial balance for spender
 	stateDB.AddBalance(spender, uint256.NewInt(5), tracing.BalanceChangeUnspecified)

@@ -12,6 +12,7 @@ import (
 
 	cmn "github.com/zenanetwork/zena/precompiles/common"
 
+	"cosmossdk.io/core/address"
 	"cosmossdk.io/math"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -841,11 +842,7 @@ func (ro *RedelegationsOutput) Pack(args abi.Arguments) ([]byte, error) {
 
 // NewUnbondingDelegationRequest creates a new QueryUnbondingDelegationRequest instance and does sanity checks
 // on the given arguments before populating the request.
-<<<<<<< HEAD
-func NewUnbondingDelegationRequest(args []interface{}) (*stakingtypes.QueryUnbondingDelegationRequest, error) {
-=======
 func NewUnbondingDelegationRequest(args []interface{}, addrCdc address.Codec) (*stakingtypes.QueryUnbondingDelegationRequest, error) {
->>>>>>> upstream/main
 	if len(args) != 2 {
 		return nil, fmt.Errorf(cmn.ErrInvalidNumberOfArgs, 2, len(args))
 	}

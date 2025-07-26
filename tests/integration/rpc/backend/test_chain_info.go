@@ -14,7 +14,7 @@ import (
 
 	"github.com/zenanetwork/zena/rpc/backend/mocks"
 	rpc "github.com/zenanetwork/zena/rpc/types"
-	"github.com/zenanetwork/zena/testutil/config"
+	"github.com/zenanetwork/zena/testutil/constants"
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
@@ -156,7 +156,7 @@ func (s *TestSuite) TestBaseFee() {
 }
 
 func (s *TestSuite) TestChainID() {
-	expChainID := (*hexutil.Big)(big.NewInt(config.EVMChainID))
+	expChainID := (*hexutil.Big)(big.NewInt(int64(constants.ExampleChainID.EVMChainID))) //nolint:gosec // G115
 	testCases := []struct {
 		name         string
 		registerMock func()

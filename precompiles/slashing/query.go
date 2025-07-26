@@ -20,22 +20,14 @@ const (
 // GetSigningInfo handles the `getSigningInfo` precompile call.
 // It expects a single argument: the validator’s consensus address in hex format.
 // That address comes from the validator’s Tendermint ed25519 public key,
-<<<<<<< HEAD
 // typically found in `$HOME/.zenad/config/priv_validator_key.json`.
-=======
-// typically found in `$HOME/.evmd/config/priv_validator_key.json`.
->>>>>>> upstream/main
 func (p *Precompile) GetSigningInfo(
 	ctx sdk.Context,
 	method *abi.Method,
 	_ *vm.Contract,
 	args []interface{},
 ) ([]byte, error) {
-<<<<<<< HEAD
-	req, err := ParseSigningInfoArgs(args)
-=======
 	req, err := ParseSigningInfoArgs(args, p.consCodec)
->>>>>>> upstream/main
 	if err != nil {
 		return nil, err
 	}

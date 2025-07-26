@@ -22,7 +22,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
-
 )
 
 // PrepareEthTx creates an ethereum tx and signs it with the provided messages and private key.
@@ -53,9 +52,6 @@ func PrepareEthTx(
 				return nil, err
 			}
 		}
-
-		msg.From = ""
-
 		txGasLimit += msg.GetGas()
 		txFee = txFee.Add(sdk.Coin{Denom: baseDenom, Amount: sdkmath.NewIntFromBigInt(msg.GetFee())})
 	}
@@ -93,11 +89,7 @@ func PrepareEthTx(
 // Should this not be the case, just pass in zero.
 func CreateEthTx(
 	ctx sdk.Context,
-<<<<<<< HEAD
 	evmApp zena.EvmApp,
-=======
-	evmApp evm.EvmApp,
->>>>>>> upstream/main
 	privKey cryptotypes.PrivKey,
 	dest []byte,
 	amount *big.Int,
@@ -142,8 +134,7 @@ func CreateEthTx(
 		Accesses:  &ethtypes.AccessList{},
 	}
 	msgEthereumTx := evmtypes.NewTx(evmTxParams)
-	msgEthereumTx.From = fromAddr.String()
-
+	msgEthereumTx.From = fromAddr.Bytes()
 	// If we are creating multiple eth Tx's with different senders, we need to sign here rather than later.
 	if privKey != nil {
 		signer := ethtypes.LatestSignerForChainID(evmtypes.GetEthChainConfig().ChainID)
