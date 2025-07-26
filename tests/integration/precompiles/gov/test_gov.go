@@ -93,7 +93,11 @@ func (s *PrecompileTestSuite) TestRun() {
 				To:        &contractAddr,
 				Amount:    nil,
 				GasLimit:  100000,
+<<<<<<< HEAD
 				GasPrice:  testutil.ExampleMinGasPrices.BigInt(),
+=======
+				GasPrice:  testutil.ExampleMinGasPrices,
+>>>>>>> upstream/main
 				GasFeeCap: baseFee,
 				GasTipCap: big.NewInt(1),
 				Accesses:  &ethtypes.AccessList{},

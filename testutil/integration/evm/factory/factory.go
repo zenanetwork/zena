@@ -13,6 +13,7 @@ import (
 
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/zenanetwork/zena/precompiles/testutil"
+	chainutil "github.com/zenanetwork/zena/testutil"
 	basefactory "github.com/zenanetwork/zena/testutil/integration/base/factory"
 	"github.com/zenanetwork/zena/testutil/integration/evm/grpc"
 	"github.com/zenanetwork/zena/testutil/integration/evm/network"
@@ -209,8 +210,7 @@ func (tf *IntegrationTxFactory) checkEthTxResponse(res *abcitypes.ExecTxResult) 
 	}
 
 	if evmRes.Failed() {
-		revertErr := evmtypes.NewExecErrorWithReason(evmRes.Ret)
-		return fmt.Errorf("tx failed with VmError: %v: %s", evmRes.VmError, revertErr.ErrorData())
+		return chainutil.DecodeRevertReason(evmRes)
 	}
 	return nil
 }

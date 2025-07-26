@@ -24,9 +24,9 @@ var ChainsCoinInfo = map[uint64]evmtypes.EvmCoinInfo{
 		Decimals:      evmtypes.EighteenDecimals,
 	},
 	EVMChainID: {
-		Denom:         BaseDenom,
-		ExtendedDenom: BaseDenom,
-		DisplayDenom:  DisplayDenom,
+		Denom:         "atest",
+		ExtendedDenom: "atest",
+		DisplayDenom:  "test",
 		Decimals:      evmtypes.EighteenDecimals,
 	},
 }

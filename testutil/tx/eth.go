@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/server/config"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
@@ -21,7 +22,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
-	"github.com/zenanetwork/zena"
+
 )
 
 // PrepareEthTx creates an ethereum tx and signs it with the provided messages and private key.
@@ -92,7 +93,11 @@ func PrepareEthTx(
 // Should this not be the case, just pass in zero.
 func CreateEthTx(
 	ctx sdk.Context,
+<<<<<<< HEAD
 	evmApp zena.EvmApp,
+=======
+	evmApp evm.EvmApp,
+>>>>>>> upstream/main
 	privKey cryptotypes.PrivKey,
 	dest []byte,
 	amount *big.Int,

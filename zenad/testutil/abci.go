@@ -8,6 +8,7 @@ import (
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
 
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/testutil/integration"
 	"github.com/zenanetwork/zena/testutil/tx"
 
@@ -17,7 +18,6 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/zenanetwork/zena"
 )
 
 // Commit commits a block at a given time. Reminder: At the end of each

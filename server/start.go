@@ -67,7 +67,7 @@ func NewDefaultStartOptions(appCreator types.AppCreator, defaultNodeHome string)
 	return StartOptions{
 		AppCreator:      appCreator,
 		DefaultNodeHome: defaultNodeHome,
-		DBOpener:        openDB,
+		DBOpener:        cosmosevmserverconfig.OpenDB,
 	}
 }
 
@@ -144,10 +144,6 @@ which accepts a path for the resulting pprof file.
 			}
 
 			serverCtx.Logger.Debug("received quit signal")
-			// TODO: why is this check here? Should not make sense since err is checked above
-			if err != nil {
-				serverCtx.Logger.Error(fmt.Sprintf("error on quit: %s", err.Error()))
-			}
 
 			return nil
 		},
@@ -673,6 +669,7 @@ func GenDocProvider(cfg *cmtcfg.Config) func() (*cmttypes.GenesisDoc, error) {
 		return appGenesis.ToGenesisDoc()
 	}
 }
+<<<<<<< HEAD
 
 // openDB opens a database based on the specified backend type.
 // It takes the home directory where the database data will be stored, along with the backend type.
@@ -686,3 +683,5 @@ func openDB(_ types.AppOptions, home string, backendType dbm.BackendType) (dbm.D
 	dataDir := filepath.Join(home, "data")
 	return dbm.NewDB("application", backendType, dataDir)
 }
+=======
+>>>>>>> upstream/main

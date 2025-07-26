@@ -29,6 +29,7 @@ import (
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/zenanetwork/zena/crypto/hd"
 	"github.com/zenanetwork/zena/server/config"
+	testconfig "github.com/zenanetwork/zena/testutil/config"
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	cosmosevmtypes "github.com/zenanetwork/zena/types"
 	"github.com/zenanetwork/zena/zenad"
@@ -109,7 +110,7 @@ func DefaultConfig() Config {
 		panic(fmt.Sprintf("failed creating temporary directory: %v", err))
 	}
 	defer os.RemoveAll(dir)
-	tempApp := zenad.NewExampleApp(log.NewNopLogger(), dbm.NewMemDB(), nil, true, simutils.NewAppOptionsWithFlagHome(dir), evmChainID, evmdconfig.EvmAppOptions, baseapp.SetChainID(chainID))
+	tempApp := zenad.NewExampleApp(log.NewNopLogger(), dbm.NewMemDB(), nil, true, simutils.NewAppOptionsWithFlagHome(dir), evmChainID, testconfig.EvmAppOptions, baseapp.SetChainID(chainID))
 
 	cfg := Config{
 		Codec:             tempApp.AppCodec(),
@@ -143,7 +144,7 @@ func NewAppConstructor(chainID string, evmChainID uint64) AppConstructor {
 			val.Ctx.Logger, dbm.NewMemDB(), nil, true,
 			simutils.NewAppOptionsWithFlagHome(val.Ctx.Config.RootDir),
 			evmChainID,
-			evmdconfig.EvmAppOptions,
+			testconfig.EvmAppOptions,
 			baseapp.SetPruning(pruningtypes.NewPruningOptionsFromString(val.AppConfig.Pruning)),
 			baseapp.SetMinGasPrices(val.AppConfig.MinGasPrices),
 			baseapp.SetChainID(chainID),
@@ -339,7 +340,7 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 		ctx.Logger = logger
 
 		nodeDirName := fmt.Sprintf("node%d", i)
-		nodeDir := filepath.Join(network.BaseDir, nodeDirName, "zenad")
+		nodeDir := filepath.Join(network.BaseDir, nodeDirName, "evmd")
 		clientDir := filepath.Join(network.BaseDir, nodeDirName, "evmoscli")
 		gentxsDir := filepath.Join(network.BaseDir, "gentxs")
 

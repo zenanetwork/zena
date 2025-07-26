@@ -9,7 +9,7 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	evm "github.com/zenanetwork/zena"
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
 	"github.com/zenanetwork/zena/testutil/integration"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
@@ -18,7 +18,7 @@ import (
 )
 
 // Call is a helper function to call any arbitrary smart contract.
-func Call(ctx sdk.Context, app evm.EvmApp, args CallArgs) (res abci.ExecTxResult, ethRes *evmtypes.MsgEthereumTxResponse, err error) {
+func Call(ctx sdk.Context, app zena.EvmApp, args CallArgs) (res abci.ExecTxResult, ethRes *evmtypes.MsgEthereumTxResponse, err error) {
 	var (
 		nonce    uint64
 		gasLimit = args.GasLimit

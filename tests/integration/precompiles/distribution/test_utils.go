@@ -6,6 +6,7 @@ import (
 
 	"cosmossdk.io/math"
 
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
@@ -83,6 +84,10 @@ func (s *PrecompileTestSuite) fundAccountWithBaseDenom(ctx sdk.Context, addr sdk
 func (s *PrecompileTestSuite) getStakingPrecompile() (*staking.Precompile, error) {
 	return staking.NewPrecompile(
 		*s.network.App.GetStakingKeeper(),
+<<<<<<< HEAD
+=======
+		address.NewBech32Codec(sdk.GetConfig().GetBech32AccountAddrPrefix()),
+>>>>>>> upstream/main
 	)
 }
 

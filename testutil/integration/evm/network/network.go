@@ -15,6 +15,7 @@ import (
 	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cometbft/cometbft/version"
 
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/testutil/integration"
 	basenetwork "github.com/zenanetwork/zena/testutil/integration/base/network"
 	"github.com/zenanetwork/zena/types"
@@ -31,7 +32,6 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/zenanetwork/zena"
 )
 
 // Network is the interface that wraps the methods to interact with integration test network.

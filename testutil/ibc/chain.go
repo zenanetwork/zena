@@ -25,7 +25,7 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 	"github.com/cosmos/ibc-go/v10/testing/simapp"
-	evm "github.com/zenanetwork/zena"
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
 	"github.com/zenanetwork/zena/testutil/config"
 	"github.com/zenanetwork/zena/testutil/tx"
@@ -370,7 +370,7 @@ func (chain *TestChain) SendEvmTx(
 	data []byte,
 	gasLimit uint64,
 ) (*abci.ExecTxResult, *types.MsgEthereumTx, *types.MsgEthereumTxResponse, error) {
-	app, ok := chain.App.(evm.EvmApp)
+	app, ok := chain.App.(zena.EvmApp)
 	require.True(chain.TB, ok)
 	ctx := chain.GetContext()
 

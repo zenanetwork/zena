@@ -12,7 +12,7 @@ import (
 
 	ibctypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
-	evm "github.com/zenanetwork/zena"
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
 	"github.com/zenanetwork/zena/ethereum/eip712"
 	"github.com/zenanetwork/zena/testutil"
@@ -610,7 +610,7 @@ func (s *EvmAnteTestSuite) prepareAccount(ctx sdk.Context, addr sdk.AccAddress, 
 //   - Allocate rewards to the validator.
 //
 // The function returns the updated context along with a potential error.
-func PrepareAccountsForDelegationRewards(t *testing.T, ctx sdk.Context, app evm.EvmApp, addr sdk.AccAddress, balance sdkmath.Int, rewards ...sdkmath.Int) (sdk.Context, error) {
+func PrepareAccountsForDelegationRewards(t *testing.T, ctx sdk.Context, app zena.EvmApp, addr sdk.AccAddress, balance sdkmath.Int, rewards ...sdkmath.Int) (sdk.Context, error) {
 	t.Helper()
 	// Calculate the necessary amount of tokens to fund the account in order for the desired residual balance to
 	// be left after creating validators and delegating to them.

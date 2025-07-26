@@ -5,6 +5,7 @@ import (
 
 	cmtypes "github.com/cometbft/cometbft/types"
 
+	"github.com/zenanetwork/zena"
 	cosmosevmtypes "github.com/zenanetwork/zena/types"
 
 	"cosmossdk.io/math"
@@ -18,7 +19,6 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/zenanetwork/zena"
 )
 
 // EthDefaultConsensusParams defines the default Tendermint consensus params used in

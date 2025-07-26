@@ -6,6 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 
+	"github.com/zenanetwork/zena"
 	cryptocodec "github.com/zenanetwork/zena/crypto/codec"
 	"github.com/zenanetwork/zena/ethereum/eip712"
 	"github.com/zenanetwork/zena/types"
@@ -18,7 +19,7 @@ import (
 	signingtypes "github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
-	"github.com/zenanetwork/zena"
+
 )
 
 type EIP712TxArgs struct {
@@ -45,7 +46,11 @@ type signatureV2Args struct {
 // It returns the signed transaction and an error
 func CreateEIP712CosmosTx(
 	ctx sdk.Context,
+<<<<<<< HEAD
 	evmApp zena.EvmApp,
+=======
+	evmApp evm.EvmApp,
+>>>>>>> upstream/main
 	args EIP712TxArgs,
 ) (sdk.Tx, error) {
 	builder, err := PrepareEIP712CosmosTx(
@@ -61,7 +66,11 @@ func CreateEIP712CosmosTx(
 // It returns the tx builder with the signed transaction and an error
 func PrepareEIP712CosmosTx(
 	ctx sdk.Context,
+<<<<<<< HEAD
 	evmApp zena.EvmApp,
+=======
+	evmApp evm.EvmApp,
+>>>>>>> upstream/main
 	args EIP712TxArgs,
 ) (client.TxBuilder, error) {
 	txArgs := args.CosmosTxArgs
@@ -118,7 +127,11 @@ func PrepareEIP712CosmosTx(
 // the provided private key and the typed data
 func signCosmosEIP712Tx(
 	ctx sdk.Context,
+<<<<<<< HEAD
 	evmApp zena.EvmApp,
+=======
+	evmApp evm.EvmApp,
+>>>>>>> upstream/main
 	args EIP712TxArgs,
 	builder authtx.ExtensionOptionsTxBuilder,
 	data apitypes.TypedData,

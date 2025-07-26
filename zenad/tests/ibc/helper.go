@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
-	evm "github.com/zenanetwork/zena"
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/contracts"
 	evmibctesting "github.com/zenanetwork/zena/testutil/ibc"
 	testutiltypes "github.com/zenanetwork/zena/testutil/types"
@@ -103,7 +103,7 @@ func DeployContract(t *testing.T, chain *evmibctesting.TestChain, deploymentData
 
 	// Get account's nonce to create contract hash
 	from := common.BytesToAddress(chain.SenderPrivKey.PubKey().Address().Bytes())
-	account := chain.App.(evm.EvmApp).GetEVMKeeper().GetAccount(chain.GetContext(), from)
+	account := chain.App.(zena.EvmApp).GetEVMKeeper().GetAccount(chain.GetContext(), from)
 	if account == nil {
 		return common.Address{}, errors.New("account not found")
 	}
@@ -116,7 +116,7 @@ func DeployContract(t *testing.T, chain *evmibctesting.TestChain, deploymentData
 	data := deploymentData.Contract.Bin
 	data = append(data, ctorArgs...)
 
-	_, err = chain.App.(evm.EvmApp).GetEVMKeeper().CallEVMWithData(chain.GetContext(), from, nil, data, true, nil)
+	_, err = chain.App.(zena.EvmApp).GetEVMKeeper().CallEVMWithData(chain.GetContext(), from, nil, data, true, nil)
 	if err != nil {
 		return common.Address{}, errorsmod.Wrapf(err, "failed to deploy contract")
 	}

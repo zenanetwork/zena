@@ -3,6 +3,7 @@ package tx
 import (
 	protov2 "google.golang.org/protobuf/proto"
 
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/testutil/constants"
 
 	sdkmath "cosmossdk.io/math"
@@ -13,7 +14,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"github.com/zenanetwork/zena"
 )
 
 var DefaultFee = sdk.NewCoin(constants.ExampleAttoDenom, sdkmath.NewInt(1e16)) // 0.01 AATOM

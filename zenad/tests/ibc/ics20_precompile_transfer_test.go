@@ -16,9 +16,9 @@ import (
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 	"github.com/zenanetwork/zena/precompiles/ics20"
+	chainutil "github.com/zenanetwork/zena/testutil"
 	evmibctesting "github.com/zenanetwork/zena/testutil/ibc"
 	evmante "github.com/zenanetwork/zena/x/vm/ante"
-	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	"github.com/zenanetwork/zena/zenad"
 	"github.com/zenanetwork/zena/zenad/tests/integration"
 
@@ -299,8 +299,8 @@ func (suite *ICS20TransferTestSuite) TestHandleMsgTransfer() {
 				"INVALID-DENOM-HASH",
 			)
 			suite.Require().ErrorContains(err, vm.ErrExecutionReverted.Error())
-			revertErr := evmtypes.NewExecErrorWithReason(evmRes.Ret)
-			suite.Require().Contains(revertErr.ErrorData(), "invalid denom trace hash")
+			revertErr := chainutil.DecodeRevertReason(*evmRes)
+			suite.Require().Contains(revertErr.Error(), "invalid denom trace hash")
 
 			// denomHash query method
 			evmRes, err = evmAppB.EVMKeeper.CallEVM(
@@ -347,8 +347,8 @@ func (suite *ICS20TransferTestSuite) TestHandleMsgTransfer() {
 				"",
 			)
 			suite.Require().ErrorContains(err, vm.ErrExecutionReverted.Error())
-			revertErr = evmtypes.NewExecErrorWithReason(evmRes.Ret)
-			suite.Require().Contains(revertErr.ErrorData(), "invalid denomination for cross-chain transfer")
+			revertErr = chainutil.DecodeRevertReason(*evmRes)
+			suite.Require().Contains(revertErr.Error(), "invalid denomination for cross-chain transfer")
 		})
 	}
 }

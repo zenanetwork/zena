@@ -5,13 +5,14 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
+	"github.com/zenanetwork/zena/testutil/keyring"
+	"github.com/zenanetwork/zena/x/ibc/callbacks/types"
+
 	cbtypes "github.com/cosmos/ibc-go/v10/modules/apps/callbacks/types"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	ibcerrors "github.com/cosmos/ibc-go/v10/modules/core/errors"
-	"github.com/zenanetwork/zena/testutil/keyring"
-	"github.com/zenanetwork/zena/x/ibc/callbacks/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

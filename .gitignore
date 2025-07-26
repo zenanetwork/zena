@@ -34,5 +34,9 @@ zenad/build/
 
 build/
 
-# bash
+tests/systemtests/binaries
+tests/systemtests/testnet
+.testnets
+
+# setup
 setup_zena_evm.sh

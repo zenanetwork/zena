@@ -252,7 +252,11 @@ func (s *PrecompileTestSuite) TestRun() {
 				To:        &contractAddr,
 				Amount:    nil,
 				GasLimit:  100000,
+<<<<<<< HEAD
 				GasPrice:  chainutil.ExampleMinGasPrices.BigInt(),
+=======
+				GasPrice:  chainutil.ExampleMinGasPrices,
+>>>>>>> upstream/main
 				GasFeeCap: baseFee,
 				GasTipCap: big.NewInt(1),
 				Accesses:  &gethtypes.AccessList{},
@@ -480,7 +484,11 @@ func (s *PrecompileTestSuite) TestCMS() {
 				To:        &contractAddr,
 				Amount:    nil,
 				GasLimit:  1000000,
+<<<<<<< HEAD
 				GasPrice:  chainutil.ExampleMinGasPrices.BigInt(),
+=======
+				GasPrice:  chainutil.ExampleMinGasPrices,
+>>>>>>> upstream/main
 				GasFeeCap: baseFee,
 				GasTipCap: big.NewInt(1),
 				Accesses:  &gethtypes.AccessList{},

@@ -6,6 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 
 	errorsmod "cosmossdk.io/errors"
@@ -122,7 +123,11 @@ func NewExecErrorWithReason(revertReason []byte) *RevertError {
 	}
 	return &RevertError{
 		error:  err,
+<<<<<<< HEAD
 		reason: reason,
+=======
+		reason: hexutil.Encode(result),
+>>>>>>> upstream/main
 	}
 }
 

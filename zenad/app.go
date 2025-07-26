@@ -17,6 +17,7 @@ import (
 	dbm "github.com/cosmos/cosmos-db"
 	evmante "github.com/zenanetwork/zena/ante"
 	cosmosevmante "github.com/zenanetwork/zena/ante/evm"
+	evmconfig "github.com/zenanetwork/zena/config"
 	evmosencoding "github.com/zenanetwork/zena/encoding"
 	srvflags "github.com/zenanetwork/zena/server/flags"
 	cosmosevmtypes "github.com/zenanetwork/zena/types"
@@ -29,7 +30,6 @@ import (
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	ibccallbackskeeper "github.com/zenanetwork/zena/x/ibc/callbacks/keeper"
 	"github.com/zenanetwork/zena/zenad/ante"
-	evmdconfig "github.com/zenanetwork/zena/zenad/cmd/zenad/config"
 
 	// NOTE: override ICS20 keeper to support IBC transfers of ERC20 tokens
 	"github.com/cosmos/gogoproto/proto"
@@ -54,6 +54,7 @@ import (
 	"github.com/zenanetwork/zena/x/vm"
 	evmkeeper "github.com/zenanetwork/zena/x/vm/keeper"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+	evmdconfig "github.com/zenanetwork/zena/zenad/cmd/zenad/config"
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
@@ -139,7 +140,7 @@ func init() {
 	defaultNodeHome = evmdconfig.MustGetDefaultNodeHome()
 }
 
-const appName = "zenad"
+const appName = "evmd"
 
 // defaultNodeHome default home directories for the application daemon
 var defaultNodeHome string
@@ -209,7 +210,7 @@ func NewExampleApp(
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
 	evmChainID uint64,
-	evmAppOptions evmdconfig.EVMOptionsFn,
+	evmAppOptions evmconfig.EVMOptionsFn,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *EVMD {
 	encodingConfig := evmosencoding.MakeConfig(evmChainID)
@@ -570,7 +571,6 @@ func NewExampleApp(
 			app.EVMKeeper,
 			app.GovKeeper,
 			app.SlashingKeeper,
-			app.EvidenceKeeper,
 			app.AppCodec(),
 		),
 	)

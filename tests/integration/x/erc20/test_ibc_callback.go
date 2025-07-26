@@ -7,17 +7,18 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
-	ibcgotesting "github.com/cosmos/ibc-go/v10/testing"
-	ibcmock "github.com/cosmos/ibc-go/v10/testing/mock"
 	"github.com/zenanetwork/zena/contracts"
 	"github.com/zenanetwork/zena/crypto/ethsecp256k1"
 	"github.com/zenanetwork/zena/testutil"
 	"github.com/zenanetwork/zena/x/erc20/keeper"
 	"github.com/zenanetwork/zena/x/erc20/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+
+	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
+	ibcgotesting "github.com/cosmos/ibc-go/v10/testing"
+	ibcmock "github.com/cosmos/ibc-go/v10/testing/mock"
 
 	"cosmossdk.io/math"
 

@@ -5,6 +5,7 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
+	"github.com/zenanetwork/zena"
 	"github.com/zenanetwork/zena/testutil/tx"
 
 	errorsmod "cosmossdk.io/errors"
@@ -12,14 +13,18 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/zenanetwork/zena"
+
 )
 
 // DeliverEthTx generates and broadcasts a Cosmos Tx populated with MsgEthereumTx messages.
 // If a private key is provided, it will attempt to sign all messages with the given private key,
 // otherwise, it will assume the messages have already been signed.
 func DeliverEthTx(
+<<<<<<< HEAD
 	evmApp zena.EvmApp,
+=======
+	evmApp evm.EvmApp,
+>>>>>>> upstream/main
 	priv cryptotypes.PrivKey,
 	msgs ...sdk.Msg,
 ) (abci.ExecTxResult, error) {
@@ -42,7 +47,11 @@ func DeliverEthTx(
 }
 
 // BroadcastTxBytes encodes a transaction and calls DeliverTx on the app.
+<<<<<<< HEAD
 func BroadcastTxBytes(app zena.EvmApp, txEncoder sdk.TxEncoder, tx sdk.Tx) (abci.ExecTxResult, error) {
+=======
+func BroadcastTxBytes(app evm.EvmApp, txEncoder sdk.TxEncoder, tx sdk.Tx) (abci.ExecTxResult, error) {
+>>>>>>> upstream/main
 	// bz are bytes to be broadcasted over the network
 	bz, err := txEncoder(tx)
 	if err != nil {

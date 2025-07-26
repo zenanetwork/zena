@@ -137,6 +137,10 @@ func (s *PrecompileTestSuite) SetupTest() {
 	if s.precompile, err = gov.NewPrecompile(
 		s.network.App.GetGovKeeper(),
 		s.network.App.AppCodec(),
+<<<<<<< HEAD
+=======
+		address.NewBech32Codec(sdk.GetConfig().GetBech32AccountAddrPrefix()),
+>>>>>>> upstream/main
 	); err != nil {
 		panic(err)
 	}

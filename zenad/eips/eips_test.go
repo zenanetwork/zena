@@ -13,6 +13,7 @@ import (
 	//nolint:revive,ST1001 // dot imports are fine for Ginkgo
 	. "github.com/onsi/gomega"
 
+	testconfig "github.com/zenanetwork/zena/testutil/config"
 	"github.com/zenanetwork/zena/testutil/integration/evm/factory"
 	"github.com/zenanetwork/zena/testutil/integration/evm/grpc"
 	"github.com/zenanetwork/zena/testutil/integration/evm/network"
@@ -20,7 +21,6 @@ import (
 	"github.com/zenanetwork/zena/testutil/keyring"
 	testutiltypes "github.com/zenanetwork/zena/testutil/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
-	"github.com/zenanetwork/zena/zenad/eips"
 	"github.com/zenanetwork/zena/zenad/eips/testdata"
 	"github.com/zenanetwork/zena/zenad/tests/integration"
 
@@ -107,7 +107,7 @@ func RunTests(t *testing.T, create network.CreateEvmApp, options ...network.Conf
 		})
 
 		It("should enable the new EIP", func() {
-			eips.Multiplier = eipMultiplier
+			testconfig.Multiplier = eipMultiplier
 			newEIP := 0o000
 
 			qRes, err := gh.GetEvmParams()
@@ -259,7 +259,7 @@ func RunTests(t *testing.T, create network.CreateEvmApp, options ...network.Conf
 			Expect(counter.String()).To(Equal(fmt.Sprintf("%d", initialCounterValue+1)), "counter is not correct")
 		})
 		It("should enable the new EIP", func() {
-			eips.Multiplier = eipMultiplier
+			testconfig.Multiplier = eipMultiplier
 			newEIP := 0o001
 
 			qRes, err := gh.GetEvmParams()
@@ -403,7 +403,7 @@ func RunTests(t *testing.T, create network.CreateEvmApp, options ...network.Conf
 		})
 
 		It("should enable the new EIP", func() {
-			eips.SstoreConstantGas = constantGas
+			testconfig.SstoreConstantGas = constantGas
 			newEIP := 0o002
 
 			qRes, err := gh.GetEvmParams()

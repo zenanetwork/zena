@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"maps"
 
+	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 
@@ -12,7 +14,6 @@ import (
 	"github.com/zenanetwork/zena/precompiles/bech32"
 	cmn "github.com/zenanetwork/zena/precompiles/common"
 	distprecompile "github.com/zenanetwork/zena/precompiles/distribution"
-	evidenceprecompile "github.com/zenanetwork/zena/precompiles/evidence"
 	govprecompile "github.com/zenanetwork/zena/precompiles/gov"
 	ics20precompile "github.com/zenanetwork/zena/precompiles/ics20"
 	"github.com/zenanetwork/zena/precompiles/p256"
@@ -22,14 +23,50 @@ import (
 	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
 	evmkeeper "github.com/zenanetwork/zena/x/vm/keeper"
 
-	evidencekeeper "cosmossdk.io/x/evidence/keeper"
-
+	"cosmossdk.io/core/address"
 	"github.com/cosmos/cosmos-sdk/codec"
 	distributionkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 )
+
+// Optionals define some optional params that can be applied to _some_ precompiles.
+// Extend this struct, add a sane default to defaultOptionals, and an Option function to provide users with a non-breaking
+// way to provide custom args to certain precompiles.
+type Optionals struct {
+	AddressCodec       address.Codec // used by gov/staking
+	ValidatorAddrCodec address.Codec // used by slashing
+	ConsensusAddrCodec address.Codec // used by slashing
+}
+
+func defaultOptionals() Optionals {
+	return Optionals{
+		AddressCodec:       addresscodec.NewBech32Codec(sdk.GetConfig().GetBech32AccountAddrPrefix()),
+		ValidatorAddrCodec: addresscodec.NewBech32Codec(sdk.GetConfig().GetBech32ValidatorAddrPrefix()),
+		ConsensusAddrCodec: addresscodec.NewBech32Codec(sdk.GetConfig().GetBech32ConsensusAddrPrefix()),
+	}
+}
+
+type Option func(opts *Optionals)
+
+func WithAddressCodec(codec address.Codec) Option {
+	return func(opts *Optionals) {
+		opts.AddressCodec = codec
+	}
+}
+
+func WithValidatorAddrCodec(codec address.Codec) Option {
+	return func(opts *Optionals) {
+		opts.ValidatorAddrCodec = codec
+	}
+}
+
+func WithConsensusAddrCodec(codec address.Codec) Option {
+	return func(opts *Optionals) {
+		opts.ConsensusAddrCodec = codec
+	}
+}
 
 const bech32PrecompileBaseGas = 6_000
 
@@ -46,9 +83,13 @@ func NewAvailableStaticPrecompiles(
 	evmKeeper *evmkeeper.Keeper,
 	govKeeper govkeeper.Keeper,
 	slashingKeeper slashingkeeper.Keeper,
-	evidenceKeeper evidencekeeper.Keeper,
 	codec codec.Codec,
+	opts ...Option,
 ) map[common.Address]vm.PrecompiledContract {
+	options := defaultOptionals()
+	for _, opt := range opts {
+		opt(&options)
+	}
 	// Clone the mapping from the latest EVM fork.
 	precompiles := maps.Clone(vm.PrecompiledContractsBerlin)
 
@@ -60,7 +101,7 @@ func NewAvailableStaticPrecompiles(
 		panic(fmt.Errorf("failed to instantiate bech32 precompile: %w", err))
 	}
 
-	stakingPrecompile, err := stakingprecompile.NewPrecompile(stakingKeeper)
+	stakingPrecompile, err := stakingprecompile.NewPrecompile(stakingKeeper, options.AddressCodec)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate staking precompile: %w", err))
 	}
@@ -69,6 +110,7 @@ func NewAvailableStaticPrecompiles(
 		distributionKeeper,
 		stakingKeeper,
 		evmKeeper,
+		options.AddressCodec,
 	)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate distribution precompile: %w", err))
@@ -90,19 +132,14 @@ func NewAvailableStaticPrecompiles(
 		panic(fmt.Errorf("failed to instantiate bank precompile: %w", err))
 	}
 
-	govPrecompile, err := govprecompile.NewPrecompile(govKeeper, codec)
+	govPrecompile, err := govprecompile.NewPrecompile(govKeeper, codec, options.AddressCodec)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate gov precompile: %w", err))
 	}
 
-	slashingPrecompile, err := slashingprecompile.NewPrecompile(slashingKeeper)
+	slashingPrecompile, err := slashingprecompile.NewPrecompile(slashingKeeper, options.ValidatorAddrCodec, options.ConsensusAddrCodec)
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate slashing precompile: %w", err))
-	}
-
-	evidencePrecompile, err := evidenceprecompile.NewPrecompile(evidenceKeeper)
-	if err != nil {
-		panic(fmt.Errorf("failed to instantiate evidence precompile: %w", err))
 	}
 
 	// Stateless precompiles
@@ -116,7 +153,6 @@ func NewAvailableStaticPrecompiles(
 	precompiles[bankPrecompile.Address()] = bankPrecompile
 	precompiles[govPrecompile.Address()] = govPrecompile
 	precompiles[slashingPrecompile.Address()] = slashingPrecompile
-	precompiles[evidencePrecompile.Address()] = evidencePrecompile
 
 	return precompiles
 }

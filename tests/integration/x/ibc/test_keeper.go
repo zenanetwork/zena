@@ -7,13 +7,6 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 
-	abcitypes "github.com/cometbft/cometbft/abci/types"
-
-	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
-	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
-	"github.com/cosmos/ibc-go/v10/modules/core/exported"
 	"github.com/zenanetwork/zena/contracts"
 	cmnfactory "github.com/zenanetwork/zena/testutil/integration/base/factory"
 	"github.com/zenanetwork/zena/testutil/integration/evm/factory"
@@ -23,6 +16,14 @@ import (
 	testutiltypes "github.com/zenanetwork/zena/testutil/types"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
+
+	abcitypes "github.com/cometbft/cometbft/abci/types"
+
+	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
+	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
+	"github.com/cosmos/ibc-go/v10/modules/core/exported"
 
 	"cosmossdk.io/math"
 
