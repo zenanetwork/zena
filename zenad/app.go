@@ -140,7 +140,7 @@ func init() {
 	defaultNodeHome = evmdconfig.MustGetDefaultNodeHome()
 }
 
-const appName = "evmd"
+const appName = "zenad"
 
 // defaultNodeHome default home directories for the application daemon
 var defaultNodeHome string
