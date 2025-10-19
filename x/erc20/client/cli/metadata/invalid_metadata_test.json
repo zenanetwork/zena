@@ -1,0 +1,21 @@
+{
+  "metadata": [
+    {
+      "description": 1,
+      "denom_units": [
+        {
+          "denom": "aznnt",
+          "exponent": 0
+        },
+        {
+          "denom": "znnt",
+          "exponent": 18
+        }
+      ],
+      "base": "aznnt",
+      "display": "aznnt",
+      "name": "aznnt",
+      "symbol": "ZNNT"
+    }
+  ]
+}
