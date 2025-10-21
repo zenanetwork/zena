@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": ["Read", "LS", "Grep", "Glob"],
-    "deny": ["Write", "Edit", "Bash", "WebFetch", "Delete"],
-    "ask": []
-  },
-  "permissionMode": "custom",
-  "notes": "읽기 관련 명령만 자동 허용"
-}
