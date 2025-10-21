@@ -52,7 +52,7 @@ var TestChainsCoinInfo = map[uint64]evmtypes.EvmCoinInfo{
 		Denom:         ExampleChainDenom,
 		ExtendedDenom: ExampleChainDenom,
 		DisplayDenom:  ExampleDisplayDenom,
-		Decimals:      evmtypes.TwelveDecimals,
+		Decimals:      evmtypes.EighteenDecimals,
 	},
 }
 
