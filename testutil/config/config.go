@@ -43,7 +43,7 @@ const (
 	// DisplayDenom defines the denomination displayed to users in client applications.
 	DisplayDenom = "znnt"
 	// BaseDenom defines to the default denomination used in the Cosmos EVM example chain.
-	BaseDenom = "atest"
+	BaseDenom = "aznnt"
 	// BaseDenomUnit defines the precision of the base denomination.
 	BaseDenomUnit = 18
 	// EVMChainID defines the EIP-155 replay-protection chain id for the current ethereum chain config.

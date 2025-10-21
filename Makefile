@@ -358,7 +358,7 @@ localnet-build-env:
 	$(MAKE) -C contrib/images zenad-env
 
 localnet-build-nodes:
-	$(DOCKER) run --rm -v $(CURDIR)/.testnets:/data cosmos/zenad \
+	$(DOCKER) run --rm -v $(CURDIR)/.testnets:/data zenanetwork/zenad \
 			  testnet init-files --validator-count 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test --chain-id=local-4221 --use-docker=true
 	docker compose up -d
 
