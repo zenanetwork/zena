@@ -1,5 +1,5 @@
 <img
-src="rogo_header.png"
+src="rogo-header.png"
 alt="Zenanet Blockchain images"
 />
 
