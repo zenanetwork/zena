@@ -1,5 +1,5 @@
 <img
-src="repo_header.png"
+src="rogo_header.png"
 alt="Zenanet Blockchain images"
 />
 
@@ -123,6 +123,7 @@ We welcome open source contributions and discussions! For more on contributing, 
 ### Acknowledgments
 
 We would like to thank:
+
 - **Cosmos Labs** for maintaining the Cosmos EVM and Cosmos Stack
 - **B-Harvest** and **Mantra** for their key contributions to Cosmos EVM development
 - The **Interchain Foundation** for funding the original evmOS development by Tharsis
