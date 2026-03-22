@@ -83,13 +83,18 @@ func (k Keeper) convertERC20IntoCoinsForNativeToken(
 		return nil, sdkerrors.Wrap(types.ErrEVMCall, "failed to retrieve balance")
 	}
 
+	// Wrap all state-changing operations in CacheContext for atomicity.
+	// This ensures that if any step fails (EVM transfer, mint, send, or
+	// balance verification), all previous state changes are rolled back.
+	cacheCtx, commit := ctx.CacheContext()
+
 	// Escrow tokens on module account
 	transferData, err := erc20.Pack("transfer", types.ModuleAddress, msg.Amount.BigInt())
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := k.evmKeeper.CallEVMWithData(ctx, sender, &contract, transferData, true, nil)
+	res, err := k.evmKeeper.CallEVMWithData(cacheCtx, sender, &contract, transferData, true, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +119,7 @@ func (k Keeper) convertERC20IntoCoinsForNativeToken(
 	// NOTE: coin fields already validated in the ValidateBasic() of the message
 	coins := sdk.Coins{sdk.Coin{Denom: pair.Denom, Amount: msg.Amount}}
 	tokens := coins[0].Amount.BigInt()
-	balanceTokenAfter := k.BalanceOf(ctx, erc20, contract, types.ModuleAddress)
+	balanceTokenAfter := k.BalanceOf(cacheCtx, erc20, contract, types.ModuleAddress)
 	if balanceTokenAfter == nil {
 		return nil, sdkerrors.Wrap(types.ErrEVMCall, "failed to retrieve balance")
 	}
@@ -130,17 +135,17 @@ func (k Keeper) convertERC20IntoCoinsForNativeToken(
 	}
 
 	// Mint coins
-	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, coins); err != nil {
+	if err := k.bankKeeper.MintCoins(cacheCtx, types.ModuleName, coins); err != nil {
 		return nil, err
 	}
 
 	// Send minted coins to the receiver
-	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, coins); err != nil {
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(cacheCtx, types.ModuleName, receiver, coins); err != nil {
 		return nil, err
 	}
 
 	// Check expected receiver balance after transfer
-	balanceCoinAfter := k.bankKeeper.GetBalance(ctx, receiver, pair.Denom)
+	balanceCoinAfter := k.bankKeeper.GetBalance(cacheCtx, receiver, pair.Denom)
 	expCoin := balanceCoin.Add(coins[0])
 
 	if ok := balanceCoinAfter.Equal(expCoin); !ok {
@@ -150,6 +155,9 @@ func (k Keeper) convertERC20IntoCoinsForNativeToken(
 			expCoin, balanceCoinAfter,
 		)
 	}
+
+	// All state changes verified - commit atomically
+	commit()
 
 	defer func() {
 		telemetry.IncrCounterWithLabels(
@@ -253,14 +261,20 @@ func (k Keeper) ConvertCoinNativeERC20(
 		return sdkerrors.Wrap(types.ErrEVMCall, "failed to retrieve balance")
 	}
 
+	// Wrap all state-changing operations in CacheContext for atomicity.
+	// This is critical for the IBC callback path (ibc_callbacks.go:143)
+	// where SDK's auto CacheContext is not available. Without this,
+	// escrowed coins could remain stuck if the EVM call fails.
+	cacheCtx, commit := ctx.CacheContext()
+
 	// Escrow Coins on module account
 	coins := sdk.Coins{{Denom: pair.Denom, Amount: amount}}
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, sender, types.ModuleName, coins); err != nil {
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(cacheCtx, sender, types.ModuleName, coins); err != nil {
 		return sdkerrors.Wrap(err, "failed to escrow coins")
 	}
 
 	// Unescrow Tokens and send to receiver
-	res, err := k.evmKeeper.CallEVM(ctx, erc20, types.ModuleAddress, contract, true, nil, "transfer", receiver, amount.BigInt())
+	res, err := k.evmKeeper.CallEVM(cacheCtx, erc20, types.ModuleAddress, contract, true, nil, "transfer", receiver, amount.BigInt())
 	if err != nil {
 		return err
 	}
@@ -282,7 +296,7 @@ func (k Keeper) ConvertCoinNativeERC20(
 	}
 
 	// Check expected Receiver balance after transfer execution
-	balanceTokenAfter := k.BalanceOf(ctx, erc20, contract, receiver)
+	balanceTokenAfter := k.BalanceOf(cacheCtx, erc20, contract, receiver)
 	if balanceTokenAfter == nil {
 		return sdkerrors.Wrap(types.ErrEVMCall, "failed to retrieve balance")
 	}
@@ -297,10 +311,13 @@ func (k Keeper) ConvertCoinNativeERC20(
 	}
 
 	// Burn escrowed Coins
-	err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, coins)
+	err = k.bankKeeper.BurnCoins(cacheCtx, types.ModuleName, coins)
 	if err != nil {
 		return sdkerrors.Wrap(err, "failed to burn coins")
 	}
+
+	// All state changes verified - commit atomically
+	commit()
 
 	return nil
 }
