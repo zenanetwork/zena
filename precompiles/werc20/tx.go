@@ -25,6 +25,10 @@ const (
 
 // Deposit handles the payable deposit function. It retrieves the deposited amount
 // and sends it back to the sender using the bank keeper.
+//
+// Reentrancy Safety: This method is always called within RunNativeAction
+// (via Run -> Execute), which manages stateDB journal entries and multi-store
+// snapshots. All state changes are atomic and will be rolled back on revert (H-04).
 func (p Precompile) Deposit(
 	ctx sdk.Context,
 	contract *vm.Contract,
@@ -32,6 +36,11 @@ func (p Precompile) Deposit(
 ) ([]byte, error) {
 	caller := contract.Caller()
 	depositedAmount := contract.Value()
+
+	// Reject zero-value deposits (H-04)
+	if depositedAmount.IsZero() {
+		return nil, fmt.Errorf("deposit amount must be positive")
+	}
 
 	callerAccAddress := sdk.AccAddress(caller.Bytes())
 	precompileAccAddr := sdk.AccAddress(p.Address().Bytes())
@@ -59,11 +68,19 @@ func (p Precompile) Deposit(
 // Withdraw is a no-op and mock function that provides the same interface as the
 // WETH contract to support equality between the native coin and its wrapped
 // ERC-20 (e.g. ATOM and WZENA).
+//
+// Reentrancy Safety: Same as Deposit — protected by RunNativeAction (H-04).
 func (p Precompile) Withdraw(ctx sdk.Context, contract *vm.Contract, stateDB vm.StateDB, args []interface{}) ([]byte, error) {
 	amount, ok := args[0].(*big.Int)
 	if !ok {
 		return nil, fmt.Errorf("invalid argument type: %T", args[0])
 	}
+
+	// Reject zero or negative withdraw amounts (H-04)
+	if amount.Sign() <= 0 {
+		return nil, fmt.Errorf("withdraw amount must be positive")
+	}
+
 	amountInt := math.NewIntFromBigInt(amount)
 
 	caller := contract.Caller()
