@@ -33,4 +33,12 @@ const (
 	ErrInvalidDescription = "invalid description: %v"
 	// ErrInvalidCommission is raised when the input commission cannot be cast to stakingtypes.CommissionRates{}.
 	ErrInvalidCommission = "invalid commission: %v"
+	// ErrNegativeCommissionRate is raised when a commission rate is negative (H-02).
+	ErrNegativeCommissionRate = "commission rate must be non-negative, got: %s"
+	// ErrCommissionRateExceedsMax is raised when the commission rate exceeds the max rate (H-02).
+	ErrCommissionRateExceedsMax = "commission rate %s cannot exceed max rate %s"
+	// ErrCommissionRateExceedsOne is raised when the commission rate exceeds 100% (H-02).
+	ErrCommissionRateExceedsOne = "commission rate cannot exceed 100%%: %s"
+	// ErrNegativeMinSelfDelegation is raised when min self delegation is negative (H-02).
+	ErrNegativeMinSelfDelegation = "minimum self delegation must be positive, got: %s"
 )
