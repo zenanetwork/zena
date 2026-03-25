@@ -103,7 +103,7 @@ func (k Keeper) convertERC20IntoCoinsForNativeToken(
 	var unpackedRet types.ERC20BoolResponse
 	if len(res.Ret) == 0 {
 		// if the token does not return a value, check for the transfer event in logs
-		if err := validateTransferEventExists(res.Logs, contract); err != nil {
+		if err := validateTransferEventExists(res.Logs, contract, sender, types.ModuleAddress, msg.Amount.BigInt()); err != nil {
 			return nil, err
 		}
 	} else {
@@ -283,7 +283,7 @@ func (k Keeper) ConvertCoinNativeERC20(
 	var unpackedRet types.ERC20BoolResponse
 	if len(res.Ret) == 0 {
 		// if the token does not return a value, check for the transfer event in logs
-		if err := validateTransferEventExists(res.Logs, contract); err != nil {
+		if err := validateTransferEventExists(res.Logs, contract, types.ModuleAddress, receiver, amount.BigInt()); err != nil {
 			return err
 		}
 	} else {
