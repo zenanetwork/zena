@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	stdmath "math"
 	"strconv"
 
 	"github.com/hashicorp/go-metrics"
@@ -61,15 +62,25 @@ func (k *Keeper) EthereumTx(goCtx context.Context, msg *types.MsgEthereumTx) (*t
 			)
 
 			// Observe which users define a gas limit >> gas used. Note, that
-			// gas_limit and gas_used are always > 0
-			gasLimit := math.LegacyNewDec(int64(tx.Gas()))                        //#nosec G115 -- int overflow is not a concern here -- tx gas is not going to exceed int64 max value
-			gasRatio, err := gasLimit.QuoInt64(int64(response.GasUsed)).Float64() //#nosec G115 -- int overflow is not a concern here -- gas used is not going to exceed int64 max value
-			if err == nil {
-				telemetry.SetGaugeWithLabels(
-					[]string{"tx", "msg", "ethereum_tx", "gas_limit", "per", "gas_used"},
-					float32(gasRatio),
-					labels,
-				)
+			// gas_limit and gas_used are always > 0.
+			// Explicit bounds check to prevent silent integer overflow when
+			// casting uint64 to int64 for decimal conversion (H-03).
+			gasU64 := tx.Gas()
+			gasUsed := response.GasUsed
+			if gasU64 > uint64(stdmath.MaxInt64) {
+				k.Logger(ctx).Error("gas limit exceeds int64 max, skipping ratio metric", "gas", gasU64)
+			} else if gasUsed > uint64(stdmath.MaxInt64) {
+				k.Logger(ctx).Error("gas used exceeds int64 max, skipping ratio metric", "gasUsed", gasUsed)
+			} else {
+				gasLimit := math.LegacyNewDec(int64(gasU64))
+				gasRatio, err := gasLimit.QuoInt64(int64(gasUsed)).Float64()
+				if err == nil {
+					telemetry.SetGaugeWithLabels(
+						[]string{"tx", "msg", "ethereum_tx", "gas_limit", "per", "gas_used"},
+						float32(gasRatio),
+						labels,
+					)
+				}
 			}
 		}
 	}()
