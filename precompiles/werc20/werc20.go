@@ -94,17 +94,6 @@ func (p Precompile) RequiredGas(input []byte) uint64 {
 	}
 }
 
-// Run wraps Execute with RunNativeAction which provides:
-// - EVM stateDB snapshot/journal integration for atomic state changes
-// - Multi-store snapshot for Cosmos SDK state rollback on revert
-// - Gas management and panic recovery
-//
-// Reentrancy Safety: All state modifications in Deposit/Withdraw are
-// protected by RunNativeAction's snapshot/journal mechanism (H-04).
-// If a reentrant call occurs, the EVM's call depth limit (1024)
-// and gas metering provide additional bounds. Cross-layer reentrancy
-// (EVM -> Precompile -> Cosmos -> EVM) is bounded by these mechanisms.
-// See precompiles/common/precompile.go:RunNativeAction.
 func (p Precompile) Run(evm *vm.EVM, contract *vm.Contract, readonly bool) ([]byte, error) {
 	return p.RunNativeAction(evm, contract, func(ctx sdk.Context) ([]byte, error) {
 		return p.Execute(ctx, evm.StateDB, contract, readonly)
