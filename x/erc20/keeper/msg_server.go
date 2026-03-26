@@ -44,12 +44,15 @@ func (k Keeper) ConvertERC20(
 		acc := k.evmKeeper.GetAccountWithoutBalance(ctx, pair.GetERC20Contract())
 		if acc == nil || !acc.HasCodeHash() {
 			k.DeleteTokenPair(ctx, pair)
-			k.Logger(ctx).Debug(
+			k.Logger(ctx).Info(
 				"deleting selfdestructed token pair from state",
 				"contract", pair.Erc20Address,
 			)
-			// NOTE: return nil error to persist the changes from the deletion
-			return nil, nil
+			return nil, sdkerrors.Wrapf(
+				types.ErrContractSelfDestructed,
+				"contract %s has been self-destructed; token pair removed from state",
+				pair.Erc20Address,
+			)
 		}
 
 		return k.convertERC20IntoCoinsForNativeToken(ctx, pair, msg, receiver, sender) // case 2.1
@@ -219,12 +222,15 @@ func (k Keeper) ConvertCoin(
 		acc := k.evmKeeper.GetAccountWithoutBalance(ctx, pair.GetERC20Contract())
 		if acc == nil || !acc.HasCodeHash() {
 			k.DeleteTokenPair(ctx, pair)
-			k.Logger(ctx).Debug(
+			k.Logger(ctx).Info(
 				"deleting selfdestructed token pair from state",
 				"contract", pair.Erc20Address,
 			)
-			// NOTE: return nil error to persist the changes from the deletion
-			return nil, nil
+			return nil, sdkerrors.Wrapf(
+				types.ErrContractSelfDestructed,
+				"contract %s has been self-destructed; token pair removed from state",
+				pair.Erc20Address,
+			)
 		}
 
 		return nil, k.ConvertCoinNativeERC20(ctx, pair, msg.Coin.Amount, receiver, sender)

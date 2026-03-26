@@ -233,6 +233,11 @@ func (k ContractKeeper) IBCReceivePacketCallback(
 	// since they would become irretrievable.
 	receiverTokenBalance := k.erc20Keeper.BalanceOf(ctx, erc20.ABI, tokenPair.GetERC20Contract(), receiverHex) // here,
 	// we can use the original ctx and skip manually adding the gas
+	if receiverTokenBalance == nil {
+		return errorsmod.Wrapf(erc20types.ErrEVMCall,
+			"failed to query token balance for receiver %s on contract %s",
+			receiverHex, tokenPair.GetERC20Contract())
+	}
 	if receiverTokenBalance.Cmp(big.NewInt(0)) != 0 {
 		return errorsmod.Wrapf(erc20types.ErrEVMCall,
 			"receiver has %d unrecoverable tokens after callback", receiverTokenBalance)
