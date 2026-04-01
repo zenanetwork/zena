@@ -10,6 +10,7 @@ import (
 	"github.com/zenanetwork/zena/contracts"
 	"github.com/zenanetwork/zena/utils"
 	"github.com/zenanetwork/zena/x/erc20/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 
 	errorsmod "cosmossdk.io/errors"
 
@@ -56,7 +57,8 @@ func (k Keeper) DeployERC20Contract(
 	}
 
 	contractAddr := crypto.CreateAddress(types.ModuleAddress, nonce)
-	_, err = k.evmKeeper.CallEVMWithData(ctx, types.ModuleAddress, nil, data, true, nil)
+	sDB := statedb.New(ctx, k.evmKeeper, statedb.NewEmptyTxConfig())
+	_, err = k.evmKeeper.CallEVMWithData(ctx, sDB, types.ModuleAddress, nil, data, true, false, nil)
 	if err != nil {
 		return common.Address{}, errorsmod.Wrapf(err, "failed to deploy contract for %s", coinMetadata.Name)
 	}
@@ -84,7 +86,8 @@ func (k Keeper) QueryERC20(
 	}
 
 	// Decimals - standard uint8, no fallback needed
-	res, err := k.evmKeeper.CallEVM(ctx, erc20, types.ModuleAddress, contract, false, nil, "decimals")
+	decStateDB := statedb.New(ctx, k.evmKeeper, statedb.NewEmptyTxConfig())
+	res, err := k.evmKeeper.CallEVM(ctx, decStateDB, erc20, types.ModuleAddress, contract, false, false, nil, "decimals")
 	if err != nil {
 		return types.ERC20Data{}, err
 	}
@@ -107,7 +110,8 @@ func (k Keeper) queryERC20String(
 	method string,
 ) (string, error) {
 	// 1) Call into the EVM
-	res, err := k.evmKeeper.CallEVM(ctx, erc20, types.ModuleAddress, contract, false, nil, method)
+	strStateDB := statedb.New(ctx, k.evmKeeper, statedb.NewEmptyTxConfig())
+	res, err := k.evmKeeper.CallEVM(ctx, strStateDB, erc20, types.ModuleAddress, contract, false, false, nil, method)
 	if err != nil {
 		return "", err
 	}
@@ -140,7 +144,8 @@ func (k Keeper) BalanceOf(
 	abi abi.ABI,
 	contract, account common.Address,
 ) *big.Int {
-	res, err := k.evmKeeper.CallEVM(ctx, abi, types.ModuleAddress, contract, false, nil, "balanceOf", account)
+	balStateDB := statedb.New(ctx, k.evmKeeper, statedb.NewEmptyTxConfig())
+	res, err := k.evmKeeper.CallEVM(ctx, balStateDB, abi, types.ModuleAddress, contract, false, false, nil, "balanceOf", account)
 	if err != nil {
 		return nil
 	}
