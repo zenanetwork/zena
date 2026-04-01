@@ -6,7 +6,7 @@ import (
 	erc20keeper "github.com/zenanetwork/zena/x/erc20/keeper"
 	feemarketkeeper "github.com/zenanetwork/zena/x/feemarket/keeper"
 	"github.com/zenanetwork/zena/x/ibc/callbacks/keeper"
-	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
+	transferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	precisebankkeeper "github.com/zenanetwork/zena/x/precisebank/keeper"
 	evmkeeper "github.com/zenanetwork/zena/x/vm/keeper"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"

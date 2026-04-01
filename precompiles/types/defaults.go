@@ -7,7 +7,7 @@ import (
 	evmaddress "github.com/zenanetwork/zena/encoding/address"
 	cmn "github.com/zenanetwork/zena/precompiles/common"
 	erc20Keeper "github.com/zenanetwork/zena/x/erc20/keeper"
-	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
+	transferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	channelkeeper "github.com/cosmos/ibc-go/v10/modules/core/04-channel/keeper"
 
 	"cosmossdk.io/core/address"

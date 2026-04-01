@@ -17,7 +17,7 @@ import (
 	slashingprecompile "github.com/zenanetwork/zena/precompiles/slashing"
 	stakingprecompile "github.com/zenanetwork/zena/precompiles/staking"
 	erc20Keeper "github.com/zenanetwork/zena/x/erc20/keeper"
-	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
+	transferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	channelkeeper "github.com/cosmos/ibc-go/v10/modules/core/04-channel/keeper"
 
 	"github.com/cosmos/cosmos-sdk/codec"
