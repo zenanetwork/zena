@@ -20,6 +20,7 @@ import (
 	chainutil "github.com/zenanetwork/zena/testutil"
 	evmibctesting "github.com/zenanetwork/zena/testutil/ibc"
 	evmante "github.com/zenanetwork/zena/x/vm/ante"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 
@@ -235,11 +236,14 @@ func (suite *ICS20TransferV2TestSuite) TestHandleMsgTransfer() {
 			// denoms query method
 			chainBAddr := common.BytesToAddress(suite.chainB.SenderAccount.GetAddress().Bytes())
 			ctxB := evmante.BuildEvmExecutionCtx(suite.chainB.GetContext())
+			sdbB := statedb.New(ctxB, evmAppB.EVMKeeper, statedb.NewEmptyTxConfig())
 			evmRes, err := evmAppB.EVMKeeper.CallEVM(
 				ctxB,
+				sdbB,
 				suite.chainBPrecompile.ABI,
 				chainBAddr,
 				suite.chainBPrecompile.Address(),
+				false,
 				false,
 				nil,
 				ics20.DenomsMethod,
@@ -258,11 +262,14 @@ func (suite *ICS20TransferV2TestSuite) TestHandleMsgTransfer() {
 			suite.Require().Equal(chainBDenom, denomsResponse.Denoms[0])
 
 			// denom query method
+			sdbB = statedb.New(ctxB, evmAppB.EVMKeeper, statedb.NewEmptyTxConfig())
 			evmRes, err = evmAppB.EVMKeeper.CallEVM(
 				ctxB,
+				sdbB,
 				suite.chainBPrecompile.ABI,
 				chainBAddr,
 				suite.chainBPrecompile.Address(),
+				false,
 				false,
 				nil,
 				ics20.DenomMethod,
@@ -275,11 +282,14 @@ func (suite *ICS20TransferV2TestSuite) TestHandleMsgTransfer() {
 			suite.Require().Equal(chainBDenom, denomResponse.Denom)
 
 			// denom query method not exists case
+			sdbB = statedb.New(ctxB, evmAppB.EVMKeeper, statedb.NewEmptyTxConfig())
 			evmRes, err = evmAppB.EVMKeeper.CallEVM(
 				ctxB,
+				sdbB,
 				suite.chainBPrecompile.ABI,
 				chainBAddr,
 				suite.chainBPrecompile.Address(),
+				false,
 				false,
 				nil,
 				ics20.DenomMethod,
@@ -292,11 +302,14 @@ func (suite *ICS20TransferV2TestSuite) TestHandleMsgTransfer() {
 			suite.Require().Equal(denomResponse.Denom, transfertypes.Denom{Base: "", Trace: []transfertypes.Hop{}})
 
 			// denom query method invalid error case
+			sdbB = statedb.New(ctxB, evmAppB.EVMKeeper, statedb.NewEmptyTxConfig())
 			evmRes, err = evmAppB.EVMKeeper.CallEVM(
 				ctxB,
+				sdbB,
 				suite.chainBPrecompile.ABI,
 				chainBAddr,
 				suite.chainBPrecompile.Address(),
+				false,
 				false,
 				nil,
 				ics20.DenomMethod,
@@ -308,11 +321,14 @@ func (suite *ICS20TransferV2TestSuite) TestHandleMsgTransfer() {
 			ctxB.GasMeter().RefundGas(ctxB.GasMeter().Limit(), "refund after error")
 
 			// denomHash query method
+			sdbB = statedb.New(ctxB, evmAppB.EVMKeeper, statedb.NewEmptyTxConfig())
 			evmRes, err = evmAppB.EVMKeeper.CallEVM(
 				ctxB,
+				sdbB,
 				suite.chainBPrecompile.ABI,
 				chainBAddr,
 				suite.chainBPrecompile.Address(),
+				false,
 				false,
 				nil,
 				ics20.DenomHashMethod,
@@ -325,11 +341,14 @@ func (suite *ICS20TransferV2TestSuite) TestHandleMsgTransfer() {
 			suite.Require().Equal(chainBDenom.Hash().String(), denomHashResponse.Hash)
 
 			// denomHash query method not exists case
+			sdbB = statedb.New(ctxB, evmAppB.EVMKeeper, statedb.NewEmptyTxConfig())
 			evmRes, err = evmAppB.EVMKeeper.CallEVM(
 				ctxB,
+				sdbB,
 				suite.chainBPrecompile.ABI,
 				chainBAddr,
 				suite.chainBPrecompile.Address(),
+				false,
 				false,
 				nil,
 				ics20.DenomHashMethod,
@@ -341,11 +360,14 @@ func (suite *ICS20TransferV2TestSuite) TestHandleMsgTransfer() {
 			suite.Require().Equal(denomHashResponse.Hash, "")
 
 			// denomHash query method invalid error case
+			sdbB = statedb.New(ctxB, evmAppB.EVMKeeper, statedb.NewEmptyTxConfig())
 			evmRes, err = evmAppB.EVMKeeper.CallEVM(
 				ctxB,
+				sdbB,
 				suite.chainBPrecompile.ABI,
 				chainBAddr,
 				suite.chainBPrecompile.Address(),
+				false,
 				false,
 				nil,
 				ics20.DenomHashMethod,

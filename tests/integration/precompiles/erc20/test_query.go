@@ -9,7 +9,7 @@ import (
 
 	"github.com/zenanetwork/zena/precompiles/erc20"
 	"github.com/zenanetwork/zena/testutil"
-	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
+	transferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	"github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 
 	sdkmath "cosmossdk.io/math"

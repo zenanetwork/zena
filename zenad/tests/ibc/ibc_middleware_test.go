@@ -23,6 +23,7 @@ import (
 	"github.com/zenanetwork/zena/x/erc20/types"
 	ibctestutil "github.com/zenanetwork/zena/x/ibc/callbacks/testutil"
 	callbacktypes "github.com/zenanetwork/zena/x/ibc/callbacks/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
@@ -1218,11 +1219,14 @@ func (suite *MiddlewareTestSuite) TestOnAcknowledgementPacketWithCallback() {
 
 				// Verify callback execution by checking counter increment
 				if strings.Contains(tc.memo(), "src_callback") {
+					sdb := statedb.New(ctxA, evmApp.EVMKeeper, statedb.NewEmptyTxConfig())
 					counterRes, err := evmApp.EVMKeeper.CallEVM(
 						ctxA,
+						sdb,
 						contractData.ABI,
 						common.BytesToAddress(suite.evmChainA.SenderAccount.GetAddress()),
 						contractAddr,
+						false,
 						false,
 						big.NewInt(100000),
 						"getCounter",
@@ -1247,12 +1251,14 @@ func (suite *MiddlewareTestSuite) TestOnAcknowledgementPacketWithCallback() {
 				}
 			} else if strings.Contains(tc.memo(), "src_callback") && strings.Contains(tc.expError, "ABCI code") {
 				// For ack failures, verify that counter was NOT incremented
-
+				sdb2 := statedb.New(ctxA, evmApp.EVMKeeper, statedb.NewEmptyTxConfig())
 				counterRes, err := evmApp.EVMKeeper.CallEVM(
 					ctxA,
+					sdb2,
 					contractData.ABI,
 					common.BytesToAddress(suite.evmChainA.SenderAccount.GetAddress()),
 					contractAddr,
+					false,
 					false,
 					big.NewInt(100000),
 					"getCounter",
@@ -2021,11 +2027,14 @@ func (suite *MiddlewareTestSuite) TestOnTimeoutPacketWithCallback() {
 				// The onPacketTimeout function in the contract doesn't modify the counter,
 				// so we verify the callback was executed by checking the counter remains unchanged
 				if strings.Contains(tc.memo(), "src_callback") {
+					sdb := statedb.New(ctxA, evmApp.EVMKeeper, statedb.NewEmptyTxConfig())
 					counterRes, err := evmApp.EVMKeeper.CallEVM(
 						ctxA,
+						sdb,
 						contractData.ABI,
 						common.BytesToAddress(suite.evmChainA.SenderAccount.GetAddress()),
 						contractAddr,
+						false,
 						false,
 						big.NewInt(100000),
 						"getCounter",
@@ -2053,11 +2062,14 @@ func (suite *MiddlewareTestSuite) TestOnTimeoutPacketWithCallback() {
 			} else {
 				// For timeout callback failures, verify that counter was NOT changed
 				if strings.Contains(tc.memo(), "src_callback") && strings.Contains(tc.expError, "ABCI code") {
+					sdb := statedb.New(ctxA, evmApp.EVMKeeper, statedb.NewEmptyTxConfig())
 					counterRes, err := evmApp.EVMKeeper.CallEVM(
 						ctxA,
+						sdb,
 						contractData.ABI,
 						common.BytesToAddress(suite.evmChainA.SenderAccount.GetAddress()),
 						contractAddr,
+						false,
 						false,
 						big.NewInt(100000),
 						"getCounter",

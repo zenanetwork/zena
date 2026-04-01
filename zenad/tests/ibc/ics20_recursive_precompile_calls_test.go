@@ -19,6 +19,7 @@ import (
 	"github.com/zenanetwork/zena/contracts"
 	testutiltypes "github.com/zenanetwork/zena/testutil/types"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -153,12 +154,16 @@ func (suite *ICS20RecursivePrecompileCallsTestSuite) setupContractForTesting(
 	suite.Require().NoError(err, "sending native tokens to contract should succeed")
 
 	// Mint ERC20 tokens
-	_, err = evmAppA.GetEVMKeeper().CallEVM(
+	evmKeeper := evmAppA.GetEVMKeeper()
+	sdb := statedb.New(suite.chainA.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+	_, err = evmKeeper.CallEVM(
 		suite.chainA.GetContext(),
+		sdb,
 		contractData.ABI,
 		deployerAddr,
 		contractAddr,
 		true,
+		false,
 		nil,
 		"mint",
 		senderEVMAddr,
@@ -171,12 +176,15 @@ func (suite *ICS20RecursivePrecompileCallsTestSuite) setupContractForTesting(
 	vals, err := evmAppA.StakingKeeper.GetAllValidators(suite.chainA.GetContext())
 	suite.Require().NoError(err)
 
-	_, err = evmAppA.GetEVMKeeper().CallEVM(
+	sdb2 := statedb.New(ctxA, evmKeeper, statedb.NewEmptyTxConfig())
+	_, err = evmKeeper.CallEVM(
 		ctxA,
+		sdb2,
 		contractData.ABI,
 		deployerAddr,
 		contractAddr,
 		true,
+		false,
 		nil,
 		"delegate",
 		vals[0].OperatorAddress,

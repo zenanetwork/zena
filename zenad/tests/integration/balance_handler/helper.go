@@ -12,6 +12,7 @@ import (
 	"github.com/zenanetwork/zena"
 	testutiltypes "github.com/zenanetwork/zena/testutil/types"
 	evmibctesting "github.com/zenanetwork/zena/testutil/ibc"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 )
 
 // DeployContract deploys a contract to the test chain
@@ -33,7 +34,9 @@ func DeployContract(t *testing.T, chain *evmibctesting.TestChain, deploymentData
 	data := deploymentData.Contract.Bin
 	data = append(data, ctorArgs...)
 
-	_, err = chain.App.(evm.EvmApp).GetEVMKeeper().CallEVMWithData(chain.GetContext(), from, nil, data, true, nil)
+	evmKeeper := chain.App.(evm.EvmApp).GetEVMKeeper()
+	sdb := statedb.New(chain.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+	_, err = evmKeeper.CallEVMWithData(chain.GetContext(), sdb, from, nil, data, true, false, nil)
 	if err != nil {
 		return common.Address{}, errorsmod.Wrapf(err, "failed to deploy contract")
 	}

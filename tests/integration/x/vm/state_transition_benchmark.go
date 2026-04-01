@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -288,7 +289,9 @@ func BenchmarkApplyMessage(b *testing.B) {
 		require.NoError(b, err)
 
 		b.StartTimer()
-		resp, err := suite.Network.App.GetEVMKeeper().ApplyMessage(suite.Network.GetContext(), *m, nil, true, false)
+		evmKeeper := suite.Network.App.GetEVMKeeper()
+		sdb := statedb.New(suite.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+		resp, err := evmKeeper.ApplyMessage(suite.Network.GetContext(), sdb, *m, nil, true, false, false)
 		b.StopTimer()
 
 		require.NoError(b, err)
@@ -322,7 +325,9 @@ func BenchmarkApplyMessageWithLegacyTx(b *testing.B) {
 		require.NoError(b, err)
 
 		b.StartTimer()
-		resp, err := suite.Network.App.GetEVMKeeper().ApplyMessage(suite.Network.GetContext(), *m, nil, true, false)
+		evmKeeper := suite.Network.App.GetEVMKeeper()
+		sdb := statedb.New(suite.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+		resp, err := evmKeeper.ApplyMessage(suite.Network.GetContext(), sdb, *m, nil, true, false, false)
 		b.StopTimer()
 
 		require.NoError(b, err)
@@ -356,7 +361,9 @@ func BenchmarkApplyMessageWithDynamicFeeTx(b *testing.B) {
 		require.NoError(b, err)
 
 		b.StartTimer()
-		resp, err := suite.Network.App.GetEVMKeeper().ApplyMessage(suite.Network.GetContext(), *m, nil, true, false)
+		evmKeeper := suite.Network.App.GetEVMKeeper()
+		sdb := statedb.New(suite.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+		resp, err := evmKeeper.ApplyMessage(suite.Network.GetContext(), sdb, *m, nil, true, false, false)
 		b.StopTimer()
 
 		require.NoError(b, err)

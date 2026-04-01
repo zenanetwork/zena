@@ -12,6 +12,7 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cmn "github.com/zenanetwork/zena/precompiles/common"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 )
 
 // Precompile defines a debugging precompile for use in testing.
@@ -66,7 +67,8 @@ func (p Precompile) Call0(ctx sdk.Context, stateDB vm.StateDB, contract *vm.Cont
 
 	caller := contract.Caller()
 	fmt.Printf("Execute debug precompile %s, %p\n", caller.String(), p.BalanceHandlerFactory)
-	rsp, err := p.evmKeeper.CallEVMWithData(ctx, p.Address(), &caller, data, true, nil)
+	sdb := stateDB.(*statedb.StateDB)
+	rsp, err := p.evmKeeper.CallEVMWithData(ctx, sdb, p.Address(), &caller, data, true, true, nil)
 	fmt.Println("callback response:", rsp.Ret, err)
 	if err != nil {
 		return nil, err
