@@ -14,6 +14,7 @@ import (
 	evmibctesting "github.com/zenanetwork/zena/testutil/ibc"
 	testutiltypes "github.com/zenanetwork/zena/testutil/types"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 
 	errorsmod "cosmossdk.io/errors"
@@ -67,12 +68,16 @@ func SetupNativeErc20(t *testing.T, chain *evmibctesting.TestChain, senderAcc ev
 	sendAmt := ibctesting.DefaultCoinAmount
 	senderAddr := senderAcc.SenderAccount.GetAddress()
 
-	_, err = evmApp.GetEVMKeeper().CallEVM(
+	evmKeeper := evmApp.GetEVMKeeper()
+	sdb := statedb.New(evmCtx, evmKeeper, statedb.NewEmptyTxConfig())
+	_, err = evmKeeper.CallEVM(
 		evmCtx,
+		sdb,
 		contractAbi,
 		erc20types.ModuleAddress,
 		contractAddr,
 		true,
+		false,
 		nil,
 		"mint",
 		common.BytesToAddress(senderAddr),
@@ -116,7 +121,9 @@ func DeployContract(t *testing.T, chain *evmibctesting.TestChain, deploymentData
 	data := deploymentData.Contract.Bin
 	data = append(data, ctorArgs...)
 
-	_, err = chain.App.(evm.EvmApp).GetEVMKeeper().CallEVMWithData(chain.GetContext(), from, nil, data, true, nil)
+	evmKeeper2 := chain.App.(evm.EvmApp).GetEVMKeeper()
+	sdb2 := statedb.New(chain.GetContext(), evmKeeper2, statedb.NewEmptyTxConfig())
+	_, err = evmKeeper2.CallEVMWithData(chain.GetContext(), sdb2, from, nil, data, true, false, nil)
 	if err != nil {
 		return common.Address{}, errorsmod.Wrapf(err, "failed to deploy contract")
 	}

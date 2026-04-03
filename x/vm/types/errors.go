@@ -32,6 +32,7 @@ const (
 	codeErrABIPack
 	codeErrABIUnpack
 	codeErrInvalidPreinstall
+	codeErrNilStateDB
 )
 
 var (
@@ -91,6 +92,9 @@ var (
 
 	// ErrInvalidPreinstall returns an error if a preinstall is invalid
 	ErrInvalidPreinstall = errorsmod.Register(ModuleName, codeErrInvalidPreinstall, "invalid preinstall")
+
+	// ErrNilStateDB returns an error when a nil stateDB is passed
+	ErrNilStateDB = errorsmod.Register(ModuleName, codeErrNilStateDB, "stateDB cannot be nil")
 
 	// RevertSelector is selector of ErrExecutionReverted
 	RevertSelector = crypto.Keccak256([]byte("Error(string)"))[:4]

@@ -156,6 +156,41 @@ func NewMsgCreateValidator(args []interface{}, denom string, addrCdc address.Cod
 		return nil, common.Address{}, fmt.Errorf(cmn.ErrInvalidAmount, args[5])
 	}
 
+	// Validate commission rates are within valid range (H-02)
+	oneDec := math.LegacyOneDec()
+	commRate := math.LegacyNewDecFromBigIntWithPrec(commission.Rate, math.LegacyPrecision)
+	commMaxRate := math.LegacyNewDecFromBigIntWithPrec(commission.MaxRate, math.LegacyPrecision)
+	commMaxChangeRate := math.LegacyNewDecFromBigIntWithPrec(commission.MaxChangeRate, math.LegacyPrecision)
+
+	if commRate.IsNegative() {
+		return nil, common.Address{}, fmt.Errorf(cmn.ErrNegativeCommissionRate, commRate)
+	}
+	if commMaxRate.IsNegative() {
+		return nil, common.Address{}, fmt.Errorf(cmn.ErrNegativeCommissionRate, commMaxRate)
+	}
+	if commMaxChangeRate.IsNegative() {
+		return nil, common.Address{}, fmt.Errorf(cmn.ErrNegativeCommissionRate, commMaxChangeRate)
+	}
+	if commRate.GT(oneDec) {
+		return nil, common.Address{}, fmt.Errorf(cmn.ErrCommissionRateExceedsOne, commRate)
+	}
+	if commMaxRate.GT(oneDec) {
+		return nil, common.Address{}, fmt.Errorf(cmn.ErrCommissionRateExceedsOne, commMaxRate)
+	}
+	if commRate.GT(commMaxRate) {
+		return nil, common.Address{}, fmt.Errorf(cmn.ErrCommissionRateExceedsMax, commRate, commMaxRate)
+	}
+
+	// Validate minSelfDelegation is non-negative
+	if minSelfDelegation.Sign() < 0 {
+		return nil, common.Address{}, fmt.Errorf(cmn.ErrNegativeMinSelfDelegation, minSelfDelegation)
+	}
+
+	// Validate staking value is positive and within SDK bounds
+	if err := cmn.ValidatePositiveAmount(value); err != nil {
+		return nil, common.Address{}, err
+	}
+
 	delegatorAddr, err := addrCdc.BytesToString(validatorAddress.Bytes())
 	if err != nil {
 		return nil, common.Address{}, fmt.Errorf("failed to decode delegator address: %w", err)
@@ -210,6 +245,13 @@ func NewMsgEditValidator(args []interface{}) (*stakingtypes.MsgEditValidator, co
 	var commissionRate *math.LegacyDec
 	if commissionRateBigInt.Cmp(big.NewInt(DoNotModifyCommissionRate)) != 0 {
 		cr := math.LegacyNewDecFromBigIntWithPrec(commissionRateBigInt, math.LegacyPrecision)
+		// Validate commission rate range (H-02)
+		if cr.IsNegative() {
+			return nil, common.Address{}, fmt.Errorf(cmn.ErrNegativeCommissionRate, cr)
+		}
+		if cr.GT(math.LegacyOneDec()) {
+			return nil, common.Address{}, fmt.Errorf(cmn.ErrCommissionRateExceedsOne, cr)
+		}
 		commissionRate = &cr
 	}
 
@@ -220,6 +262,10 @@ func NewMsgEditValidator(args []interface{}) (*stakingtypes.MsgEditValidator, co
 
 	var minSelfDelegation *math.Int
 	if minSelfDelegationBigInt.Cmp(big.NewInt(DoNotModifyMinSelfDelegation)) != 0 {
+		// Validate minSelfDelegation is non-negative (H-02)
+		if minSelfDelegationBigInt.Sign() < 0 {
+			return nil, common.Address{}, fmt.Errorf(cmn.ErrNegativeMinSelfDelegation, minSelfDelegationBigInt)
+		}
 		msd := math.NewIntFromBigInt(minSelfDelegationBigInt)
 		minSelfDelegation = &msd
 	}

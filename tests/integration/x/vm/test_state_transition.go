@@ -26,6 +26,7 @@ import (
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	"github.com/zenanetwork/zena/x/vm/keeper"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 	"github.com/zenanetwork/zena/x/vm/types"
 
 	sdkmath "cosmossdk.io/math"
@@ -818,7 +819,9 @@ func (s *KeeperTestSuite) TestApplyMessage() {
 		*coreMsg,
 		types.GetEthChainConfig(),
 	)
-	res, err := s.Network.App.GetEVMKeeper().ApplyMessage(s.Network.GetContext(), *coreMsg, tracer, true, false)
+	evmKeeper := s.Network.App.GetEVMKeeper()
+	sdb := statedb.New(s.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+	res, err := evmKeeper.ApplyMessage(s.Network.GetContext(), sdb, *coreMsg, tracer, true, false, false)
 	s.Require().NoError(err)
 	s.Require().False(res.Failed())
 
@@ -1125,11 +1128,15 @@ func (s *KeeperTestSuite) TestApplyMessageWithConfig() {
 			)
 			s.Require().NoError(err)
 
-			res, err := s.Network.App.GetEVMKeeper().ApplyMessageWithConfig(
+			evmKeeper := s.Network.App.GetEVMKeeper()
+			sdb := statedb.New(s.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+			res, err := evmKeeper.ApplyMessageWithConfig(
 				s.Network.GetContext(),
+				sdb,
 				msg,
 				nil,
 				true,
+				false,
 				config,
 				txConfig,
 				false,
@@ -1222,11 +1229,15 @@ func (s *KeeperTestSuite) TestApplyMessageWithNegativeAmount() {
 	ctx := s.Network.GetContext()
 	balance0Before := s.Network.App.GetBankKeeper().GetBalance(ctx, s.Keyring.GetAccAddr(0), "aznnt")
 	balance1Before := s.Network.App.GetBankKeeper().GetBalance(ctx, s.Keyring.GetAccAddr(1), "aznnt")
-	res, err := s.Network.App.GetEVMKeeper().ApplyMessage(
+	evmKeeper := s.Network.App.GetEVMKeeper()
+	sdb := statedb.New(s.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+	res, err := evmKeeper.ApplyMessage(
 		s.Network.GetContext(),
+		sdb,
 		*coreMsg,
 		tracer,
 		true,
+		false,
 		false,
 	)
 	s.Require().Nil(res)

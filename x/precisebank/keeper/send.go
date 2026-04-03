@@ -220,16 +220,28 @@ func (k Keeper) sendExtendedCoins(
 		// blocked addrs which is done by the parent SendCoinsFromModuleToAccount
 		// method.
 		carryCoin := sdk.NewCoin(types.IntegerCoinDenom(), sdkmath.NewInt(1))
+
+		// Pre-validation: check reserve balance before SendCoins to avoid
+		// panic on insufficient reserve. Reserve insufficiency is a detectable
+		// state condition, not a programming error.
+		reserveBalance := k.bk.GetBalance(ctx, reserveAddr, types.IntegerCoinDenom())
+		if reserveBalance.Amount.LT(sdkmath.NewInt(1)) {
+			return errorsmod.Wrapf(
+				types.ErrInsufficientReserve,
+				"reserve has %s but needs 1%s for carry operation",
+				reserveBalance, types.IntegerCoinDenom(),
+			)
+		}
+
 		if err := k.bk.SendCoins(
 			ctx,
 			reserveAddr,
 			to, // recipient carrying
 			sdk.NewCoins(carryCoin),
 		); err != nil {
-			// Panic instead of returning error, as this will only error
-			// with invalid state or logic. Reserve should always have
-			// sufficient balance to carry fractional coins.
-			panic(fmt.Errorf("failed to carry fractional coins to %s: %w", to, err))
+			// Post-validation failure after balance check passed means
+			// a true code bug, so panic is still appropriate here.
+			panic(fmt.Errorf("failed to carry fractional coins to %s after reserve validation: %w", to, err))
 		}
 	}
 

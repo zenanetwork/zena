@@ -37,9 +37,6 @@ import (
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	ibccallbackskeeper "github.com/zenanetwork/zena/x/ibc/callbacks/keeper"
 
-	"github.com/zenanetwork/zena/x/ibc/transfer"
-	transferkeeper "github.com/zenanetwork/zena/x/ibc/transfer/keeper"
-	transferv2 "github.com/zenanetwork/zena/x/ibc/transfer/v2"
 	"github.com/zenanetwork/zena/x/precisebank"
 	precisebankkeeper "github.com/zenanetwork/zena/x/precisebank/keeper"
 	precisebanktypes "github.com/zenanetwork/zena/x/precisebank/types"
@@ -49,7 +46,9 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 	ibccallbacks "github.com/cosmos/ibc-go/v10/modules/apps/callbacks"
 	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
+	transferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	ibctransferv2 "github.com/cosmos/ibc-go/v10/modules/apps/transfer/v2"
 	ibc "github.com/cosmos/ibc-go/v10/modules/core"
 	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
 	ibcapi "github.com/cosmos/ibc-go/v10/modules/core/api"
@@ -479,16 +478,17 @@ func NewExampleApp(
 		&app.TransferKeeper,
 	)
 
-	// instantiate IBC transfer keeper AFTER the ERC-20 keeper to use it in the instantiation
+	// instantiate IBC transfer keeper using official ibc-go transfer keeper (v0.6.0)
+	// ERC20 conversions via IBC are now only handled through the ICS20 precompile
 	app.TransferKeeper = transferkeeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(keys[ibctransfertypes.StoreKey]),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
+		nil, // legacySubspace (not needed)
+		app.IBCKeeper.ChannelKeeper, // ics4Wrapper
+		app.IBCKeeper.ChannelKeeper, // channelKeeper
 		app.MsgServiceRouter(),
 		app.AccountKeeper,
 		app.BankKeeper,
-		app.Erc20Keeper, // Add ERC20 Keeper for ERC20 transfers
 		authAddr,
 	)
 	app.TransferKeeper.SetAddressCodec(evmaddress.NewEvmCodec(sdk.GetConfig().GetBech32AccountAddrPrefix()))
@@ -511,7 +511,7 @@ func NewExampleApp(
 	// create IBC module from top to bottom of stack
 	var transferStack porttypes.IBCModule
 
-	transferStack = transfer.NewIBCModule(app.TransferKeeper)
+	transferStack = ibctransfer.NewIBCModule(app.TransferKeeper)
 	maxCallbackGas := uint64(1_000_000)
 	transferStack = erc20.NewIBCMiddleware(app.Erc20Keeper, transferStack)
 	app.CallbackKeeper = ibccallbackskeeper.NewKeeper(
@@ -522,7 +522,7 @@ func NewExampleApp(
 	transferStack = ibccallbacks.NewIBCMiddleware(transferStack, app.IBCKeeper.ChannelKeeper, app.CallbackKeeper, maxCallbackGas)
 
 	var transferStackV2 ibcapi.IBCModule
-	transferStackV2 = transferv2.NewIBCModule(app.TransferKeeper)
+	transferStackV2 = ibctransferv2.NewIBCModule(app.TransferKeeper)
 	transferStackV2 = erc20v2.NewIBCMiddleware(transferStackV2, app.Erc20Keeper)
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -540,7 +540,7 @@ func NewExampleApp(
 	clientKeeper.AddRoute(ibctm.ModuleName, &tmLightClientModule)
 
 	// Override the ICS20 app module
-	transferModule := transfer.NewAppModule(app.TransferKeeper)
+	transferModule := ibctransfer.NewAppModule(app.TransferKeeper)
 
 	/****  Module Options ****/
 
@@ -585,7 +585,7 @@ func NewExampleApp(
 			genutiltypes.ModuleName:     genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
 			stakingtypes.ModuleName:     staking.AppModuleBasic{},
 			govtypes.ModuleName:         gov.NewAppModuleBasic(nil),
-			ibctransfertypes.ModuleName: transfer.AppModuleBasic{AppModuleBasic: &ibctransfer.AppModuleBasic{}},
+			ibctransfertypes.ModuleName: ibctransfer.AppModuleBasic{},
 		},
 	)
 	app.BasicModuleManager.RegisterLegacyAminoCodec(legacyAmino)

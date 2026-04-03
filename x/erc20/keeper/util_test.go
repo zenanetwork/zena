@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -8,6 +9,27 @@ import (
 
 	"github.com/zenanetwork/zena/x/vm/types"
 )
+
+var (
+	testTokenAddr = common.HexToAddress("0x1234567890abcdef")
+	testFromAddr  = common.HexToAddress("0xaaaaaaaaaaaaaaaa")
+	testToAddr    = common.HexToAddress("0xbbbbbbbbbbbbbbbb")
+	testAmount    = big.NewInt(1000)
+)
+
+// makeTopicHex returns the hex representation of an address zero-padded to 32 bytes,
+// matching how ERC-20 Transfer event indexed parameters are encoded.
+func makeTopicHex(addr common.Address) string {
+	return common.BytesToHash(common.LeftPadBytes(addr.Bytes(), 32)).Hex()
+}
+
+// makeAmountData returns the ABI-encoded uint256 representation of amount (32 bytes).
+func makeAmountData(amount *big.Int) []byte {
+	data := make([]byte, 32)
+	b := amount.Bytes()
+	copy(data[32-len(b):], b)
+	return data
+}
 
 func TestValidateApprovalEventDoesNotExist(t *testing.T) {
 	tests := []struct {
@@ -74,18 +96,31 @@ func TestValidateApprovalEventDoesNotExist(t *testing.T) {
 }
 
 func TestValidateTransferEventExists(t *testing.T) {
+	validTopics := []string{
+		logTransferSigHash.Hex(),
+		makeTopicHex(testFromAddr),
+		makeTopicHex(testToAddr),
+	}
+	validData := makeAmountData(testAmount)
+
 	tests := []struct {
-		name         string
-		res          *types.MsgEthereumTxResponse
-		tokenAddress common.Address
-		expectError  string
+		name           string
+		res            *types.MsgEthereumTxResponse
+		tokenAddress   common.Address
+		expectedFrom   common.Address
+		expectedTo     common.Address
+		expectedAmount *big.Int
+		expectError    string
 	}{
 		{
 			name: "empty logs",
 			res: &types.MsgEthereumTxResponse{
 				Logs: []*types.Log{},
 			},
-			expectError: "expected Transfer event",
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "expected Transfer event",
 		},
 		{
 			name: "no transfer event",
@@ -96,74 +131,170 @@ func TestValidateTransferEventExists(t *testing.T) {
 					},
 				},
 			},
-			tokenAddress: common.HexToAddress("0x1234567890abcdef"),
-			expectError:  "expected Transfer event",
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "expected Transfer event",
 		},
 		{
-			name: "has transfer event from different address",
+			name: "transfer event from different contract address",
 			res: &types.MsgEthereumTxResponse{
 				Logs: []*types.Log{
 					{
 						Address: common.HexToAddress("0x1234567890abcdef").Hex(),
-						Topics:  []string{logTransferSigHash.Hex()},
+						Topics:  validTopics,
+						Data:    validData,
 					},
 				},
 			},
-			tokenAddress: common.HexToAddress("fedcba0987654321"),
-			expectError:  "Transfer event from unexpected address",
+			tokenAddress:   common.HexToAddress("fedcba0987654321"),
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "Transfer event from unexpected address",
 		},
 		{
-			name: "has duplicate transfer event",
+			name: "duplicate transfer event",
 			res: &types.MsgEthereumTxResponse{
 				Logs: []*types.Log{
 					{
-						Address: common.HexToAddress("0x1234567890abcdef").Hex(),
-						Topics:  []string{logTransferSigHash.Hex()},
+						Address: testTokenAddr.Hex(),
+						Topics:  validTopics,
+						Data:    validData,
 					},
 					{
-						Address: common.HexToAddress("0x1234567890abcdef").Hex(),
-						Topics:  []string{logTransferSigHash.Hex()},
-					},
-				},
-			},
-			tokenAddress: common.HexToAddress("0x1234567890abcdef"),
-			expectError:  "duplicate Transfer event",
-		},
-		{
-			name: "has transfer event",
-			res: &types.MsgEthereumTxResponse{
-				Logs: []*types.Log{
-					{
-						Address: common.HexToAddress("0x1234567890abcdef").Hex(),
-						Topics:  []string{logTransferSigHash.Hex()},
+						Address: testTokenAddr.Hex(),
+						Topics:  validTopics,
+						Data:    validData,
 					},
 				},
 			},
-			tokenAddress: common.HexToAddress("0x1234567890abcdef"),
-			expectError:  "",
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "duplicate Transfer event",
 		},
 		{
-			name: "transfer event among others",
+			name: "topics array too short",
 			res: &types.MsgEthereumTxResponse{
 				Logs: []*types.Log{
 					{
-						Address: common.HexToAddress("0x1234567890abcdef").Hex(),
+						Address: testTokenAddr.Hex(),
+						Topics:  []string{logTransferSigHash.Hex()},
+						Data:    validData,
+					},
+				},
+			},
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "Transfer event has insufficient topics",
+		},
+		{
+			name: "wrong from address in topics",
+			res: &types.MsgEthereumTxResponse{
+				Logs: []*types.Log{
+					{
+						Address: testTokenAddr.Hex(),
+						Topics: []string{
+							logTransferSigHash.Hex(),
+							makeTopicHex(common.HexToAddress("0xcccccccccccccccc")),
+							makeTopicHex(testToAddr),
+						},
+						Data: validData,
+					},
+				},
+			},
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "Transfer from mismatch",
+		},
+		{
+			name: "wrong to address in topics",
+			res: &types.MsgEthereumTxResponse{
+				Logs: []*types.Log{
+					{
+						Address: testTokenAddr.Hex(),
+						Topics: []string{
+							logTransferSigHash.Hex(),
+							makeTopicHex(testFromAddr),
+							makeTopicHex(common.HexToAddress("0xdddddddddddddddd")),
+						},
+						Data: validData,
+					},
+				},
+			},
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "Transfer to mismatch",
+		},
+		{
+			name: "wrong amount in data",
+			res: &types.MsgEthereumTxResponse{
+				Logs: []*types.Log{
+					{
+						Address: testTokenAddr.Hex(),
+						Topics:  validTopics,
+						Data:    makeAmountData(big.NewInt(9999)),
+					},
+				},
+			},
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "Transfer value mismatch",
+		},
+		{
+			name: "valid transfer event with all fields matching",
+			res: &types.MsgEthereumTxResponse{
+				Logs: []*types.Log{
+					{
+						Address: testTokenAddr.Hex(),
+						Topics:  validTopics,
+						Data:    validData,
+					},
+				},
+			},
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "",
+		},
+		{
+			name: "valid transfer event among other logs",
+			res: &types.MsgEthereumTxResponse{
+				Logs: []*types.Log{
+					{
+						Address: testTokenAddr.Hex(),
 						Topics:  []string{"0x1234567890abcdef"},
 					},
 					{
-						Address: common.HexToAddress("0x1234567890abcdef").Hex(),
-						Topics:  []string{logTransferSigHash.Hex()},
+						Address: testTokenAddr.Hex(),
+						Topics:  validTopics,
+						Data:    validData,
 					},
 				},
 			},
-			tokenAddress: common.HexToAddress("0x1234567890abcdef"),
-			expectError:  "",
+			tokenAddress:   testTokenAddr,
+			expectedFrom:   testFromAddr,
+			expectedTo:     testToAddr,
+			expectedAmount: testAmount,
+			expectError:    "",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := validateTransferEventExists(tt.res.Logs, tt.tokenAddress)
+			err := validateTransferEventExists(tt.res.Logs, tt.tokenAddress, tt.expectedFrom, tt.expectedTo, tt.expectedAmount)
 			if tt.expectError != "" {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tt.expectError)

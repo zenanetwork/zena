@@ -318,6 +318,29 @@ func (s *KeeperTestSuite) TestConvertERC20NativeERC20() {
 			false,
 			false,
 		},
+		{
+			"fail - selfdestructed contract returns error instead of silent nil",
+			100,
+			10,
+			func(common.Address) {},
+			func() {
+				mockEVMKeeper := &erc20mocks.EVMKeeper{}
+				transferKeeper := s.network.App.GetTransferKeeper()
+				erc20Keeper := keeper.NewKeeper(
+					s.network.App.GetKey("erc20"), s.network.App.AppCodec(),
+					authtypes.NewModuleAddress(govtypes.ModuleName), s.network.App.GetAccountKeeper(),
+					s.network.App.GetBankKeeper(), mockEVMKeeper, s.network.App.GetStakingKeeper(),
+					&transferKeeper,
+				)
+				s.network.App.SetErc20Keeper(erc20Keeper)
+
+				// Simulate self-destructed contract: GetAccountWithoutBalance returns nil
+				mockEVMKeeper.On("GetAccountWithoutBalance", mock.Anything, mock.Anything).Return(nil)
+			},
+			contractMinterBurner,
+			false,
+			false,
+		},
 	}
 	for _, tc := range testCases {
 		s.Run(fmt.Sprintf("Case %s", tc.name), func() {

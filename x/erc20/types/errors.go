@@ -25,4 +25,5 @@ var (
 	ErrInvalidAllowance         = errorsmod.Register(ModuleName, 18, "invalid allowance")
 	ErrNegativeToken            = errorsmod.Register(ModuleName, 19, "token amount is negative")
 	ErrExpectedEvent            = errorsmod.Register(ModuleName, 20, "expected event")
+	ErrContractSelfDestructed   = errorsmod.Register(ModuleName, 21, "token pair contract has been self-destructed")
 )

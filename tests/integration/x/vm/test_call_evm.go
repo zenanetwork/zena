@@ -9,6 +9,7 @@ import (
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	utiltx "github.com/zenanetwork/zena/testutil/tx"
 	"github.com/zenanetwork/zena/x/erc20/types"
+	"github.com/zenanetwork/zena/x/vm/statedb"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
@@ -35,7 +36,9 @@ func (s *KeeperTestSuite) TestCallEVM() {
 
 		erc20 := contracts.ERC20MinterBurnerDecimalsContract.ABI
 		account := utiltx.GenerateAddress()
-		res, err := s.Network.App.GetEVMKeeper().CallEVM(s.Network.GetContext(), erc20, types.ModuleAddress, wcosmosEVMContract, false, nil, tc.method, account)
+		evmKeeper := s.Network.App.GetEVMKeeper()
+		sdb := statedb.New(s.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
+		res, err := evmKeeper.CallEVM(s.Network.GetContext(), sdb, erc20, types.ModuleAddress, wcosmosEVMContract, false, false, nil, tc.method, account)
 		if tc.expPass {
 			s.Require().IsTypef(&evmtypes.MsgEthereumTxResponse{}, res, tc.name)
 			s.Require().NoError(err)
@@ -133,10 +136,12 @@ func (s *KeeperTestSuite) TestCallEVMWithData() {
 			var res *evmtypes.MsgEthereumTxResponse
 			var err error
 
+			evmKeeper := s.Network.App.GetEVMKeeper()
+			sdb := statedb.New(s.Network.GetContext(), evmKeeper, statedb.NewEmptyTxConfig())
 			if tc.deploy {
-				res, err = s.Network.App.GetEVMKeeper().CallEVMWithData(s.Network.GetContext(), tc.from, nil, data, true, nil)
+				res, err = evmKeeper.CallEVMWithData(s.Network.GetContext(), sdb, tc.from, nil, data, true, false, nil)
 			} else {
-				res, err = s.Network.App.GetEVMKeeper().CallEVMWithData(s.Network.GetContext(), tc.from, &wcosmosEVMContract, data, false, nil)
+				res, err = evmKeeper.CallEVMWithData(s.Network.GetContext(), sdb, tc.from, &wcosmosEVMContract, data, false, false, nil)
 			}
 
 			if tc.expPass {
