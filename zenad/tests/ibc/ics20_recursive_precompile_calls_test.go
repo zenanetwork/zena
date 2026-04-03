@@ -228,6 +228,7 @@ func (suite *ICS20RecursivePrecompileCallsTestSuite) SetupTest() {
 		*evmAppA.StakingKeeper,
 		evmAppA.TransferKeeper,
 		evmAppA.IBCKeeper.ChannelKeeper,
+		&evmAppA.Erc20Keeper,
 	)
 	bondDenom, err := evmAppA.StakingKeeper.BondDenom(suite.chainA.GetContext())
 	suite.Require().NoError(err)
@@ -244,6 +245,7 @@ func (suite *ICS20RecursivePrecompileCallsTestSuite) SetupTest() {
 		*evmAppB.StakingKeeper,
 		evmAppB.TransferKeeper,
 		evmAppB.IBCKeeper.ChannelKeeper,
+		&evmAppB.Erc20Keeper,
 	)
 }
 

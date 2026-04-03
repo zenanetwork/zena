@@ -53,6 +53,7 @@ func (suite *ICS20TransferV2TestSuite) SetupTest() {
 		*evmAppA.StakingKeeper,
 		evmAppA.TransferKeeper,
 		evmAppA.IBCKeeper.ChannelKeeper,
+		&evmAppA.Erc20Keeper,
 	)
 	evmAppB := suite.chainB.App.(*zenad.ZENAD)
 	suite.chainBPrecompile = ics20.NewPrecompile(
@@ -60,6 +61,7 @@ func (suite *ICS20TransferV2TestSuite) SetupTest() {
 		*evmAppB.StakingKeeper,
 		evmAppB.TransferKeeper,
 		evmAppB.IBCKeeper.ChannelKeeper,
+		&evmAppB.Erc20Keeper,
 	)
 }
 
