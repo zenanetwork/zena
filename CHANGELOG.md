@@ -4,7 +4,17 @@
 
 ### DEPENDENCIES
 
+- Upgrade Cosmos SDK v0.53.4 → v0.53.6 (CometBFT v0.38.21, gogoproto v1.7.2)
+
 ### BUG FIXES
+
+- Security audit: add nil check for GetAccount in CanTransfer (C-02)
+- Security audit: add reserve balance pre-validation in precisebank (C-01)
+- Security audit: wrap ERC20 conversion in CacheContext for atomicity (C-03/M-06)
+- Security audit: strengthen Transfer event validation with full parameter check (H-01)
+- Security audit: add precompile input validation for commission/delegation bounds (H-02)
+- Security audit: return error for self-destructed token pairs (M-05)
+- Security audit: prevent nil panic in IBC callback BalanceOf (M-03)
 
 - [\#471](https://github.com/zenanetwork/zena/pull/471) Notify new block for mempool in time
 - [\#492](https://github.com/zenanetwork/zena/pull/492) Duplicate case switch to avoid empty execution block
@@ -32,6 +42,12 @@
 
 ### IMPROVEMENTS
 
+- Cosmos EVM v0.6.0: pass StateDB as explicit parameter to EVM call functions
+- Cosmos EVM v0.6.0: port counter-based StateDB event architecture (processedEventsCount)
+- Cosmos EVM v0.6.0: remove custom IBC transfer wrapper, use official ibc-go transfer keeper
+- Cosmos EVM v0.6.0: restore ERC20 conversion in ICS20 precompile (transferWithStateDB)
+- Cosmos EVM v0.6.0: add SetAddressCodec with EVM codec for transfer keeper
+- Security audit: add ERC20-PreciseBank cross-module integration tests (H-05)
 - [\#708](https://github.com/zenanetwork/zena/pull/708) Add configurable testnet validator powers
 - [\#698](https://github.com/zenanetwork/zena/pull/698) Expose mempool configuration flags and move mempool configuration in app.go to helper
 - [\#538](https://github.com/zenanetwork/zena/pull/538) Optimize `eth_estimateGas` gRPC path: short-circuit plain transfers, add optimistic gas bound based on `MaxUsedGas`.
