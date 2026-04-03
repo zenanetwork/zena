@@ -384,7 +384,7 @@ func (k *Keeper) ApplyMessage(ctx sdk.Context, stateDB *statedb.StateDB, msg cor
 //
 // # Commit parameter
 //
-// If commit is true, the `StateDB` will be committed, otherwise discarded.
+// If commit is true, the `StateDB` will be committed or flushed (if called from within a precompile), otherwise discarded.
 func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context, stateDB *statedb.StateDB, msg core.Message, tracer *tracing.Hooks, commit bool, callFromPrecompile bool, cfg *statedb.EVMConfig, txConfig statedb.TxConfig, internal bool, overrides *rpctypes.StateOverride) (*types.MsgEthereumTxResponse, error) {
 	var (
 		ret   []byte // return bytes from evm execution
@@ -450,7 +450,10 @@ func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context, stateDB *statedb.StateD
 
 	// access list preparation is moved from ante handler to here, because it's needed when `ApplyMessage` is called
 	// under contexts where ante handlers are not run, for example `eth_call` and `eth_estimateGas`.
-	stateDB.Prepare(rules, msg.From, common.Address{}, msg.To, evm.ActivePrecompiles(), msg.AccessList)
+	// If we're in a nested precompile scenario, then we don't want to prepare the stateDB a second time.
+	if !callFromPrecompile {
+		stateDB.Prepare(rules, msg.From, common.Address{}, msg.To, evm.ActivePrecompiles(), msg.AccessList)
+	}
 
 	convertedValue, err := utils.Uint256FromBigInt(msg.Value)
 	if err != nil {
@@ -517,8 +520,16 @@ func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context, stateDB *statedb.StateD
 
 	// The dirty states in `StateDB` is either committed or discarded after return
 	if commit {
-		if err := stateDB.Commit(); err != nil {
-			return nil, errorsmod.Wrap(err, "failed to commit stateDB")
+		// In a precompile context, we never want to commit, as that will collapse the cache stack.
+		// Instead, we want to flush to the cacheCtx.
+		if callFromPrecompile {
+			if err := stateDB.FlushToCacheCtx(); err != nil {
+				return nil, errorsmod.Wrap(err, "failed to flush stateDB to cacheCtx")
+			}
+		} else {
+			if err := stateDB.Commit(); err != nil {
+				return nil, errorsmod.Wrap(err, "failed to commit stateDB")
+			}
 		}
 	}
 

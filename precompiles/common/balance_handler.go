@@ -68,7 +68,14 @@ func (bh *BalanceHandler) BeforeBalanceChange(ctx sdk.Context) {
 func (bh *BalanceHandler) AfterBalanceChange(ctx sdk.Context, stateDB *statedb.StateDB) error {
 	events := ctx.EventManager().Events()
 
-	for _, event := range events[bh.prevEventsLen:] {
+	for i, event := range events[bh.prevEventsLen:] {
+		eventIdx := bh.prevEventsLen + i
+
+		// Skip events already processed by flushing before the precompile was called.
+		if stateDB.IsEventProcessed(eventIdx) {
+			continue
+		}
+
 		switch event.Type {
 		case banktypes.EventTypeCoinSpent:
 			spenderAddr, err := ParseAddress(event, banktypes.AttributeKeySpender)
