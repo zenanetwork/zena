@@ -17,6 +17,7 @@ import (
 func TestSumExtendedCoin(t *testing.T) {
 	coinInfo := testconstants.ExampleChainCoinInfo[testconstants.SixDecimalsChainID]
 	configurator := evmtypes.NewEVMConfigurator()
+	configurator.ResetTestConfig()
 	err := configurator.
 		WithEVMCoinInfo(coinInfo).
 		Configure()

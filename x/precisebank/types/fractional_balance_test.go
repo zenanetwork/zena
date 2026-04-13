@@ -6,7 +6,6 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	_ "github.com/zenanetwork/zena/testutil/setup"
 	"github.com/zenanetwork/zena/x/precisebank/types"
 
 	sdkmath "cosmossdk.io/math"

@@ -789,7 +789,7 @@ func TestCalcBaseFee(t *testing.T) {
 
 func TestHexAddressFromBech32String(t *testing.T) {
 	accAddr := "zenanet16val7w9lc7wltqvpt0kscaul4xd6l2l4e9says"
-	valAddr := "zenanetvaloper16val7w9lc7wltqvpt0kscaul4xd6l2l458rdvx"
+	valAddr := "zenanetvaloper16val7w9lc7wltqvpt0kscaul4xd6l2l4x2p4cz"
 	consAddr := "zenanetvalcons16val7w9lc7wltqvpt0kscaul4xd6l2l4jejf5r"
 	invalidAddr := "invalid1address"
 	expectedHex := "0xd33bFF38Bfc79df581815BED0c779FA99BaFAbf5"
