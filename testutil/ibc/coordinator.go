@@ -49,8 +49,15 @@ func NewCoordinator(t *testing.T, nEVMChains, mCosmosChains int, evmAppCreator i
 	}
 
 	// setup Cosmos chains
-	ibctesting.DefaultTestingAppInit = ibctesting.SetupTestingApp
+	// Use the same Zena app creator for Cosmos counterparty chains.
+	// ibc-go's simapp hardcodes "cosmos" bech32 prefix which conflicts with
+	// the "zenanet" global SDK config, causing bank keeper panics.
+	// The isEVM=false flag in NewTestChain still controls key generation
+	// (secp256k1 vs ethsecp256k1), preserving the behavioral difference.
+	ibctesting.DefaultTestingAppInit = evmAppCreator
 	for j := 1 + nEVMChains; j <= nEVMChains+mCosmosChains; j++ {
+		configurator := types.NewEVMConfigurator()
+		configurator.ResetTestConfig()
 		chainID := GetChainID(j)
 		chains[chainID] = NewTestChain(t, false, coord, chainID)
 	}

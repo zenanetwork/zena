@@ -311,7 +311,7 @@ func (suite *MiddlewareTestSuite) TestOnRecvPacketWithCallback() {
 
 			ctxB := suite.chainB.GetContext()
 			evmCtx := suite.evmChainA.GetContext()
-			bondDenom, err := suite.chainB.GetSimApp().StakingKeeper.BondDenom(ctxB)
+			bondDenom, err := suite.chainB.GetEvmApp().GetStakingKeeper().BondDenom(ctxB)
 			suite.Require().NoError(err)
 
 			// Generate the isolated address for the sender
@@ -493,7 +493,7 @@ func (suite *MiddlewareTestSuite) TestOnRecvPacket() {
 			suite.SetupTest()
 
 			ctxB := suite.chainB.GetContext()
-			bondDenom, err := suite.chainB.GetSimApp().StakingKeeper.BondDenom(ctxB)
+			bondDenom, err := suite.chainB.GetEvmApp().GetStakingKeeper().BondDenom(ctxB)
 			suite.Require().NoError(err)
 
 			sendAmt := ibctesting.DefaultCoinAmount

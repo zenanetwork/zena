@@ -162,9 +162,9 @@ func (suite *TransferTestSuite) TestHandleMsgTransfer() {
 			suite.Require().True(transferAmount.Equal(chainAEscrowBalance.Amount))
 
 			// check that voucher exists on chain B
-			chainBApp := suite.chainB.GetSimApp()
+			chainBApp := suite.chainB.GetEvmApp()
 			chainBDenom := types.NewDenom(originalCoin.Denom, traceAToB)
-			chainBBalance := chainBApp.BankKeeper.GetBalance(
+			chainBBalance := chainBApp.GetBankKeeper().GetBalance(
 				suite.chainB.GetContext(),
 				suite.chainB.SenderAccount.GetAddress(),
 				chainBDenom.IBCDenom(),
@@ -204,9 +204,9 @@ func (suite *TransferTestSuite) TestHandleMsgTransfer() {
 			chainCDenom := types.NewDenom(originalCoin.Denom, traceBToC, traceAToB)
 
 			// check that the balance is updated on chainC
-			chainCApp := suite.chainC.GetSimApp()
+			chainCApp := suite.chainC.GetEvmApp()
 			coinSentFromBToC := sdk.NewCoin(chainCDenom.IBCDenom(), transferAmount)
-			chainCBalance := chainCApp.BankKeeper.GetBalance(
+			chainCBalance := chainCApp.GetBankKeeper().GetBalance(
 				suite.chainC.GetContext(),
 				suite.chainC.SenderAccount.GetAddress(),
 				coinSentFromBToC.Denom,
@@ -214,7 +214,7 @@ func (suite *TransferTestSuite) TestHandleMsgTransfer() {
 			suite.Require().Equal(coinSentFromBToC, chainCBalance)
 
 			// check that balance on chain B is empty
-			chainBBalance = chainBApp.BankKeeper.GetBalance(
+			chainBBalance = chainBApp.GetBankKeeper().GetBalance(
 				suite.chainB.GetContext(),
 				suite.chainB.SenderAccount.GetAddress(),
 				coinSentFromBToC.Denom,
@@ -241,7 +241,7 @@ func (suite *TransferTestSuite) TestHandleMsgTransfer() {
 			// check balances for chainC are empty after transfer from chainC to chainB
 			for _, coin := range coinsSentFromBToC {
 				// check that balance on chain C is empty
-				chainCBalance := chainCApp.BankKeeper.GetBalance(
+				chainCBalance := chainCApp.GetBankKeeper().GetBalance(
 					suite.chainC.GetContext(),
 					suite.chainC.SenderAccount.GetAddress(),
 					coin.Denom,
@@ -251,7 +251,7 @@ func (suite *TransferTestSuite) TestHandleMsgTransfer() {
 
 			// check balances for chainB after transfer from chainC to chainB
 			// check that balance on chain B has the transferred amount
-			chainBBalance = chainBApp.BankKeeper.GetBalance(
+			chainBBalance = chainBApp.GetBankKeeper().GetBalance(
 				suite.chainB.GetContext(),
 				suite.chainB.SenderAccount.GetAddress(),
 				coinSentFromAToB.Denom,
@@ -260,7 +260,7 @@ func (suite *TransferTestSuite) TestHandleMsgTransfer() {
 
 			// check that module account escrow address is empty
 			escrowAddress = types.GetEscrowAddress(traceBToC.PortId, traceBToC.ChannelId)
-			chainBEscrowBalance := chainBApp.BankKeeper.GetBalance(
+			chainBEscrowBalance := chainBApp.GetBankKeeper().GetBalance(
 				suite.chainB.GetContext(),
 				escrowAddress,
 				coinSentFromAToB.Denom,
