@@ -8,6 +8,7 @@ import (
 	cosmosevmibc "github.com/zenanetwork/zena/ibc"
 	precompilestestutil "github.com/zenanetwork/zena/precompiles/testutil"
 	testconstants "github.com/zenanetwork/zena/testutil/constants"
+	_ "github.com/zenanetwork/zena/testutil/setup"
 	transfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
@@ -16,11 +17,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
-
-func init() {
-	cfg := sdk.GetConfig()
-	cfg.SetBech32PrefixForAccount("cosmos", "zenanetpub")
-}
 
 func TestGetTransferAmount(t *testing.T) {
 	testCases := []struct {
@@ -222,16 +218,16 @@ func TestGetSentCoin(t *testing.T) {
 		expCoin   sdk.Coin
 	}{
 		{
-			"get unwrapped aatom coin",
+			"get unwrapped aznnt coin",
 			baseDenom,
 			"10",
 			sdk.Coin{Denom: baseDenom, Amount: math.NewInt(10)},
 		},
 		{
-			"get ibc wrapped aatom coin",
-			"transfer/channel-0/aatom",
+			"get ibc wrapped aznnt coin",
+			"transfer/channel-0/aznnt",
 			"10",
-			sdk.Coin{Denom: precompilestestutil.AatomIbcDenom, Amount: math.NewInt(10)},
+			sdk.Coin{Denom: precompilestestutil.AznntIbcDenom, Amount: math.NewInt(10)},
 		},
 		{
 			"get ibc wrapped uosmo coin",

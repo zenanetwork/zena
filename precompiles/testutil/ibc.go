@@ -21,6 +21,6 @@ var (
 	)
 	UatomOsmoIbcDenom = UatomOsmoDenom.IBCDenom()
 
-	AatomDenom    = transfertypes.NewDenom("aznnt", transfertypes.NewHop(transfertypes.PortID, "channel-0"))
-	AatomIbcDenom = AatomDenom.IBCDenom()
+	AznntDenom    = transfertypes.NewDenom("aznnt", transfertypes.NewHop(transfertypes.PortID, "channel-0"))
+	AznntIbcDenom = AznntDenom.IBCDenom()
 )

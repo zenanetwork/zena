@@ -8,6 +8,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 
+	_ "github.com/zenanetwork/zena/testutil/setup"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

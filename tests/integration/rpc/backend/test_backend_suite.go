@@ -61,7 +61,7 @@ func (s *TestSuite) SetupTest() {
 
 	baseDir := s.T().TempDir()
 	nodeDirName := "node"
-	clientDir := filepath.Join(baseDir, nodeDirName, "evmoscli")
+	clientDir := filepath.Join(baseDir, nodeDirName, "zenacli")
 	keyRing, err := s.generateTestKeyring(clientDir)
 	if err != nil {
 		panic(err)
