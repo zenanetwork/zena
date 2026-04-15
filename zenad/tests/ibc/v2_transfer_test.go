@@ -273,8 +273,8 @@ func (suite *TransferTestSuiteV2) TestOnRecvPacket() {
 		suite.Run(tc.name, func() {
 			suite.SetupTest() // reset
 
-			simAppB := suite.chainB.GetSimApp()
-			originalBalance := simAppB.BankKeeper.GetBalance(
+			evmAppB := suite.chainB.GetEvmApp()
+			originalBalance := evmAppB.GetBankKeeper().GetBalance(
 				suite.chainB.GetContext(),
 				suite.chainB.SenderAccount.GetAddress(),
 				tc.sourceDenomToTransfer,
@@ -295,7 +295,7 @@ func (suite *TransferTestSuiteV2) TestOnRecvPacket() {
 			_, err := suite.chainB.SendMsgs(msg)
 			suite.Require().NoError(err) // message committed
 
-			token, err := simAppB.TransferKeeper.TokenFromCoin(suite.chainB.GetContext(), originalCoin)
+			token, err := evmAppB.GetTransferKeeper().TokenFromCoin(suite.chainB.GetContext(), originalCoin)
 			suite.Require().NoError(err)
 
 			transferData := types.NewFungibleTokenPacketData(
@@ -330,7 +330,7 @@ func (suite *TransferTestSuiteV2) TestOnRecvPacket() {
 
 				escrowAddress := types.GetEscrowAddress(types.PortID, suite.pathBToA.EndpointB.ClientID)
 				// check that the balance for evmChainA is updated
-				chainBBalance := simAppB.BankKeeper.GetBalance(
+				chainBBalance := evmAppB.GetBankKeeper().GetBalance(
 					suite.chainB.GetContext(),
 					suite.chainB.SenderAccount.GetAddress(),
 					originalCoin.Denom,
@@ -338,7 +338,7 @@ func (suite *TransferTestSuiteV2) TestOnRecvPacket() {
 				suite.Require().Equal(originalBalance.Amount.Sub(amount).Int64(), chainBBalance.Amount.Int64())
 
 				// check that module account escrow address has locked the tokens
-				chainBEscrowBalance := simAppB.BankKeeper.GetBalance(
+				chainBEscrowBalance := evmAppB.GetBankKeeper().GetBalance(
 					suite.chainB.GetContext(),
 					escrowAddress,
 					originalCoin.Denom,

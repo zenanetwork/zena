@@ -3,67 +3,34 @@ package zenad
 import (
 	"context"
 
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/zenanetwork/zena/x/vm/types"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 )
 
-// UpgradeName defines the on-chain upgrade name for the sample ZENAD upgrade
-// from v0.4.0 to v0.5.0.
+// UpgradeName is the on-chain upgrade identifier for migrating Zena mainnet
+// from v0.5.0 to v0.6.0.
 //
-// NOTE: This upgrade defines a reference implementation of what an upgrade
-// could look like when an application is migrating from ZENAD version
-// v0.4.0 to v0.5.x
-const UpgradeName = "v0.4.0-to-v0.5.0"
+// v0.6.0 ships:
+//   - CRITICAL/HIGH security fixes (see claudedocs/security-audit/)
+//   - Rebranding of test data (aatom → aznnt, cosmos → zenanet prefixes)
+//   - Cosmos SDK v0.53.4 → v0.53.6 + StateDB event architecture port
+//   - Test infrastructure improvements (testutil/setup, proto-gen fix)
+//
+// No on-chain state migration is currently required: the security fixes do
+// not change storage layouts, and rebranding affects test-only data. If
+// v0.7.0 introduces storage migrations, extend the handler below and add
+// entries to StoreUpgrades.
+const UpgradeName = "v0.5.0-to-v0.6.0"
 
 func (app ZENAD) RegisterUpgradeHandlers() {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		UpgradeName,
 		func(ctx context.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			sdkCtx := sdk.UnwrapSDKContext(ctx)
-			sdkCtx.Logger().Debug("this is a debug level message to test that verbose logging mode has properly been enabled during a chain upgrade")
-
-			app.BankKeeper.SetDenomMetaData(ctx, banktypes.Metadata{
-				Description: "Example description",
-				DenomUnits: []*banktypes.DenomUnit{
-					{
-						Denom:    "atest",
-						Exponent: 0,
-						Aliases:  nil,
-					},
-					{
-						Denom:    "test",
-						Exponent: 18,
-						Aliases:  nil,
-					},
-				},
-				Base:    "atest",
-				Display: "test",
-				Name:    "Test Token",
-				Symbol:  "TEST",
-				URI:     "example_uri",
-				URIHash: "example_uri_hash",
-			})
-
-			// (Required for NON-18 denom chains *only)
-			// Update EVM params to add Extended denom options
-			// Ensure that this corresponds to the EVM denom
-			// (tyically the bond denom)
-			evmParams := app.EVMKeeper.GetParams(sdkCtx)
-			evmParams.ExtendedDenomOptions = &types.ExtendedDenomOptions{ExtendedDenom: "atest"}
-			err := app.EVMKeeper.SetParams(sdkCtx, evmParams)
-			if err != nil {
-				return nil, err
-			}
-			// Initialize EvmCoinInfo in the module store
-			if err := app.EVMKeeper.InitEvmCoinInfo(sdkCtx); err != nil {
-				return nil, err
-			}
+			// v0.5.0 → v0.6.0 does not need custom state migrations. Running
+			// the module manager's migrations is sufficient to apply any
+			// upstream Cosmos SDK module version bumps picked up by v0.53.6.
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
 	)
@@ -77,7 +44,6 @@ func (app ZENAD) RegisterUpgradeHandlers() {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Added: []string{},
 		}
-		// configure store loader that checks if version == upgradeHeight and applies store upgrades
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
 	}
 }

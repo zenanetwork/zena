@@ -29,7 +29,6 @@ import (
 	"github.com/cosmos/ibc-go/v10/modules/core/exported"
 	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
 	ibctesting "github.com/cosmos/ibc-go/v10/testing"
-	"github.com/cosmos/ibc-go/v10/testing/simapp"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
@@ -239,11 +238,11 @@ func (chain *TestChain) GetContext() sdk.Context {
 	return chain.App.GetBaseApp().NewUncachedContext(false, chain.ProposedHeader)
 }
 
-// GetSimApp returns the SimApp to allow usage ofnon-interface fields.
-// CONTRACT: This function should not be called by third parties implementing
-// their own SimApp.
-func (chain *TestChain) GetSimApp() *simapp.SimApp {
-	app, ok := chain.App.(*simapp.SimApp)
+// GetEvmApp returns the app as an EvmApp interface to access keepers
+// (BankKeeper, StakingKeeper, AccountKeeper, etc.) without depending on
+// ibc-go's simapp type.
+func (chain *TestChain) GetEvmApp() evm.EvmApp {
+	app, ok := chain.App.(evm.EvmApp)
 	require.True(chain.TB, ok)
 
 	return app
@@ -692,7 +691,7 @@ func (chain *TestChain) GetTimeoutTimestampSecs() uint64 {
 
 // DeleteKey deletes the specified key from the ibc store.
 func (chain *TestChain) DeleteKey(key []byte) {
-	storeKey := chain.GetSimApp().GetKey(exported.StoreKey)
+	storeKey := chain.GetEvmApp().GetKey(exported.StoreKey)
 	kvStore := chain.GetContext().KVStore(storeKey)
 	kvStore.Delete(key)
 }
@@ -723,7 +722,7 @@ func (chain *TestChain) IBCClientHeader(header *ibctm.Header, trustedHeight clie
 
 // GetSenderAccount returns the sender account associated with the provided private key.
 func (chain *TestChain) GetSenderAccount(privKey cryptotypes.PrivKey) SenderAccount {
-	account := chain.GetSimApp().AccountKeeper.GetAccount(chain.GetContext(), sdk.AccAddress(privKey.PubKey().Address()))
+	account := chain.GetEvmApp().GetAccountKeeper().GetAccount(chain.GetContext(), sdk.AccAddress(privKey.PubKey().Address()))
 
 	return SenderAccount{
 		SenderPrivKey: privKey,

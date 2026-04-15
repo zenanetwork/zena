@@ -43,7 +43,7 @@ func setupMockBackend(t *testing.T) *Backend {
 
 	baseDir := t.TempDir()
 	nodeDirName := "node"
-	clientDir := filepath.Join(baseDir, nodeDirName, "evmoscli")
+	clientDir := filepath.Join(baseDir, nodeDirName, "zenacli")
 
 	keyRing := keyring.NewInMemory(client.Context{}.Codec)
 

@@ -16,6 +16,7 @@ import (
 	"github.com/zenanetwork/zena/crypto/hd"
 	"github.com/zenanetwork/zena/rpc/types"
 	"github.com/zenanetwork/zena/testutil/constants"
+	_ "github.com/zenanetwork/zena/testutil/setup"
 	"github.com/zenanetwork/zena/utils"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
@@ -92,8 +93,6 @@ func TestIsSupportedKeys(t *testing.T) {
 }
 
 func TestIsBech32Address(t *testing.T) {
-	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount("cosmos", "zenanetpub")
 
 	testCases := []struct {
 		name    string
@@ -139,8 +138,6 @@ func TestIsBech32Address(t *testing.T) {
 }
 
 func TestGetAccAddressFromBech32(t *testing.T) {
-	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount("cosmos", "zenanetpub")
 
 	testCases := []struct {
 		name       string
@@ -169,7 +166,7 @@ func TestGetAccAddressFromBech32(t *testing.T) {
 		{
 			"evmos address",
 			"evmos1ltzy54ms24v590zz37r2q9hrrdcc8eslndsqwv",
-			"cosmos1ltzy54ms24v590zz37r2q9hrrdcc8esl3vpw5y",
+			"zenanet1ltzy54ms24v590zz37r2q9hrrdcc8esle6xtsp",
 			false,
 		},
 		{
@@ -303,8 +300,6 @@ func TestAccAddressFromBech32(t *testing.T) {
 }
 
 func TestAddressConversion(t *testing.T) {
-	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount("cosmos", "zenanetpub")
 
 	require.Equal(t, bech32, utils.Bech32StringFromHexAddress(hex))
 	gotAddr, err := utils.HexAddressFromBech32String(bech32)
@@ -794,7 +789,7 @@ func TestCalcBaseFee(t *testing.T) {
 
 func TestHexAddressFromBech32String(t *testing.T) {
 	accAddr := "zenanet16val7w9lc7wltqvpt0kscaul4xd6l2l4e9says"
-	valAddr := "zenanetvaloper16val7w9lc7wltqvpt0kscaul4xd6l2l458rdvx"
+	valAddr := "zenanetvaloper16val7w9lc7wltqvpt0kscaul4xd6l2l4x2p4cz"
 	consAddr := "zenanetvalcons16val7w9lc7wltqvpt0kscaul4xd6l2l4jejf5r"
 	invalidAddr := "invalid1address"
 	expectedHex := "0xd33bFF38Bfc79df581815BED0c779FA99BaFAbf5"

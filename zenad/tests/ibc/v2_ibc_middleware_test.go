@@ -226,7 +226,7 @@ func (suite *MiddlewareV2TestSuite) TestOnRecvPacket() {
 		suite.Run(tc.name, func() {
 			suite.SetupTest()
 			ctx = suite.chainB.GetContext()
-			bondDenom, err := suite.chainB.GetSimApp().StakingKeeper.BondDenom(ctx)
+			bondDenom, err := suite.chainB.GetEvmApp().GetStakingKeeper().BondDenom(ctx)
 			suite.Require().NoError(err)
 			receiver := suite.evmChainA.SenderAccount.GetAddress()
 			sendAmt := ibctesting.DefaultCoinAmount

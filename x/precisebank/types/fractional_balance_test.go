@@ -54,7 +54,7 @@ func TestNewFractionalBalance(t *testing.T) {
 	}{
 		{
 			"correctly sets fields",
-			"cosmos1qperwt9wrnkg5k9e5gzfgjppzpqur82k6c5a0n",
+			"zenanet1gpxd677pp8zr97xvy3pmgk70a9vcpagsf4lhey",
 			sdkmath.NewInt(100),
 		},
 	}
@@ -114,7 +114,7 @@ func TestFractionalBalance_Validate(t *testing.T) {
 		},
 		{
 			"invalid - mixed case address",
-			"cosmos1gpxd677pP8zr97xvy3pmgk70a9vcpagsprcjap",
+			"zenanet1gpxd677pP8zr97xvy3pmgk70a9vcpagsF4lhey",
 			sdkmath.NewInt(100),
 			"decoding bech32 failed: string not all lowercase or all uppercase",
 		},
