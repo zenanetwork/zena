@@ -39,7 +39,7 @@ func BankSendWithEIP712(
 	}
 	accountNumber := account.GetAccountNumber()
 
-	msg := banktypes.NewMsgSend(from, to, sdk.NewCoins(sdk.NewCoin("atest", amount)))
+	msg := banktypes.NewMsgSend(from, to, sdk.NewCoins(sdk.NewCoin("aznnt", amount)))
 
 	txBytes, err := signMsgsWithEIP712(cosmosClient, privKey, accountNumber, nonce, gasPrice, msg)
 	if err != nil {
@@ -71,7 +71,7 @@ func signMsgsWithEIP712(
 	txBuilder := cosmosClient.ClientCtx.TxConfig.NewTxBuilder()
 
 	txBuilder.SetGasLimit(150_000)
-	txBuilder.SetFeeAmount(sdk.NewCoins(sdk.NewCoin("atest", sdkmath.NewIntFromBigInt(gasPrice).MulRaw(150_001))))
+	txBuilder.SetFeeAmount(sdk.NewCoins(sdk.NewCoin("aznnt", sdkmath.NewIntFromBigInt(gasPrice).MulRaw(150_001))))
 
 	err := txBuilder.SetMsgs(msg)
 	if err != nil {

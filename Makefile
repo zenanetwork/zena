@@ -380,18 +380,28 @@ test-rpc-compat-stop:
 
 .PHONY: localnet-start localnet-stop localnet-build-env localnet-build-nodes test-rpc-compat test-rpc-compat-stop
 
-test-system: build-v04 build
+# LEGACY_REF is the commit of the binary the Zenanet mainnet runs today. The
+# upgrade system test starts a chain with it and upgrades to the current branch.
+LEGACY_REF ?= af31aba
+LEGACY_SRC := $(BUILDDIR)/legacy-src
+
+test-system: build-legacy build
 	mkdir -p ./tests/systemtests/binaries/
 	cp $(BUILDDIR)/zenad ./tests/systemtests/binaries/
 	cd tests/systemtests/Counter && forge build
 	$(MAKE) -C tests/systemtests test
 
-build-v04:
-	mkdir -p ./tests/systemtests/binaries/v0.4
-	git checkout v0.4.1
-	make build
-	cp $(BUILDDIR)/zenad ./tests/systemtests/binaries/v0.4
-	git checkout -
+# build-legacy builds LEGACY_REF in a temporary git worktree, so the current
+# checkout (and any uncommitted change) is left untouched.
+build-legacy:
+	mkdir -p ./tests/systemtests/binaries/legacy
+	rm -rf $(LEGACY_SRC) && git worktree prune
+	git worktree add --force --detach $(LEGACY_SRC) $(LEGACY_REF)
+	$(MAKE) -C $(LEGACY_SRC) build BUILDDIR=$(BUILDDIR)/legacy
+	cp $(BUILDDIR)/legacy/zenad ./tests/systemtests/binaries/legacy/zenad
+	git worktree remove --force $(LEGACY_SRC)
+
+.PHONY: test-system build-legacy
 
 mocks:
 	@echo "--> generating mocks"

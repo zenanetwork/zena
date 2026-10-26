@@ -54,7 +54,7 @@ func TestEIP712BankSendWithBalanceCheck(t *testing.T) {
 	sut := NewSystemTestSuite(t)
 	sut.SetupTest(t)
 
-	denom := "atest"
+	denom := "aznnt"
 
 	// Get accounts
 	fromAddr := sut.CosmosClient.Accs[sut.Acc(0)].AccAddress
@@ -125,7 +125,7 @@ func TestEIP712MultipleBankSends(t *testing.T) {
 	sut := NewSystemTestSuite(t)
 	sut.SetupTest(t)
 
-	denom := "atest"
+	denom := "aznnt"
 	toAddr := sut.CosmosClient.Accs[sut.Acc(1)].AccAddress
 
 	// Get initial balance

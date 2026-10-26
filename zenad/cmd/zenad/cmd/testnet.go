@@ -71,7 +71,9 @@ var (
 	unsafeStartValidatorFn UnsafeStartValidatorCmdCreator
 )
 
-const TEST_DENOM = "atest"
+// TEST_DENOM funds the testnet accounts and is the EVM denom of the testnet; it
+// must match the base of the bank metadata written below (config.NativeDenomMetadata).
+const TEST_DENOM = config.ZenaChainDenom
 
 var mnemonics = []string{
 	"copper push brief egg scan entry inform record adjust fossil boss egg comic alien upon aspect dry avoid interest fury window hint race symptom",

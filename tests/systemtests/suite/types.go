@@ -9,7 +9,7 @@ const (
 	NodeArgsApiEnable                  = "--api.enable=true"
 	NodeArgsJsonrpcApi                 = "--json-rpc.api=eth,txpool,personal,net,debug,web3"
 	NodeArgsJsonrpcAllowUnprotectedTxs = "--json-rpc.allow-unprotected-txs=true"
-	NodeArgsMinimumGasPrice            = "--minimum-gas-prices=0.000001atest"
+	NodeArgsMinimumGasPrice            = "--minimum-gas-prices=0.000001aznnt"
 	NodeArgsMaxTxs                     = "--mempool.max-txs=0"
 )
 
@@ -60,5 +60,5 @@ func MinimumGasPriceZeroArgs() []string {
 		}
 	}
 	// Add the zero minimum gas price argument
-	return append(DefaultNodeArgs(), "--minimum-gas-prices=0atest")
+	return append(DefaultNodeArgs(), "--minimum-gas-prices=0aznnt")
 }
