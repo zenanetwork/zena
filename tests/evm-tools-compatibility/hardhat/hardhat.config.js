@@ -29,7 +29,7 @@ module.exports = {
     customChains: [
       {
         network: "localhost",
-        chainId: 262144,
+        chainId: 15150,
         urls: {
           apiURL: "http://localhost/api",
           browserURL: "http://localhost"
