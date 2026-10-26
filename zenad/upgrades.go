@@ -18,9 +18,18 @@ import (
 // stabilization upgrade.
 //
 // The upgrade carries the state machine changes accumulated since the
-// mainnet genesis binary (Cosmos SDK v0.53.6, Cosmos EVM v0.6.0 StateDB port,
-// official ibc-go transfer keeper, security audit fixes) and runs the
-// following migrations:
+// mainnet genesis binary (based on Cosmos EVM v0.5.0, Cosmos SDK v0.53.4,
+// CometBFT v0.38.18):
+//   - Cosmos EVM v0.6.0 port (ASA-2026-002 ICS20 precompile fix, StateDB as
+//     parameter of internal EVM calls, official ibc-go transfer keeper)
+//   - Cosmos EVM v0.6.1-v0.6.3 fixes (GHSA-7g4w-cg88-2cq2 balance underflow,
+//     GHSA-367m-g444-9mg3 non-atomic StateDB commit, locked balance snapshot,
+//     precompile gas semantics, ICS-20 v2 ack validation)
+//   - Cosmos SDK v0.53.8, CometBFT v0.38.26, ibc-go v10.7.0
+//   - security audit fixes
+//
+// None of these change a module consensus version or a store key. The
+// handler runs the following migrations:
 //   - remove the unimplemented static precompiles (0x...0803, 0x...0807)
 //     from the EVM active_static_precompiles parameter
 //   - make sure the native aznnt bank denom metadata exists
