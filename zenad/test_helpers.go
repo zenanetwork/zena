@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/zenanetwork/zena/config"
+	testconfig "github.com/zenanetwork/zena/testutil/config"
 	"github.com/zenanetwork/zena/testutil/integration/evm/network"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	"github.com/zenanetwork/zena/x/vm/types"
 	"testing"
 
@@ -58,7 +60,7 @@ func setup(withGenesis bool, invCheckPeriod uint, chainID string, evmChainID uin
 
 	app := NewExampleApp(log.NewNopLogger(), db, nil, true, appOptions, baseapp.SetChainID(chainID))
 	if withGenesis {
-		return app, app.DefaultGenesis()
+		return app, testGenesis(app)
 	}
 
 	return app, GenesisState{}
@@ -139,6 +141,15 @@ func SetupTestingApp(chainID string) func() (ibctesting.TestingApp, map[string]j
 			simtestutil.NewAppOptionsWithFlagHome(defaultNodeHome),
 			baseapp.SetChainID(chainID),
 		)
-		return app, app.DefaultGenesis()
+		return app, testGenesis(app)
 	}
+}
+
+// testGenesis returns the app default genesis plus the test-only native ERC-20
+// token pair (testutil/config) that the integration and IBC tests rely on.
+// The production DefaultGenesis intentionally registers no token pair.
+func testGenesis(app *ZENAD) GenesisState {
+	genesis := app.DefaultGenesis()
+	genesis[erc20types.ModuleName] = app.AppCodec().MustMarshalJSON(testconfig.NewErc20GenesisState())
+	return genesis
 }
