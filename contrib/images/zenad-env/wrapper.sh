@@ -10,10 +10,10 @@ if ! [ -f "${BINARY}" ]; then
 	exit 1
 fi
 
-export EVMDHOME="/data/node${ID}/zenad"
+export ZENADHOME="/data/node${ID}/zenad"
 
-if [ -d "$(dirname "${EVMDHOME}"/"${LOG}")" ]; then
-  "${BINARY}" --home "${EVMDHOME}" "$@" | tee "${EVMDHOME}/${LOG}"
+if [ -d "$(dirname "${ZENADHOME}"/"${LOG}")" ]; then
+  "${BINARY}" --home "${ZENADHOME}" "$@" | tee "${ZENADHOME}/${LOG}"
 else
-  "${BINARY}" --home "${EVMDHOME}" "$@"
+  "${BINARY}" --home "${ZENADHOME}" "$@"
 fi
