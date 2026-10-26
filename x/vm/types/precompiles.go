@@ -9,10 +9,18 @@ const (
 	StakingPrecompileAddress      = "0x0000000000000000000000000000000000000800"
 	DistributionPrecompileAddress = "0x0000000000000000000000000000000000000801"
 	ICS20PrecompileAddress        = "0x0000000000000000000000000000000000000802"
-	VestingPrecompileAddress      = "0x0000000000000000000000000000000000000803"
 	BankPrecompileAddress         = "0x0000000000000000000000000000000000000804"
 	GovPrecompileAddress          = "0x0000000000000000000000000000000000000805"
 	SlashingPrecompileAddress     = "0x0000000000000000000000000000000000000806"
+)
+
+const (
+	// VestingPrecompileAddress is the address reserved by upstream Cosmos EVM for the
+	// vesting precompile. Zenanet does not ship an implementation for it.
+	VestingPrecompileAddress = "0x0000000000000000000000000000000000000803"
+	// ICS02PrecompileAddress is the address used by newer upstream Cosmos EVM releases for
+	// the ICS-02 client precompile. Zenanet does not ship an implementation for it.
+	ICS02PrecompileAddress = "0x0000000000000000000000000000000000000807"
 )
 
 // AvailableStaticPrecompiles defines the full list of all available EVM extension addresses.
@@ -25,8 +33,16 @@ var AvailableStaticPrecompiles = []string{
 	StakingPrecompileAddress,
 	DistributionPrecompileAddress,
 	ICS20PrecompileAddress,
-	VestingPrecompileAddress,
 	BankPrecompileAddress,
 	GovPrecompileAddress,
 	SlashingPrecompileAddress,
+}
+
+// UnimplementedStaticPrecompiles lists precompile addresses that have no implementation in
+// this binary but were enabled in active_static_precompiles by earlier genesis scripts.
+// They must never be active: calling an active address without an implementation panics
+// in Keeper.GetStaticPrecompileInstance.
+var UnimplementedStaticPrecompiles = []string{
+	VestingPrecompileAddress,
+	ICS02PrecompileAddress,
 }

@@ -2,6 +2,7 @@ package config
 
 import (
 	"maps"
+	"slices"
 	"sort"
 
 	corevm "github.com/ethereum/go-ethereum/core/vm"
@@ -55,6 +56,7 @@ var maccPerms = map[string][]string{
 //   - module accounts
 //   - Ethereum's native precompiled smart contracts
 //   - Cosmos EVM' available static precompiled contracts
+//   - reserved static precompile addresses without an implementation
 func BlockedAddresses() map[string]bool {
 	blockedAddrs := make(map[string]bool)
 
@@ -69,7 +71,7 @@ func BlockedAddresses() map[string]bool {
 		blockedAddrs[authtypes.NewModuleAddress(acc).String()] = true
 	}
 
-	blockedPrecompilesHex := evmtypes.AvailableStaticPrecompiles
+	blockedPrecompilesHex := slices.Concat(evmtypes.AvailableStaticPrecompiles, evmtypes.UnimplementedStaticPrecompiles)
 	for _, addr := range corevm.PrecompiledAddressesPrague {
 		blockedPrecompilesHex = append(blockedPrecompilesHex, addr.Hex())
 	}

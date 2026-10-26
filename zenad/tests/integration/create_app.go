@@ -11,7 +11,9 @@ import (
 	"github.com/zenanetwork/zena/config"
 	"github.com/zenanetwork/zena/zenad"
 	srvflags "github.com/zenanetwork/zena/server/flags"
+	testconfig "github.com/zenanetwork/zena/testutil/config"
 	"github.com/zenanetwork/zena/testutil/constants"
+	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 
 	clienthelpers "cosmossdk.io/client/v2/helpers"
@@ -69,6 +71,8 @@ func SetupEvmd() (ibctesting.TestingApp, map[string]json.RawMessage) {
 	mintGen := minttypes.DefaultGenesisState()
 	mintGen.Params.MintDenom = config.ExampleChainDenom
 	genesisState[minttypes.ModuleName] = app.AppCodec().MustMarshalJSON(mintGen)
+	// the production default genesis registers no native token pair; add the test-only one
+	genesisState[erc20types.ModuleName] = app.AppCodec().MustMarshalJSON(testconfig.NewErc20GenesisState())
 
 	return app, genesisState
 }

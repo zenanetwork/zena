@@ -30,8 +30,8 @@ export GO111MODULE = on
 ###############################################################################
 
 # zenad is a separate module under ./zenad
-EVMD_DIR      := zenad
-EVMD_MAIN_PKG := ./cmd/zenad
+ZENAD_DIR      := zenad
+ZENAD_MAIN_PKG := ./cmd/zenad
 
 ###############################################################################
 ###                        Build & Install zenad                             ###
@@ -90,8 +90,8 @@ endif
 # Build into $(BUILDDIR)
 build: go.sum $(BUILDDIR)/
 	@echo "🏗️  Building zenad to $(BUILDDIR)/$(EXAMPLE_BINARY) ..."
-	@cd $(EVMD_DIR) && CGO_ENABLED="1" \
-	  go build $(BUILD_FLAGS) -o $(BUILDDIR)/$(EXAMPLE_BINARY) $(EVMD_MAIN_PKG)
+	@cd $(ZENAD_DIR) && CGO_ENABLED="1" \
+	  go build $(BUILD_FLAGS) -o $(BUILDDIR)/$(EXAMPLE_BINARY) $(ZENAD_MAIN_PKG)
 
 # Cross-compile for Linux AMD64
 build-linux:
@@ -100,8 +100,8 @@ build-linux:
 # Install into $(BINDIR)
 install: go.sum
 	@echo "🚚  Installing zenad to $(BINDIR) ..."
-	@cd $(EVMD_DIR) && CGO_ENABLED="1" \
-	  go install $(BUILD_FLAGS) $(EVMD_MAIN_PKG)
+	@cd $(ZENAD_DIR) && CGO_ENABLED="1" \
+	  go install $(BUILD_FLAGS) $(ZENAD_MAIN_PKG)
 
 $(BUILDDIR)/:
 	mkdir -p $(BUILDDIR)/
@@ -129,7 +129,7 @@ vulncheck:
 
 PACKAGES_NOSIMULATION=$(shell go list ./... | grep -v '/simulation')
 PACKAGES_UNIT := $(shell go list ./... | grep -v '/tests/e2e$$' | grep -v '/simulation')
-PACKAGES_EVMD := $(shell cd zenad && go list ./... | grep -v '/simulation')
+PACKAGES_ZENAD := $(shell cd zenad && go list ./... | grep -v '/simulation')
 COVERPKG_EVM  := $(shell go list ./... | grep -v '/tests/e2e$$' | grep -v '/simulation' | paste -sd, -)
 COVERPKG_ALL  := $(COVERPKG_EVM)
 COMMON_COVER_ARGS := -timeout=15m -covermode=atomic
@@ -147,7 +147,7 @@ test-race: run-tests
 
 test-zenad: ARGS=-timeout=15m
 test-zenad:
-	@cd zenad && go test -race -tags=test -mod=readonly $(ARGS) $(EXTRA_ARGS) $(PACKAGES_EVMD)
+	@cd zenad && go test -race -tags=test -mod=readonly $(ARGS) $(EXTRA_ARGS) $(PACKAGES_ZENAD)
 
 test-unit-cover: ARGS=-timeout=15m -coverprofile=coverage.txt -covermode=atomic
 test-unit-cover: TEST_PACKAGES=$(PACKAGES_UNIT)
@@ -155,9 +155,9 @@ test-unit-cover: run-tests
 	@echo "🔍 Running evm (root) coverage..."
 	@go test -race -tags=test $(COMMON_COVER_ARGS) -coverpkg=$(COVERPKG_ALL) -coverprofile=coverage.txt ./...
 	@echo "🔍 Running zenad coverage..."
-	@cd zenad && go test -race -tags=test $(COMMON_COVER_ARGS) -coverpkg=$(COVERPKG_ALL) -coverprofile=coverage_evmd.txt ./...
+	@cd zenad && go test -race -tags=test $(COMMON_COVER_ARGS) -coverpkg=$(COVERPKG_ALL) -coverprofile=coverage_zenad.txt ./...
 	@echo "🔀 Merging zenad coverage into root coverage..."
-	@tail -n +2 zenad/coverage_evmd.txt >> coverage.txt && rm zenad/coverage_evmd.txt
+	@tail -n +2 zenad/coverage_zenad.txt >> coverage.txt && rm zenad/coverage_zenad.txt
 	@echo "🧹 Filtering ignored files from coverage.txt..."
 	@grep -v -E '/cmd/|/client/|/proto/|/testutil/|/mocks/|/test_.*\.go:|\.pb\.go:|\.pb\.gw\.go:|/x/[^/]+/module\.go:|/scripts/|/ibc/testing/|/version/|\.md:|\.pulsar\.go:' coverage.txt > tmp_coverage.txt && mv tmp_coverage.txt coverage.txt
 	@echo "📊 Coverage summary:"
@@ -169,7 +169,7 @@ test-all:
 	@echo "🔍 Running evm module tests..."
 	@go test -race -tags=test -mod=readonly -timeout=15m $(PACKAGES_NOSIMULATION)
 	@echo "🔍 Running zenad module tests..."
-	@cd zenad && go test -race -tags=test -mod=readonly -timeout=15m $(PACKAGES_EVMD)
+	@cd zenad && go test -race -tags=test -mod=readonly -timeout=15m $(PACKAGES_ZENAD)
 
 run-tests:
 ifneq (,$(shell which tparse 2>/dev/null))
@@ -295,7 +295,9 @@ proto-check-breaking:
 ###############################################################################
 
 PACKAGE_NAME:=github.com/zenanetwork/zena
-GOLANG_CROSS_VERSION  = v1.22
+# NOTE: goreleaser-cross has no v1.23.8 image; v1.23.6 is the newest 1.23.x tag.
+# The go directive in go.mod (1.23.8) makes the go command fetch the matching toolchain.
+GOLANG_CROSS_VERSION  = v1.23.6
 GOPATH ?= '$(HOME)/go'
 release-dry-run:
 	docker run \
@@ -366,7 +368,7 @@ localnet-stop:
 	docker compose down
 
 # localnet-start will run a 4-node testnet locally. The nodes are
-# based off the docker images in: ./contrib/images/simd-env
+# based off the docker images in: ./contrib/images/zenad-env
 localnet-start: localnet-stop localnet-build-env localnet-build-nodes
 
 
@@ -378,18 +380,29 @@ test-rpc-compat-stop:
 
 .PHONY: localnet-start localnet-stop localnet-build-env localnet-build-nodes test-rpc-compat test-rpc-compat-stop
 
-test-system: build-v04 build
+# LEGACY_REF is the commit of the binary the Zenanet mainnet runs today. The
+# upgrade system test starts a chain with it and upgrades to the current branch.
+LEGACY_REF ?= af31aba
+LEGACY_SRC := $(BUILDDIR)/legacy-src
+
+test-system: build-legacy build
 	mkdir -p ./tests/systemtests/binaries/
 	cp $(BUILDDIR)/zenad ./tests/systemtests/binaries/
+	git submodule update --init tests/systemtests/Counter/lib/forge-std
 	cd tests/systemtests/Counter && forge build
 	$(MAKE) -C tests/systemtests test
 
-build-v04:
-	mkdir -p ./tests/systemtests/binaries/v0.4
-	git checkout v0.4.1
-	make build
-	cp $(BUILDDIR)/zenad ./tests/systemtests/binaries/v0.4
-	git checkout -
+# build-legacy builds LEGACY_REF in a temporary git worktree, so the current
+# checkout (and any uncommitted change) is left untouched.
+build-legacy:
+	mkdir -p ./tests/systemtests/binaries/legacy
+	rm -rf $(LEGACY_SRC) && git worktree prune
+	git worktree add --force --detach $(LEGACY_SRC) $(LEGACY_REF)
+	$(MAKE) -C $(LEGACY_SRC) build BUILDDIR=$(BUILDDIR)/legacy
+	cp $(BUILDDIR)/legacy/zenad ./tests/systemtests/binaries/legacy/zenad
+	git worktree remove --force $(LEGACY_SRC)
+
+.PHONY: test-system build-legacy
 
 mocks:
 	@echo "--> generating mocks"

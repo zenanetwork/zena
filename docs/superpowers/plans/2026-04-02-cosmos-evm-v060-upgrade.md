@@ -123,7 +123,18 @@ Replace the entire `CallEVM` function in `x/vm/keeper/call_evm.go`:
 // CallEVM performs a smart contract method call using given args.
 // Note: if you call this from a precompile context, ensure that
 // you use the existing stateDB.
-func (k Keeper) CallEVM(ctx sdk.Context, stateDB *statedb.StateDB, abi abi.ABI, from, contract common.Address, commit, callFromPrecompile bool, gasCap *big.Int, method string, args ...interface{}) (*types.MsgEthereumTxResponse, error) {
+func (k Keeper) CallEVM(
+	ctx sdk.Context,
+	stateDB *statedb.StateDB,
+	abi abi.ABI,
+	from,
+	contract common.Address,
+	commit,
+	callFromPrecompile bool,
+	gasCap *big.Int,
+	method string,
+	args ...interface{},
+) (*types.MsgEthereumTxResponse, error) {
 	data, err := abi.Pack(method, args...)
 	if err != nil {
 		return nil, errorsmod.Wrap(
@@ -148,7 +159,16 @@ Replace the entire `CallEVMWithData` function:
 // CallEVMWithData performs a smart contract method call using contract data.
 // Note: if you call this from a precompile context, ensure that
 // you use the existing stateDB.
-func (k Keeper) CallEVMWithData(ctx sdk.Context, stateDB *statedb.StateDB, from common.Address, contract *common.Address, data []byte, commit bool, callFromPrecompile bool, gasCap *big.Int) (*types.MsgEthereumTxResponse, error) {
+func (k Keeper) CallEVMWithData(
+	ctx sdk.Context,
+	stateDB *statedb.StateDB,
+	from common.Address,
+	contract *common.Address,
+	data []byte,
+	commit bool,
+	callFromPrecompile bool,
+	gasCap *big.Int,
+) (*types.MsgEthereumTxResponse, error) {
 	nonce, err := k.accountKeeper.GetSequence(ctx, from.Bytes())
 	if err != nil {
 		return nil, err
@@ -199,7 +219,15 @@ In `x/vm/keeper/state_transition.go`, replace the `ApplyMessage` function:
 // ApplyMessage calls ApplyMessageWithConfig with an empty TxConfig.
 // Note: if you call this from a precompile context, ensure that
 // you use the existing stateDB.
-func (k *Keeper) ApplyMessage(ctx sdk.Context, stateDB *statedb.StateDB, msg core.Message, tracer *tracing.Hooks, commit, callFromPrecompile, internal bool) (*types.MsgEthereumTxResponse, error) {
+func (k *Keeper) ApplyMessage(
+	ctx sdk.Context,
+	stateDB *statedb.StateDB,
+	msg core.Message,
+	tracer *tracing.Hooks,
+	commit,
+	callFromPrecompile,
+	internal bool,
+) (*types.MsgEthereumTxResponse, error) {
 	cfg, err := k.EVMConfig(ctx, ctx.BlockHeader().ProposerAddress)
 	if err != nil {
 		return nil, errorsmod.Wrap(err, "failed to load evm config")
@@ -220,7 +248,18 @@ Replace the `ApplyMessageWithConfig` function signature and add nil check. The k
 5. When `commit=true` and `callFromPrecompile=true`, flush instead of full commit
 
 ```go
-func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context, stateDB *statedb.StateDB, msg core.Message, tracer *tracing.Hooks, commit bool, callFromPrecompile bool, cfg *statedb.EVMConfig, txConfig statedb.TxConfig, internal bool, overrides *rpctypes.StateOverride) (*types.MsgEthereumTxResponse, error) {
+func (k *Keeper) ApplyMessageWithConfig(
+	ctx sdk.Context,
+	stateDB *statedb.StateDB,
+	msg core.Message,
+	tracer *tracing.Hooks,
+	commit bool,
+	callFromPrecompile bool,
+	cfg *statedb.EVMConfig,
+	txConfig statedb.TxConfig,
+	internal bool,
+	overrides *rpctypes.StateOverride,
+) (*types.MsgEthereumTxResponse, error) {
 	var (
 		ret   []byte
 		vmErr error
@@ -338,12 +377,44 @@ Replace the entire `EVMKeeper` interface with v0.6.0-compatible version:
 type EVMKeeper interface {
 	GetParams(ctx sdk.Context) evmtypes.Params
 	GetAccountWithoutBalance(ctx sdk.Context, addr common.Address) *statedb.Account
-	EstimateGasInternal(c context.Context, req *evmtypes.EthCallRequest, fromType evmtypes.CallType) (*evmtypes.EstimateGasResponse, error)
-	ApplyMessage(ctx sdk.Context, stateDB *statedb.StateDB, msg core.Message, tracer *tracing.Hooks, commit, callFromPrecompile, internal bool) (*evmtypes.MsgEthereumTxResponse, error)
+	EstimateGasInternal(
+		c context.Context,
+		req *evmtypes.EthCallRequest,
+		fromType evmtypes.CallType,
+	) (*evmtypes.EstimateGasResponse, error)
+	ApplyMessage(
+		ctx sdk.Context,
+		stateDB *statedb.StateDB,
+		msg core.Message,
+		tracer *tracing.Hooks,
+		commit,
+		callFromPrecompile,
+		internal bool,
+	) (*evmtypes.MsgEthereumTxResponse, error)
 	DeleteAccount(ctx sdk.Context, addr common.Address) error
 	IsAvailableStaticPrecompile(params *evmtypes.Params, address common.Address) bool
-	CallEVM(ctx sdk.Context, stateDB *statedb.StateDB, abi abi.ABI, from, contract common.Address, commit, callFromPrecompile bool, gasCap *big.Int, method string, args ...interface{}) (*evmtypes.MsgEthereumTxResponse, error)
-	CallEVMWithData(ctx sdk.Context, stateDB *statedb.StateDB, from common.Address, contract *common.Address, data []byte, commit bool, callFromPrecompile bool, gasCap *big.Int) (*evmtypes.MsgEthereumTxResponse, error)
+	CallEVM(
+		ctx sdk.Context,
+		stateDB *statedb.StateDB,
+		abi abi.ABI,
+		from,
+		contract common.Address,
+		commit,
+		callFromPrecompile bool,
+		gasCap *big.Int,
+		method string,
+		args ...interface{},
+	) (*evmtypes.MsgEthereumTxResponse, error)
+	CallEVMWithData(
+		ctx sdk.Context,
+		stateDB *statedb.StateDB,
+		from common.Address,
+		contract *common.Address,
+		data []byte,
+		commit bool,
+		callFromPrecompile bool,
+		gasCap *big.Int,
+	) (*evmtypes.MsgEthereumTxResponse, error)
 	GetCode(ctx sdk.Context, hash common.Hash) []byte
 	SetCode(ctx sdk.Context, hash []byte, bytecode []byte)
 	SetAccount(ctx sdk.Context, address common.Address, account statedb.Account) error
@@ -393,8 +464,28 @@ Replace the `EVMKeeper` interface with v0.6.0-compatible version:
 ```go
 // EVMKeeper defines the expected EVM keeper interface used on erc20
 type EVMKeeper interface {
-	CallEVM(ctx sdk.Context, stateDB *statedb.StateDB, abi abi.ABI, from, contract common.Address, commit bool, callFromPrecompile bool, gasCap *big.Int, method string, args ...interface{}) (*evmtypes.MsgEthereumTxResponse, error)
-	CallEVMWithData(ctx sdk.Context, stateDB *statedb.StateDB, from common.Address, contract *common.Address, data []byte, commit bool, callFromPrecompile bool, gasCap *big.Int) (*evmtypes.MsgEthereumTxResponse, error)
+	CallEVM(
+		ctx sdk.Context,
+		stateDB *statedb.StateDB,
+		abi abi.ABI,
+		from,
+		contract common.Address,
+		commit bool,
+		callFromPrecompile bool,
+		gasCap *big.Int,
+		method string,
+		args ...interface{},
+	) (*evmtypes.MsgEthereumTxResponse, error)
+	CallEVMWithData(
+		ctx sdk.Context,
+		stateDB *statedb.StateDB,
+		from common.Address,
+		contract *common.Address,
+		data []byte,
+		commit bool,
+		callFromPrecompile bool,
+		gasCap *big.Int,
+	) (*evmtypes.MsgEthereumTxResponse, error)
 	GetAccountOrEmpty(ctx sdk.Context, addr common.Address) statedb.Account
 	GetAccount(ctx sdk.Context, addr common.Address) *statedb.Account
 	IsContract(ctx sdk.Context, addr common.Address) bool
@@ -490,7 +581,18 @@ func (k Keeper) BalanceOf(
 	contract, account common.Address,
 ) *big.Int {
 	stateDB := statedb.New(ctx, k.evmKeeper, statedb.NewEmptyTxConfig())
-	res, err := k.evmKeeper.CallEVM(ctx, stateDB, abi, types.ModuleAddress, contract, false, false, nil, "balanceOf", account)
+	res, err := k.evmKeeper.CallEVM(
+		ctx,
+		stateDB,
+		abi,
+		types.ModuleAddress,
+		contract,
+		false,
+		false,
+		nil,
+		"balanceOf",
+		account,
+	)
 	// ... rest unchanged ...
 }
 ```
@@ -552,7 +654,16 @@ import (
 
 // ConvertERC20IntoCoinsForNativeToken handles the erc20 conversion for a native erc20 token pair.
 // This function is used by both the msg server and precompiles (like ICS20).
-func (k Keeper) ConvertERC20IntoCoinsForNativeToken(ctx sdk.Context, stateDB *statedb.StateDB, contract common.Address, amount math.Int, receiver sdk.AccAddress, sender common.Address, commit bool, callFromPrecompile bool) (*types.MsgConvertERC20Response, error) {
+func (k Keeper) ConvertERC20IntoCoinsForNativeToken(
+	ctx sdk.Context,
+	stateDB *statedb.StateDB,
+	contract common.Address,
+	amount math.Int,
+	receiver sdk.AccAddress,
+	sender common.Address,
+	commit bool,
+	callFromPrecompile bool,
+) (*types.MsgConvertERC20Response, error) {
 	// Validate and get token pair
 	pair, err := k.MintingEnabled(ctx, receiver, contract.Hex())
 	if err != nil {
@@ -596,7 +707,16 @@ func (k Keeper) ConvertERC20IntoCoinsForNativeToken(ctx sdk.Context, stateDB *st
 		return nil, err
 	}
 
-	res, err := k.evmKeeper.CallEVMWithData(ctx, stateDB, sender, &erc20Contract, transferData, commit, callFromPrecompile, nil)
+	res, err := k.evmKeeper.CallEVMWithData(
+		ctx,
+		stateDB,
+		sender,
+		&erc20Contract,
+		transferData,
+		commit,
+		callFromPrecompile,
+		nil,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -770,7 +890,14 @@ func (k Keeper) ConvertCoin(
 Update the function signature and add stateDB creation:
 
 ```go
-func (k Keeper) ConvertCoinNativeERC20(ctx sdk.Context, pair types.TokenPair, amount math.Int, receiver common.Address, sender sdk.AccAddress, callFromPrecompile bool) error {
+func (k Keeper) ConvertCoinNativeERC20(
+	ctx sdk.Context,
+	pair types.TokenPair,
+	amount math.Int,
+	receiver common.Address,
+	sender sdk.AccAddress,
+	callFromPrecompile bool,
+) error {
 	if !amount.IsPositive() {
 		return sdkerrors.Wrap(types.ErrNegativeToken, "converted coin amount must be positive")
 	}
@@ -791,7 +918,19 @@ func (k Keeper) ConvertCoinNativeERC20(ctx sdk.Context, pair types.TokenPair, am
 
 	// Unescrow Tokens and send to receiver
 	stateDB := statedb.New(ctx, k.evmKeeper, statedb.NewEmptyTxConfig())
-	res, err := k.evmKeeper.CallEVM(ctx, stateDB, erc20, types.ModuleAddress, contract, true, callFromPrecompile, nil, "transfer", receiver, amount.BigInt())
+	res, err := k.evmKeeper.CallEVM(
+		ctx,
+		stateDB,
+		erc20,
+		types.ModuleAddress,
+		contract,
+		true,
+		callFromPrecompile,
+		nil,
+		"transfer",
+		receiver,
+		amount.BigInt(),
+	)
 	if err != nil {
 		return err
 	}
@@ -886,12 +1025,33 @@ Then update all CallEVM/CallEVMWithData calls in IBCReceivePacketCallback:
 
 For the `approve` call:
 ```go
-	res, err := k.evmKeeper.CallEVM(cachedCtx, stateDB, erc20.ABI, receiverHex, tokenPair.GetERC20Contract(), true, false, remainingGas, "approve", contractAddr, amountInt.BigInt())
+	res, err := k.evmKeeper.CallEVM(
+		cachedCtx,
+		stateDB,
+		erc20.ABI,
+		receiverHex,
+		tokenPair.GetERC20Contract(),
+		true,
+		false,
+		remainingGas,
+		"approve",
+		contractAddr,
+		amountInt.BigInt(),
+	)
 ```
 
 For the `CallEVMWithData` call:
 ```go
-	res, err = k.evmKeeper.CallEVMWithData(cachedCtx, stateDB, receiverHex, &contractAddr, cbData.Calldata, true, false, remainingGas)
+	res, err = k.evmKeeper.CallEVMWithData(
+		cachedCtx,
+		stateDB,
+		receiverHex,
+		&contractAddr,
+		cbData.Calldata,
+		true,
+		false,
+		remainingGas,
+	)
 ```
 
 - [ ] **Step 3: Update IBCOnAcknowledgementPacketCallback**
@@ -907,7 +1067,16 @@ Same pattern — create stateDB after `cachedCtx` setup:
 
 Update the CallEVM call:
 ```go
-	res, err := k.evmKeeper.CallEVM(cachedCtx, stateDB, *abi, sender, contractAddr, true, false, math.NewIntFromUint64(cachedCtx.GasMeter().GasRemaining()).BigInt(), "onPacketAcknowledgement",
+	res, err := k.evmKeeper.CallEVM(
+		cachedCtx,
+		stateDB,
+		*abi,
+		sender,
+		contractAddr,
+		true,
+		false,
+		math.NewIntFromUint64(cachedCtx.GasMeter().GasRemaining()).BigInt(),
+		"onPacketAcknowledgement",
 		packet.GetSourceChannel(), packet.GetSourcePort(), packet.GetSequence(), packet.GetData(), acknowledgement)
 ```
 
@@ -924,7 +1093,16 @@ Same pattern:
 
 Update the CallEVM call:
 ```go
-	res, err := k.evmKeeper.CallEVM(ctx, stateDB, *abi, sender, contractAddr, true, false, math.NewIntFromUint64(cachedCtx.GasMeter().GasRemaining()).BigInt(), "onPacketTimeout",
+	res, err := k.evmKeeper.CallEVM(
+		ctx,
+		stateDB,
+		*abi,
+		sender,
+		contractAddr,
+		true,
+		false,
+		math.NewIntFromUint64(cachedCtx.GasMeter().GasRemaining()).BigInt(),
+		"onPacketTimeout",
 		packet.GetSourceChannel(), packet.GetSourcePort(), packet.GetSequence(), packet.GetData())
 ```
 

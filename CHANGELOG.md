@@ -2,7 +2,28 @@
 
 ## UNRELEASED
 
+### STATE BREAKING
+
+- Add the `v0.6.0-stabilization` upgrade handler: removes the unimplemented static precompiles
+  `0x…0803` and `0x…0807` from `active_static_precompiles` and ensures the `aznnt` bank metadata exists.
+  Replaces the upstream example `v0.4.0-to-v0.5.0` handler, which wrote test `atest` metadata.
+- Keep `0x…0803` and `0x…0807` in the bank blocked address list.
+- Port Cosmos EVM v0.6.1–v0.6.3 fixes: GHSA-7g4w-cg88-2cq2 (StateDB balance underflow guard, locked
+  balance snapshot), GHSA-367m-g444-9mg3 (atomic `StateDB.Commit`, `AddBalance` overflow guard, EVM commit
+  path may not write a module account balance), precompile gas semantics, ICS-20 v2 ack validation,
+  feemarket gas clamping and `ProcessProposal` handler.
+- Remove the unused `x/erc20` keeper `DeployERC20Contract`, which deployed from the module account.
+
+### IMPROVEMENTS
+
+- Default EVM denom is `aznnt` (18 decimals, symbol `ZNNT`) and default EVM chain ID is `15150`.
+- `zenad` default genesis no longer depends on `testutil/constants` or the upstream WEVMOS address.
+- Fix the `zenad` Docker image and localnet paths, pin Go 1.23.8 in CI and Docker, add a minimal `.goreleaser.yml`.
+
 ### DEPENDENCIES
+
+- Upgrade Cosmos SDK v0.53.6 → v0.53.8, CometBFT v0.38.21 → v0.38.26, ibc-go v10.3.1-pre → v10.7.0
+- Align the go-ethereum requirement (v1.16.2) with the `cosmos/go-ethereum v1.16.2-cosmos-1` replacement
 
 - Upgrade Cosmos SDK v0.53.4 → v0.53.6 (CometBFT v0.38.21, gogoproto v1.7.2)
 

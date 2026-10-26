@@ -1,0 +1,78 @@
+# Minimal release configuration used by `make release` / `make release-dry-run`
+# (goreleaser-cross image, see Makefile).
+#
+# TODO: not yet exercised end to end. Signing, checksums upload targets, Docker
+# images and darwin builds still need to be decided by the release owner.
+version: 2
+
+project_name: zenad
+
+env:
+  - CGO_ENABLED=1
+
+builds:
+  - id: zenad-linux-amd64
+    dir: zenad
+    main: ./cmd/zenad
+    binary: zenad
+    goos:
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CC=x86_64-linux-gnu-gcc
+      - CXX=x86_64-linux-gnu-g++
+    flags:
+      - -mod=readonly
+      - -trimpath
+    tags:
+      - netgo
+      - ledger
+    ldflags:
+      - -s -w
+      - -X github.com/cosmos/cosmos-sdk/version.Name=zena
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=zenad
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger
+
+  - id: zenad-linux-arm64
+    dir: zenad
+    main: ./cmd/zenad
+    binary: zenad
+    goos:
+      - linux
+    goarch:
+      - arm64
+    env:
+      - CC=aarch64-linux-gnu-gcc
+      - CXX=aarch64-linux-gnu-g++
+    flags:
+      - -mod=readonly
+      - -trimpath
+    tags:
+      - netgo
+      - ledger
+    ldflags:
+      - -s -w
+      - -X github.com/cosmos/cosmos-sdk/version.Name=zena
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=zenad
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger
+
+archives:
+  - id: zenad
+    formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: SHA256SUMS-{{ .Version }}.txt
+  algorithm: sha256
+
+release:
+  github:
+    owner: zenanetwork
+    name: zena
+  prerelease: auto
+  draft: true

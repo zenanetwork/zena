@@ -11,7 +11,7 @@ export FOUNDRY_DISABLE_NIGHTLY_WARNING=1
 RPC_URL=${CUSTOM_RPC:-http://127.0.0.1:8545}
 PK=${PRIVATE_KEY:?}
 RECIPIENT=${ACCOUNT_2:?}
-CHAIN_ID=${CHAIN_ID:-262144}
+CHAIN_ID=${CHAIN_ID:-15150}
 
 # Ensure CONTRACT is set
 if [ -z "${CONTRACT:-}" ]; then
@@ -35,29 +35,24 @@ OUTPUT=$(cast send \
 	--chain-id "$CHAIN_ID" \
 	--json 2>&1 || true)
 
-# 2) Try parse JSON
-JSON=$(echo "$OUTPUT" | sed -n 's/.*\({.*\)/\1/p')
-
-if [ -n "$JSON" ]; then
-	# 3a) JSON returned -> parse error field
-	echo "$JSON" | jq -r '
-    if has("error") then
-      "✅ Transaction reverted as expected:\n  " + .error.message
-    else
-      "❌ Expected a revert, but transaction succeeded:\n" + (.|tojson)
-    end'
-else
-	# 3b) No JSON -> fallback to raw text check
-	if echo "$OUTPUT" | grep -q -e 'execution reverted' -e 'ERC20InsufficientBalance'; then
-		echo "✅ Transaction reverted as expected"
-		echo
-		echo "Revert detail:"
-		# Newline before 'Error:'
-		echo "$OUTPUT" | sed -n 's/.*\(Error:.*\)/\1/p'
-	else
-		echo "❌ Unexpected response (no JSON, no revert message):"
-		echo
-		echo "$OUTPUT"
-		exit 1
-	fi
+# 2) A revert shows up either in the error text (gas estimation fails) or as a
+#    mined receipt with status 0x0. Newer cast versions print errors as JSON
+#    ({"level":"error",...,"message":...}), so match on the text first.
+if echo "$OUTPUT" | grep -q -e 'execution reverted' -e 'ERC20InsufficientBalance'; then
+	echo "✅ Transaction reverted as expected"
+	echo
+	echo "Revert detail:"
+	echo "$OUTPUT"
+	exit 0
 fi
+
+STATUS=$(echo "$OUTPUT" | jq -r '.status // empty' 2>/dev/null || true)
+if [ "$STATUS" = "0x0" ] || [ "$STATUS" = "0" ]; then
+	echo "✅ Transaction mined with failed status as expected"
+	exit 0
+fi
+
+echo "❌ Expected a revert, but got:"
+echo
+echo "$OUTPUT"
+exit 1

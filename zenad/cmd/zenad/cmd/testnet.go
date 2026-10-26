@@ -49,7 +49,6 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	customnetwork "github.com/zenanetwork/zena/zenad/tests/network"
-	evmnetwork "github.com/zenanetwork/zena/testutil/integration/evm/network"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
@@ -72,7 +71,9 @@ var (
 	unsafeStartValidatorFn UnsafeStartValidatorCmdCreator
 )
 
-const TEST_DENOM = "atest"
+// TEST_DENOM funds the testnet accounts and is the EVM denom of the testnet; it
+// must match the base of the bank metadata written below (config.NativeDenomMetadata).
+const TEST_DENOM = config.ZenaChainDenom
 
 var mnemonics = []string{
 	"copper push brief egg scan entry inform record adjust fossil boss egg comic alien upon aspect dry avoid interest fury window hint race symptom",
@@ -572,7 +573,7 @@ func initGenFiles(
 	var bankGenState banktypes.GenesisState
 	clientCtx.Codec.MustUnmarshalJSON(appGenState[banktypes.ModuleName], &bankGenState)
 
-	bankGenState.DenomMetadata = append(bankGenState.DenomMetadata, evmnetwork.GenerateBankGenesisMetadata(config.EVMChainID)...)
+	bankGenState.DenomMetadata = append(bankGenState.DenomMetadata, config.NativeDenomMetadata())
 
 	bankGenState.Balances = banktypes.SanitizeGenesisBalances(genBalances)
 	for _, bal := range bankGenState.Balances {

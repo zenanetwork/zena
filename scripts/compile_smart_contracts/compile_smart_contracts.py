@@ -21,6 +21,8 @@ from typing import List, Union
 
 # The path to the main level of the Cosmos EVM repository.
 REPO_PATH = Path(__file__).parent.parent.parent
+# REPO_MODULE is the Go module path declared in the repository root go.mod.
+REPO_MODULE = "github.com/zenanetwork/zena"
 
 
 # This is the main target directory inside of the contracts folder.
@@ -195,8 +197,8 @@ def copy_to_contracts_directory(target_dir: Path, contracts: List[Contract]) -> 
 
 def is_os_repo(path: Path) -> bool:
     """
-    This function checks if the given path is the root of the Cosmos EVM repository,
-    where this script is designed to be executed.
+    This function checks if the given path is the root of the Zenanet (zena)
+    repository, where this script is designed to be executed.
     """
 
     contents = os.listdir(path)
@@ -210,7 +212,7 @@ def is_os_repo(path: Path) -> bool:
             if not line:
                 break
 
-            if "module github.com/cosmos/evm" in line:
+            if line.strip() == f"module {REPO_MODULE}":
                 return True
 
     return False
@@ -329,7 +331,7 @@ if __name__ == "__main__":
     if not is_os_repo(REPO_PATH):
         raise ValueError(
             "This script should only be executed "
-            + "in the evmos repository."
+            + "in the zena repository. "
             + f"Current path: {REPO_PATH}"
         )
 
