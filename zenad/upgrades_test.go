@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-
 	"github.com/zenanetwork/zena/config"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 

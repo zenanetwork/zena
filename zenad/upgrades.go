@@ -8,10 +8,10 @@ import (
 	"github.com/zenanetwork/zena/config"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 
+	upgradetypes "cosmossdk.io/x/upgrade/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-
-	upgradetypes "cosmossdk.io/x/upgrade/types"
 )
 
 // UpgradeName defines the on-chain upgrade name for the Zenanet mainnet
