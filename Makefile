@@ -388,6 +388,7 @@ LEGACY_SRC := $(BUILDDIR)/legacy-src
 test-system: build-legacy build
 	mkdir -p ./tests/systemtests/binaries/
 	cp $(BUILDDIR)/zenad ./tests/systemtests/binaries/
+	git submodule update --init tests/systemtests/Counter/lib/forge-std
 	cd tests/systemtests/Counter && forge build
 	$(MAKE) -C tests/systemtests test
 
