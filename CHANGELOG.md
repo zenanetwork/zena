@@ -2,6 +2,19 @@
 
 ## UNRELEASED
 
+### STATE BREAKING
+
+- Add the `v0.6.0-stabilization` upgrade handler: removes the unimplemented static precompiles
+  `0x…0803` and `0x…0807` from `active_static_precompiles` and ensures the `aznnt` bank metadata exists.
+  Replaces the upstream example `v0.4.0-to-v0.5.0` handler, which wrote test `atest` metadata.
+- Keep `0x…0803` and `0x…0807` in the bank blocked address list.
+
+### IMPROVEMENTS
+
+- Default EVM denom is `aznnt` (18 decimals, symbol `ZNNT`) and default EVM chain ID is `15150`.
+- `zenad` default genesis no longer depends on `testutil/constants` or the upstream WEVMOS address.
+- Fix the `zenad` Docker image and localnet paths, pin Go 1.23.8 in CI and Docker, add a minimal `.goreleaser.yml`.
+
 ### DEPENDENCIES
 
 - Upgrade Cosmos SDK v0.53.4 → v0.53.6 (CometBFT v0.38.21, gogoproto v1.7.2)
