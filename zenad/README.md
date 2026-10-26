@@ -12,15 +12,16 @@ as well as to provide a chain object for testing purposes within the repository.
 
 By default, this chain has the following configuration:
 
-| Option              | Value                  |
-|---------------------|------------------------|
-| Binary              | `zenad`                 |
-| Chain ID            | `zena_262144-1`      |
-| Custom Opcodes      | -                      |
-| Default Token Pairs | 1 for the native token |
-| Denomination        | `atest`                |
-| EVM permissioning   | permissionless         |
-| Enabled Precompiles | all                    |
+| Option              | Value                                   |
+|---------------------|-----------------------------------------|
+| Binary              | `zenad`                                 |
+| Chain ID (Cosmos)   | `15150` (as set by `local_node.sh`)     |
+| EVM Chain ID        | `15150` (`0x3b2e`)                      |
+| Custom Opcodes      | -                                       |
+| Default Token Pairs | none in `DefaultGenesis`; `local_node.sh` registers the native token |
+| Denomination        | `aznnt` (18 decimals, display `znnt`, symbol `ZNNT`) |
+| EVM permissioning   | permissionless                          |
+| Enabled Precompiles | all implemented static precompiles (`0x0100`, `0x0400`, `0x0800`-`0x0802`, `0x0804`-`0x0806`) |
 
 ## Running The Chain
 

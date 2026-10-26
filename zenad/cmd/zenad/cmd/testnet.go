@@ -49,7 +49,6 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	customnetwork "github.com/zenanetwork/zena/zenad/tests/network"
-	evmnetwork "github.com/zenanetwork/zena/testutil/integration/evm/network"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
 )
 
@@ -572,7 +571,7 @@ func initGenFiles(
 	var bankGenState banktypes.GenesisState
 	clientCtx.Codec.MustUnmarshalJSON(appGenState[banktypes.ModuleName], &bankGenState)
 
-	bankGenState.DenomMetadata = append(bankGenState.DenomMetadata, evmnetwork.GenerateBankGenesisMetadata(config.EVMChainID)...)
+	bankGenState.DenomMetadata = append(bankGenState.DenomMetadata, config.NativeDenomMetadata())
 
 	bankGenState.Balances = banktypes.SanitizeGenesisBalances(genBalances)
 	for _, bal := range bankGenState.Balances {

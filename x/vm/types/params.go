@@ -17,14 +17,15 @@ import (
 )
 
 var (
-	// DefaultEVMDenom is the default value for the evm denom
-	DefaultEVMDenom = "uznnt"
+	// DefaultEVMDenom is the default value for the evm denom (Zenanet mainnet: aznnt, 18 decimals)
+	DefaultEVMDenom = "aznnt"
 	// DefaultEVMExtendedDenom is the default value for the evm extended denom
 	DefaultEVMExtendedDenom = "aznnt"
 	// DefaultEVMDisplayDenom is the default value for the display denom in the bank metadata
 	DefaultEVMDisplayDenom = "znnt"
-	// DefaultEVMChainID is the default value for the evm chain ID
-	DefaultEVMChainID uint64 = 262144
+	// DefaultEVMChainID is the default value for the evm chain ID (Zenanet mainnet).
+	// NOTE: keep in sync with config.ZenaMainnetEVMChainID and server/config.DefaultEVMChainID.
+	DefaultEVMChainID uint64 = 15150
 	// DefaultEVMDecimals is the default value for the evm denom decimal precision
 	DefaultEVMDecimals uint64 = 18
 	// DefaultStaticPrecompiles defines the default active precompiles.

@@ -2,8 +2,8 @@ package zenad
 
 import (
 	"encoding/json"
+
 	"github.com/zenanetwork/zena/config"
-	testconstants "github.com/zenanetwork/zena/testutil/constants"
 	erc20types "github.com/zenanetwork/zena/x/erc20/types"
 	feemarkettypes "github.com/zenanetwork/zena/x/feemarket/types"
 	evmtypes "github.com/zenanetwork/zena/x/vm/types"
@@ -22,10 +22,12 @@ type GenesisState map[string]json.RawMessage
 
 // NewEVMGenesisState returns the default genesis state for the EVM module.
 //
-// NOTE: for the example chain implementation we need to set the default EVM denomination,
-// enable ALL precompiles, and include default preinstalls.
+// It uses the Zenanet native denom (aznnt), enables every static precompile
+// implemented by this binary and includes the default preinstalls.
 func NewEVMGenesisState() *evmtypes.GenesisState {
 	evmGenState := evmtypes.DefaultGenesisState()
+	evmGenState.Params.EvmDenom = config.ZenaChainDenom
+	evmGenState.Params.ExtendedDenomOptions = &evmtypes.ExtendedDenomOptions{ExtendedDenom: config.ZenaChainDenom}
 	evmGenState.Params.ActiveStaticPrecompiles = evmtypes.AvailableStaticPrecompiles
 	evmGenState.Preinstalls = evmtypes.DefaultPreinstalls
 
@@ -34,29 +36,25 @@ func NewEVMGenesisState() *evmtypes.GenesisState {
 
 // NewErc20GenesisState returns the default genesis state for the ERC20 module.
 //
-// NOTE: for the example chain implementation we are also adding a default token pair,
-// which is the base denomination of the chain (i.e. the WZENA contract).
+// NOTE: no native token pair is registered by default. The address of the
+// native ERC-20 representation (WZENA) is network specific, so it must be set
+// explicitly in the network's genesis (see local_node.sh) instead of being
+// hard coded here.
 func NewErc20GenesisState() *erc20types.GenesisState {
-	erc20GenState := erc20types.DefaultGenesisState()
-	erc20GenState.TokenPairs = testconstants.ExampleTokenPairs
-	erc20GenState.NativePrecompiles = []string{testconstants.WZENAContractMainnet}
-
-	return erc20GenState
+	return erc20types.DefaultGenesisState()
 }
 
 // NewMintGenesisState returns the default genesis state for the mint module.
-//
-// NOTE: for the example chain implementation we are also adding a default minter.
 func NewMintGenesisState() *minttypes.GenesisState {
 	mintGenState := minttypes.DefaultGenesisState()
-	mintGenState.Params.MintDenom = config.ExampleChainDenom
+	mintGenState.Params.MintDenom = config.ZenaChainDenom
 
 	return mintGenState
 }
 
 // NewFeeMarketGenesisState returns the default genesis state for the feemarket module.
 //
-// NOTE: for the example chain implementation we are disabling the base fee.
+// NOTE: the base fee is disabled for local test networks.
 func NewFeeMarketGenesisState() *feemarkettypes.GenesisState {
 	feeMarketGenState := feemarkettypes.DefaultGenesisState()
 	feeMarketGenState.Params.NoBaseFee = true

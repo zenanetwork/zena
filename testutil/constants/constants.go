@@ -26,9 +26,13 @@ const (
 	// ExampleEIP155ChainID provides an example EIP-155 chain ID for use in tests
 	ExampleEIP155ChainID = 9001
 
-	// WZENAContractMainnet is the WZENA contract address for mainnet
+	// WZENAContractMainnet is a test-only WZENA address.
+	//
+	// NOTE: this value is inherited from upstream Cosmos EVM, where it is the
+	// Evmos mainnet WEVMOS address (WEVMOSContractMainnet). It is NOT the
+	// address of a contract deployed on the Zenanet mainnet; use it in tests only.
 	WZENAContractMainnet = "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517"
-	// WZENAContractTestnet is the WZENA contract address for testnet
+	// WZENAContractTestnet is a test-only address inherited from upstream (Evmos testnet WEVMOS).
 	WZENAContractTestnet = "0xcc491f589b45d4a3c679016195b3fb87d7848210"
 	// ExampleEvmAddress1 is the example EVM address
 	ExampleEvmAddressAlice = "0x1e0DE5DB1a39F99cBc67B00fA3415181b3509e42"
